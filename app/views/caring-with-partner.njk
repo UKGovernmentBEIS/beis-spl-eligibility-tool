@@ -1,0 +1,58 @@
+{% from "radios/macro.njk" import govukRadios %}
+
+{% extends "layout.njk" %}
+
+{% block content %}
+    {% set questionText %}
+      Will the mother care for the child with a partner?
+    {% endset %}
+
+    {% set hintText %}
+      <p class="govuk-hint">
+        The partner is one of the following:
+      </p>
+      <ul>
+        <li>the mother’s husband, wife or civil partner</li>
+        <li>the child’s other parent</li>
+        <li>the mother’s partner (if they live with the mother and the child)</li>
+      </ul>
+    {% endset %}
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds-from-desktop">
+    <form action="caring-with-partner" method="POST">
+      {{ govukRadios({
+        classes: "govuk-radios",
+        idPrefix: "caring-with-partner",
+        name: "caring-with-partner",
+        fieldset: {
+          legend: {
+            text: questionText,
+            isPageHeading: true,
+            classes: "govuk-fieldset__legend--xl"
+          }
+        },
+        hint: {
+          html: hintText
+        },
+        errorMessage : errors['caring-with-partner'] if errors['caring-with-partner'],
+        items: [
+          {
+            value: "yes",
+            text: "Yes"
+          },
+          {
+            value: "no",
+            text: "No"
+          }
+        ]
+      }) }}
+
+      <button type="submit" class="govuk-button">
+        Continue
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -3,6 +3,7 @@ const path = require('path')
 
 // Npm dependencies
 const express = require('express')
+const session = require('express-session')
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const logger = require('pino')()
@@ -11,7 +12,6 @@ const argv = require('minimist')(process.argv.slice(2))
 const staticify = require('staticify')(path.join(__dirname, 'public'))
 const compression = require('compression')
 const nunjucks = require('nunjucks')
-const session = require('express-session')
 const MemoryStore = require('memorystore')(session)
 
 // Local dependencies
@@ -69,6 +69,20 @@ function initialiseGlobalMiddleware (app) {
   }))
 
   app.use(sessionData)
+
+  function handleViewErrors (app) {
+    app.route('*')
+      .post(function initializeSessionErrors (req, res, next) {
+        req.session.errors = {}
+        next()
+      })
+      .get(function addErrorsToLocals (req, res, next) {
+        res.locals.errors = req.session.errors
+        next()
+      })
+  }
+
+  handleViewErrors(app)
 }
 
 function initialiseProxy (app) {
