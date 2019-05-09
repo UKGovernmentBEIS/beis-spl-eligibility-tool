@@ -28,7 +28,7 @@
   {% endif %}
 
   {% set questionText %}
-    {% if data | isBirth %}
+    {% if data() | isBirth %}
       When is the baby due, or when was the baby born?
     {% else %}
       When is or was your match date?
@@ -55,15 +55,18 @@
           items: [
             {
               name: "day",
-              classes: "govuk-input--width-2"
+              classes: "govuk-input--width-2",
+              value: data()['start-date-day']
             },
             {
               name: "month",
-              classes: "govuk-input--width-2"
+              classes: "govuk-input--width-2",
+              value: data()['start-date-month']
             },
             {
               name: "year",
-              classes: "govuk-input--width-4"
+              classes: "govuk-input--width-4",
+              value: data()['start-date-year']
             }
           ]
         }) }}

@@ -57,11 +57,13 @@
           items: [
             {
               value: "yes",
-              text: "Yes"
+              text: "Yes",
+              checked: data()['caring-with-partner'] == 'yes'
             },
             {
               value: "no",
-              text: "No"
+              text: "No",
+              checked: data()['caring-with-partner'] == 'no'
             }
           ]
         }) }}

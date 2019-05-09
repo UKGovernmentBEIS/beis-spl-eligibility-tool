@@ -38,11 +38,13 @@
           items: [
             {
               value: 'birth',
-              text: 'Birth'
+              text: 'Birth',
+              checked: data()['birth-or-adoption'] == 'birth'
             },
             {
               value: 'adoption',
-              text: 'Adoption'
+              text: 'Adoption',
+              checked: data()['birth-or-adoption'] == 'adoption'
             }
           ]
         }) }}
