@@ -9,7 +9,7 @@ function birthOrAdoption (req) {
 
 function caringWithPartner (req) {
   if (!req.body['caring-with-partner']) {
-    req.session.errors = { 'caring-with-partner': { text: 'Select whether or not you are caring for the child with a partner' } }
+    req.session.errors = { 'caring-with-partner': 'Select whether or not you are caring for the child with a partner' }
   }
   return hasPassedValidation(req)
 }
@@ -45,7 +45,7 @@ function startDate (req) {
   const earliestPermitted = moment().subtract(1, 'year')
   const latestPermitted = moment().add(1, 'year')
   if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
-    errorMessages.push(buildError('start date must be within 1 year of today'))
+    errorMessages.push(buildError('Start date must be within 1 year of today'))
   }
 
   if (errorMessages.length > 0) {
