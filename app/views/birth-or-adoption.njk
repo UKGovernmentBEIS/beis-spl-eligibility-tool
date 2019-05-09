@@ -1,50 +1,62 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "button/macro.njk" import govukButton %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "macros/hidden-inputs.njk" import hiddenInputs %}
 
 {% extends "layout.njk" %}
 
 {% block content %}
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds-from-desktop">
-    <form method="POST" action="birth-or-adoption">
-      {{ govukRadios({
-        idPrefix: 'birth-or-adoption',
-        name: 'birth-or-adoption',
-        fieldset: {
-          legend: {
-            text: 'Are you having a child through birth or adoption?',
-            isPageHeading: true,
-            classes: "govuk-fieldset__legend--xl"
-          }
-        },
-        hint: {
-          text: 'Shared parental leave and pay is available for both birth and adoptive parents.'
-        },
-        errorMessage: errors['birth-or-adoption'] if errors['birth-or-adoption'],
-        items: [
-          {
-            value: 'birth',
-            text: 'Birth'
+  {% if errors["birth-or-adoption"] %}
+    {{govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [{
+        text: errors['birth-or-adoption'],
+        href: '#birth-or-adoption'
+      }]
+    }) }}
+  {% endif %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST" action="birth-or-adoption">
+        {{ govukRadios({
+          idPrefix: 'birth-or-adoption',
+          name: 'birth-or-adoption',
+          fieldset: {
+            legend: {
+              text: 'Are you having a child through birth or adoption?',
+              isPageHeading: true,
+              classes: "govuk-fieldset__legend--xl"
+            }
           },
-          {
-            value: 'adoption',
-            text: 'Adoption'
-          }
-        ]
-      }) }}
+          hint: {
+            text: 'Shared parental leave and pay is available for both birth and adoptive parents.'
+          },
+          errorMessage: {
+            text: errors['birth-or-adoption']
+          } if errors['birth-or-adoption'],
+          items: [
+            {
+              value: 'birth',
+              text: 'Birth'
+            },
+            {
+              value: 'adoption',
+              text: 'Adoption'
+            }
+          ]
+        }) }}
 
-      {{ hiddenInputs(data, {
-        exclude: [
-          'birth-or-adoption'
-        ]
-      }) }}
+        {{ hiddenInputs(data, {
+          exclude: [
+            'birth-or-adoption'
+          ]
+        }) }}
 
-      {{ govukButton({
-        text: "Continue"
-      }) }}
-    </form>
+        {{ govukButton({
+          text: "Continue"
+        }) }}
+      </form>
+    </div>
   </div>
-</div>
-
 {% endblock %}

@@ -2,7 +2,7 @@ const moment = require('moment')
 
 function birthOrAdoption (req) {
   if (!req.body['birth-or-adoption']) {
-    req.session.errors = { 'birth-or-adoption': { text: 'Select either birth or adoption' } }
+    req.session.errors = { 'birth-or-adoption': 'Select either birth or adoption' }
   }
   return hasPassedValidation(req)
 }
