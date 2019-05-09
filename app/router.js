@@ -15,7 +15,7 @@ router.route(paths.birthOrAdoption)
     if (!validate.birthOrAdoption(req)) {
       return res.redirect(paths.birthOrAdoption)
     }
-    Object.assign(req.session.data, req.body)
+    req.session.data['birth-or-adoption'] = req.body['birth-or-adoption']
     res.redirect(paths.caringWithPartner)
   })
 
@@ -27,7 +27,7 @@ router.route(paths.caringWithPartner)
     if (!validate.caringWithPartner(req)) {
       return res.redirect(paths.caringWithPartner)
     }
-    Object.assign(req.session.data, req.body)
+    req.session.data['caring-with-partner'] = req.body['caring-with-partner']
     res.redirect(paths.startDate)
   })
 
@@ -39,7 +39,7 @@ router.route(paths.startDate)
     if (!validate.startDate(req)) {
       return res.redirect(paths.startDate)
     }
-    Object.assign(req.session.data, req.body)
+    ['start-date-year', 'start-date-month', 'start-date-day'].forEach(key => { req.session.data[key] = req.body[key] })
     res.redirect(paths.results)
   })
 
