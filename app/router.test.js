@@ -13,6 +13,16 @@ beforeEach(() => {
   app = supertest(getApp())
 })
 
+describe('GET /', () => {
+  it('returns 200 status', done => {
+    supertest(getApp())
+      .get('/')
+      .expect(200)
+      .end(done)
+  })
+})
+
+
 describe('POST birthOrAdoption', () => {
   it('redirects back to birth-or-adoption if birth-or-adoption not provided', done => {
     app.post(paths.birthOrAdoption)
