@@ -102,7 +102,7 @@ describe('POST startDate', () => {
     })
   })
 
-  it('redirects to summary when date is valid', done => {
+  it('redirects to results when date is valid', done => {
     const payload = {
       'start-date-day': '02',
       'start-date-month': '11',
@@ -112,7 +112,7 @@ describe('POST startDate', () => {
     app.post(paths.startDate)
       .send(payload)
       .expect(302)
-      .expect('Location', paths.summary)
+      .expect('Location', paths.results)
       .end(done)
   })
 })

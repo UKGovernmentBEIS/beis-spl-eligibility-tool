@@ -3,5 +3,5 @@ module.exports = {
   birthOrAdoption: '/birth-or-adoption',
   caringWithPartner: '/caring-with-partner',
   startDate: '/start-date',
-  summary: '/summary'
+  results: '/results'
 }
