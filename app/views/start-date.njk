@@ -27,6 +27,14 @@
     {% endset %}
   {% endif %}
 
+  {% set questionText %}
+    {% if data | isBirth %}
+      When is the baby due, or when was the baby born?
+    {% else %}
+      When is or was your match date?
+    {% endif %}
+  {% endset %}
+
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form action="start-date" method="POST">
@@ -35,7 +43,7 @@
           namePrefix: "start-date",
           fieldset: {
             legend: {
-              text: "When is the baby start, or when was the baby born?",
+              text: questionText,
               isPageHeading: true,
               classes: "govuk-fieldset__legend--xl"
             }
