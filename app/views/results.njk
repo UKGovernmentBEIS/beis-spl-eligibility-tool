@@ -25,19 +25,19 @@
       </p>
 
       {% set primaryTableCaption %}
-      {# {{ data['primary-name'] | capitalize }} #}
+        {{ data | primaryName | capitalize }}
       {% endset %}
 
       {% set secondaryTableCaption %}
-      {# {{ data['secondary-name'] | capitalize }} #}
+        {{ data | secondaryName | capitalize }}
       {% endset %}
 
       {% set primaryCheckEligibilityButton %}
-      <a class="govuk-link" href="check-eligibility/primary">Check eligibility</a>
+        <a class="govuk-link" href="check-eligibility/primary">Check eligibility</a>
       {% endset %}
 
       {% set secondaryCheckEligibilityButton %}
-      <a class="govuk-link" href="check-eligibility/secondary">Check eligibility</a>
+        <a class="govuk-link" href="check-eligibility/secondary">Check eligibility</a>
       {% endset %}
 
       {{ govukTable({
