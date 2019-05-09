@@ -1,6 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "date-input/macro.njk" import govukDateInput %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "macros/hidden-inputs.njk" import hiddenInputs %}
 
 {% extends "layout.njk" %}
 
@@ -46,19 +47,24 @@
           items: [
             {
               name: "day",
-              classes: "govuk-input--width-2",
-              value: data["start-date-day"]
+              classes: "govuk-input--width-2"
             },
             {
               name: "month",
-              classes: "govuk-input--width-2",
-              value: data["start-date-month"]
+              classes: "govuk-input--width-2"
             },
             {
               name: "year",
-              classes: "govuk-input--width-4",
-              value: data["start-date-year"]
+              classes: "govuk-input--width-4"
             }
+          ]
+        }) }}
+
+        {{ hiddenInputs(data, {
+          exclude: [
+            'start-date-year',
+            'start-date-month',
+            'start-date-day'
           ]
         }) }}
         <button type="submit" class="govuk-button">

@@ -105,11 +105,13 @@
         </p>
       {% endif %} #}
 
-      {# <form method="POST" action="results">
-        <button {% if not hasCheckedEligibility %} disabled{% endif %}="disabled{% endif %}" type="submit" class="govuk-button">
+      <form method="POST" action="results">
+        {{ hiddenInputs(data, {
+        }) }}
+        <button type="submit" class="govuk-button">
           Continue to planner
-        </button> #}
-      {# </form> #}
+        </button>
+      </form>
     </div>
   </div>
 

@@ -1,5 +1,6 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macros/hidden-inputs.njk" import hiddenInputs %}
 
 {% extends "layout.njk" %}
 
@@ -30,6 +31,12 @@
             value: 'adoption',
             text: 'Adoption'
           }
+        ]
+      }) }}
+
+      {{ hiddenInputs(data, {
+        exclude: [
+          'birth-or-adoption'
         ]
       }) }}
 
