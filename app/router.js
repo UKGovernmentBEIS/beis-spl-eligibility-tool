@@ -15,6 +15,7 @@ router.route(paths.birthOrAdoption)
     if (!validate.birthOrAdoption(req)) {
       return res.redirect(paths.birthOrAdoption)
     }
+    Object.assign(req.session.data, req.body)
     res.redirect(paths.caringWithPartner)
   })
 
@@ -26,6 +27,7 @@ router.route(paths.caringWithPartner)
     if (!validate.caringWithPartner(req)) {
       return res.redirect(paths.caringWithPartner)
     }
+    Object.assign(req.session.data, req.body)
     res.redirect(paths.startDate)
   })
 
@@ -37,7 +39,13 @@ router.route(paths.startDate)
     if (!validate.startDate(req)) {
       return res.redirect(paths.startDate)
     }
-    res.redirect(paths.summary)
+    Object.assign(req.session.data, req.body)
+    res.redirect(paths.results)
+  })
+
+router.route(paths.results)
+  .get(function (req, res) {
+    res.render('results')
   })
 
 module.exports = router
