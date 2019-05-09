@@ -5,12 +5,22 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
   }
 
+  function secondaryName (data) {
+    return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
+  }
+
   function isBirth (data) {
     return data['birth-or-adoption'] === 'birth'
   }
 
+  function capitalize (string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
   return {
     primaryName,
-    isBirth
+    secondaryName,
+    isBirth,
+    capitalize
   }
 }
