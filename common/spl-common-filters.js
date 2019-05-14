@@ -9,6 +9,10 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
   }
 
+  function currentParentName (data, currentParent) {
+    return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
+  }
+
   function isBirth (data) {
     return data['birth-or-adoption'] === 'birth'
   }
@@ -20,6 +24,7 @@ module.exports = function (env) {
   return {
     primaryName,
     secondaryName,
+    currentParentName,
     isBirth,
     capitalize,
     ...require('./macros/hidden-fields/filters')(env)
