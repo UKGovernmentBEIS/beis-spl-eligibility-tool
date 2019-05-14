@@ -1,6 +1,6 @@
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
-const { convertToMoment, formatForDisplay } = require('../common/utils/dateUtils')
+const { convertToMoment, formatForDisplay, standardFormat } = require('../common/utils/dateUtils')
 
 module.exports = function (env) {
   function twentySixWeeksBeforeRelevantWeek (data) {
@@ -12,10 +12,15 @@ module.exports = function (env) {
 
     const startOfWeekProvided = convertToMoment(year, month, day).startOf('week')
     const qualifyingWeek = env.getFilter('isBirth')(data) ? startOfWeekProvided.subtract(105, 'days') : startOfWeekProvided
-    return formatForDisplay(qualifyingWeek)
+    return standardFormat(qualifyingWeek)
+  }
+
+  function displayFormat (standardFormatDate) {
+    return formatForDisplay(standardFormatDate)
   }
 
   return {
-    twentySixWeeksBeforeRelevantWeek
+    twentySixWeeksBeforeRelevantWeek,
+    displayFormat
   }
 }

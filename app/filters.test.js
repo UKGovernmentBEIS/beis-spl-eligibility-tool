@@ -24,7 +24,7 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.twentySixWeeksBeforeRelevantWeek(data)).to.equal('29 September 2019')
+      expect(filters.twentySixWeeksBeforeRelevantWeek(data)).to.equal('2019-09-29')
     })
 
     it('returns 105 days before the start of the birth week for birth parents', () => {
@@ -36,7 +36,7 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.twentySixWeeksBeforeRelevantWeek(data)).to.equal('16 June 2019')
+      expect(filters.twentySixWeeksBeforeRelevantWeek(data)).to.equal('2019-06-16')
     })
 
     it('always returns a sunday', () => {
@@ -48,7 +48,13 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.twentySixWeeksBeforeRelevantWeek(dataWithSunday)).to.equal('29 September 2019')
+      expect(filters.twentySixWeeksBeforeRelevantWeek(dataWithSunday)).to.equal('2019-09-29')
+    })
+  })
+
+  describe('displayFormat', () => {
+    it("returns a string in the form '1 December 2019'", () => {
+      expect(filters.displayFormat('2019-10-09')).to.equal('9 October 2019')
     })
   })
 })
