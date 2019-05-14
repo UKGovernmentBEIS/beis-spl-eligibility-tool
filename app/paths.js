@@ -4,5 +4,6 @@ module.exports = {
   caringWithPartner: '/caring-with-partner',
   startDate: '/start-date',
   results: '/results',
-  employmentStatus: '/employment-status'
+  employmentStatus: '/employment-status',
+  workAndPay: '/work-and-pay'
 }
