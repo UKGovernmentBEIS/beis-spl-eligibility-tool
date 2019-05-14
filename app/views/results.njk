@@ -37,7 +37,10 @@
         {{ govukButton({
           text: "Check eligibility",
           classes: "govuk-link--no-visited-state button-link",
-          role: "link"
+          role: "link",
+          attributes: {
+            formaction: "check-eligibility/primary"
+          }
         }) }}
         {# <a class="govuk-link" href="check-eligibility/primary">Check eligibility</a> #}
       {% endset %}
@@ -46,81 +49,87 @@
         {{ govukButton({
           text: "Check eligibility",
           classes: "govuk-link--no-visited-state button-link",
-          role: "link"
+          role: "link",
+          attributes: {
+            formaction: "check-eligibility/secondary"
+          }
         }) }}
         {# <a class="govuk-link" href="check-eligibility/secondary">Check eligibility</a> #}
       {% endset %}
 
-      {{ govukTable({
-        caption: primaryTableCaption,
-        head: [
-          {
-            text: "Shared parental leave"
-          },
-          {
-            text: "Statutory shared parental pay"
-          },
-          {}
-        ],
-        rows: [
-          [
-            {
-              text: "hello"
-            },
-            {
-              text: "hello"
-            },
-            {
-              html: primaryCheckEligibilityButton
-            }
-          ]
-        ]
-      }) }}
-
-      {{ govukTable({
-        caption: secondaryTableCaption,
-        head: [
-          {
-            text: "Shared parental leave"
-          },
-          {
-            text: "Statutory shared parental pay"
-          },
-          {}
-        ],
-        rows: [
-          [
-            {
-              text: 'hello'
-            },
-            {
-              text: 'hello'
-            },
-            {
-              html: secondaryCheckEligibilityButton
-            }
-          ]
-        ]
-      }) }}
-
-      {% set hasCheckedEligibility = data["primary-eligibility"] or data["secondary-eligibility"] %}
-
-      {# {% if hasCheckedEligibility and (data['primary-eligibility']['spl'] === false or data['primary-eligibility']['shpp'] === false or data['secondary-eligibility']['spl'] === false or data['secondary-eligibility']['shpp'] === false) %}
-        <p>
-          To understand why you or your partner aren't eligible for shared parental leave or shared parental pay, you can check the guidelines on
-          {% if data | isBirth %}
-            <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
-          {% else %}
-            <a href="/shared-parental-leave-and-pay/eligibility-for-adopters">eligibility for adopters</a>.
-          {% endif %}
-        </p>
-      {% endif %} #}
-
-      <form method="POST" action="results">
+      <form method="POST">
         {% call appendHiddenFields(data) %}
-          {{ govukButton({
-            text: "Continue to planner"
+          {{ govukTable({
+            caption: primaryTableCaption,
+            head: [
+              {
+                text: "Shared parental leave"
+              },
+              {
+                text: "Statutory shared parental pay"
+              },
+              {}
+            ],
+            rows: [
+              [
+                {
+                  text: "hello"
+                },
+                {
+                  text: "hello"
+                },
+                {
+                  html: primaryCheckEligibilityButton
+                }
+              ]
+            ]
           }) }}
+
+          {{ govukTable({
+            caption: secondaryTableCaption,
+            head: [
+              {
+                text: "Shared parental leave"
+              },
+              {
+                text: "Statutory shared parental pay"
+              },
+              {}
+            ],
+            rows: [
+              [
+                {
+                  text: 'hello'
+                },
+                {
+                  text: 'hello'
+                },
+                {
+                  html: secondaryCheckEligibilityButton
+                }
+              ]
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue to planner",
+            attributes: {
+              formaction: 'planner'
+            }
+          }) }}
+
+          {% set hasCheckedEligibility = data["primary-eligibility"] or data["secondary-eligibility"] %}
+
+          {# {% if hasCheckedEligibility and (data['primary-eligibility']['spl'] === false or data['primary-eligibility']['shpp'] === false or data['secondary-eligibility']['spl'] === false or data['secondary-eligibility']['shpp'] === false) %}
+            <p>
+              To understand why you or your partner aren't eligible for shared parental leave or shared parental pay, you can check the guidelines on
+              {% if data | isBirth %}
+                <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
+              {% else %}
+                <a href="/shared-parental-leave-and-pay/eligibility-for-adopters">eligibility for adopters</a>.
+              {% endif %}
+            </p>
+          {% endif %} #}
         {% endcall %}
       </form>
     </div>
