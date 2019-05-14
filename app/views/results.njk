@@ -118,9 +118,9 @@
             }
           }) }}
 
-          {% set hasCheckedEligibility = data["primary-eligibility"] or data["secondary-eligibility"] %}
+          {# {% set hasCheckedEligibility = data["primary-eligibility"] or data["secondary-eligibility"] %}
 
-          {# {% if hasCheckedEligibility and (data['primary-eligibility']['spl'] === false or data['primary-eligibility']['shpp'] === false or data['secondary-eligibility']['spl'] === false or data['secondary-eligibility']['shpp'] === false) %}
+          {% if hasCheckedEligibility and (data['primary-eligibility']['spl'] === false or data['primary-eligibility']['shpp'] === false or data['secondary-eligibility']['spl'] === false or data['secondary-eligibility']['shpp'] === false) %}
             <p>
               To understand why you or your partner aren't eligible for shared parental leave or shared parental pay, you can check the guidelines on
               {% if data | isBirth %}

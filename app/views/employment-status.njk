@@ -1,0 +1,83 @@
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+
+{% extends "layout.njk" %}
+
+{% block content %}
+  {% set formKey = currentParent + "-employment-status" %}
+
+  {% if errors[formKey] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [{
+        text: errors[formKey],
+        href: '#' + formKey
+      }]
+    }) }}
+  {% endif %}
+
+
+  {% set questionText %}
+    What is the {{ data | currentParentName(currentParent) }}’s employment status?
+  {% endset %}
+
+  {% set hintText %}
+    Read about <a href="https://www.gov.uk/employment-status">employment statuses</a> if you aren’t sure which one applies.
+  {% endset %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <span class="govuk-caption-xl">{{ data | currentParentName | capitalize }}’s eligibility</span>
+
+      <form action="caring-with-partner" method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: formKey,
+            name: formKey,
+            fieldset: {
+              legend: {
+                text: questionText,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              html: hintText
+            },
+            errorMessage : errors[formKey] if errors[formKey],
+            items: [
+              {
+                value: "employee",
+                text: "Employee",
+                checked: data[formKey] == 'employee'
+              },
+              {
+                value: "worker",
+                text: "Worker",
+                checked: data[formKey] == 'worker'
+              },
+              {
+                value: "self-employed",
+                text: "Self-employed",
+                checked: data[formKey] == 'self-employed'
+              },
+              {
+                value: "unemployed",
+                text: "Unemployed",
+                checked: data[formKey] == 'unemployed'
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+
+        {% endcall %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
