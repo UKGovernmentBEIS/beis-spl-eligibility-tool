@@ -31,7 +31,8 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <span class="govuk-caption-xl">{{ data | currentParentName | capitalize }}’s eligibility</span>
 
-      <form action="caring-with-partner" method="POST">
+      {% set formaction = "employment-status?current=" + currentParent %}
+      <form action="{{formaction}}" method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
             classes: "govuk-radios",

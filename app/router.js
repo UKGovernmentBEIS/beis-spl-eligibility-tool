@@ -52,8 +52,9 @@ router.post(paths.results + '/:currentParent', function (req, res) {
   res.redirect(paths.employmentStatus + `?current=${req.params['currentParent']}`)
 })
 
-router.get(paths.employmentStatus, function (req, res) {
-  res.render('employment-status', { currentParent: req.params['currentParent'] })
-})
+router.route(paths.employmentStatus)
+  .get(function (req, res) {
+    res.render('employment-status', { currentParent: req.query['current'] })
+  })
 
 module.exports = router
