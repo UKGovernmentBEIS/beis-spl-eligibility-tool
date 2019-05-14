@@ -1,6 +1,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "table/macro.njk" import govukTable %}
-{% from "macros/hidden-inputs.njk" import hiddenInputs %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "button/macro.njk" import govukButton %}
 
 {% extends "layout.njk" %}
 
@@ -106,11 +107,11 @@
       {% endif %} #}
 
       <form method="POST" action="results">
-        {{ hiddenInputs(data, {
-        }) }}
-        <button type="submit" class="govuk-button">
-          Continue to planner
-        </button>
+        {% call appendHiddenFields(data) %}
+          {{ govukButton({
+            text: "Continue to planner"
+          }) }}
+        {% endcall %}
       </form>
     </div>
   </div>

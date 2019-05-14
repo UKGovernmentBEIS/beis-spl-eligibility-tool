@@ -21,6 +21,7 @@ module.exports = function (env) {
     primaryName,
     secondaryName,
     isBirth,
-    capitalize
+    capitalize,
+    ...require('./macros/hidden-fields/filters')(env)
   }
 }

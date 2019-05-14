@@ -1,5 +1,6 @@
 {% from "radios/macro.njk" import govukRadios %}
-{% from "macros/hidden-inputs.njk" import hiddenInputs %}
+{% from "button/macro.njk" import govukButton %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 
 {% extends "layout.njk" %}
@@ -16,7 +17,7 @@
   {% endif %}
 
   {% set questionText %}
-    Will the {{ data() | primaryName }} care for the child with a partner?
+    Will the {{ data | primaryName }} care for the child with a partner?
   {% endset %}
 
   {% set hintText %}
@@ -24,7 +25,7 @@
       The partner is one of the following:
     </p>
     <ul>
-      {% if data() | isBirth %}
+      {% if data | isBirth %}
         <li>the mother’s husband, wife or civil partner</li>
         <li>the child’s other parent</li>
         <li>the mother’s partner (if they live with the mother and the child)</li>
@@ -39,43 +40,41 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form action="caring-with-partner" method="POST">
-        {{ govukRadios({
-          classes: "govuk-radios",
-          idPrefix: "caring-with-partner",
-          name: "caring-with-partner",
-          fieldset: {
-            legend: {
-              text: questionText,
-              isPageHeading: true,
-              classes: "govuk-fieldset__legend--xl"
-            }
-          },
-          hint: {
-            html: hintText
-          },
-          errorMessage : errors['caring-with-partner'] if errors['caring-with-partner'],
-          items: [
-            {
-              value: "yes",
-              text: "Yes",
-              checked: data()['caring-with-partner'] == 'yes'
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "caring-with-partner",
+            name: "caring-with-partner",
+            fieldset: {
+              legend: {
+                text: questionText,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
             },
-            {
-              value: "no",
-              text: "No",
-              checked: data()['caring-with-partner'] == 'no'
-            }
-          ]
-        }) }}
+            hint: {
+              html: hintText
+            },
+            errorMessage : errors['caring-with-partner'] if errors['caring-with-partner'],
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data['caring-with-partner'] == 'yes'
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data['caring-with-partner'] == 'no'
+              }
+            ]
+          }) }}
 
-        {{ hiddenInputs(data, {
-          exclude: [
-            'caring-with-partner'
-          ]
-        }) }}
-        <button type="submit" class="govuk-button">
-          Continue
-        </button>
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+
+        {% endcall %}
       </form>
     </div>
   </div>
