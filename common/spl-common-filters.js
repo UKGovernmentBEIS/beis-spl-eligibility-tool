@@ -37,6 +37,10 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth'
   }
 
+  function isAdoption (data) {
+    return data['birth-or-adoption'] === 'adoption'
+  }
+
   function capitalize (string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
@@ -49,6 +53,7 @@ module.exports = function (env) {
     currentParentName,
     otherParentName,
     isBirth,
+    isAdoption,
     capitalize,
     ...require('./macros/hidden-fields/filters')(env)
   }
