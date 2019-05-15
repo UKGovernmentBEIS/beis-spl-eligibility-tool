@@ -1,40 +1,52 @@
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 
-const moment = require('moment')
-const dates = require('../common/utils/dateUtils')
+const Week = require('../common/lib/week')
 
 module.exports = function (env) {
   function relevantWeek (data) {
-    const {
-      'start-date-day': day,
-      'start-date-month': month,
-      'start-date-year': year
-    } = data
+    const providedWeek = buildStartDateWeek(data)
 
-    const startOfWeekProvided = dates.convertToMoment(year, month, day).startOf('week')
-    const qualifyingWeek = env.getFilter('isBirth')(data) ? startOfWeekProvided.subtract(105, 'days') : startOfWeekProvided
-    return dates.standardFormat(qualifyingWeek)
+    if (env.getFilter('isBirth')(data)) {
+      return providedWeek.start().subtract(105, 'days')
+    } else {
+      return providedWeek.start()
+    }
   }
 
   function twentySixWeeksBeforeRelevantWeek (data) {
-    const relevantWeekValue = relevantWeek(data)
-    const twentySixWeeksBefore = moment(relevantWeekValue).subtract(26 * 7, 'days')
-    return dates.standardFormat(twentySixWeeksBefore)
+    const twentySixWeeksBefore = relevantWeek(data).subtract(26 * 7, 'days')
+    return twentySixWeeksBefore
   }
 
-  function formatForDisplay (standardFormatDate) {
-    return dates.formatForDisplay(standardFormatDate)
+  function eightWeeksBeforeRelevantWeek (data) {
+    const startOfEighthWeek = relevantWeek(data).subtract(56, 'days')
+    return startOfEighthWeek
   }
 
-  function isInPast (standardFormatDate) {
-    return dates.isInPast(standardFormatDate)
+  function formatForDisplay (week) {
+    return week.formatForDisplay()
+  }
+
+  function isInPast (week) {
+    return week.isInPast()
   }
 
   return {
     relevantWeek,
     twentySixWeeksBeforeRelevantWeek,
+    eightWeeksBeforeRelevantWeek,
     formatForDisplay,
     isInPast
   }
+}
+
+function buildStartDateWeek (data) {
+  const {
+    'start-date-day': day,
+    'start-date-month': month,
+    'start-date-year': year
+  } = data
+
+  return new Week(year, month, day)
 }

@@ -4,6 +4,10 @@ const { describe, it, beforeEach } = require('mocha')
 const { expect } = require('chai')
 const sinon = require('sinon')
 
+const moment = require('moment')
+
+const Week = require('../common/lib/week')
+
 describe('filters', () => {
   let filters, environment
 
@@ -24,7 +28,8 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.relevantWeek(data)).to.equal('2019-09-29')
+      const result = filters.relevantWeek(data)
+      expect(result.formatForDisplay()).to.equal('29 September 2019')
     })
 
     it('returns 15 weeks before the start of the birth week for birth parents', () => {
@@ -36,7 +41,8 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.relevantWeek(data)).to.equal('2019-06-16')
+      const result = filters.relevantWeek(data)
+      expect(result.formatForDisplay()).to.equal('16 June 2019')
     })
 
     it('always returns a sunday', () => {
@@ -48,13 +54,15 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.relevantWeek(dataWithSunday)).to.equal('2019-09-29')
+      const result = filters.relevantWeek(dataWithSunday)
+      expect(result.formatForDisplay()).to.equal('29 September 2019')
     })
   })
 
   describe('formatForDisplay', () => {
     it("returns a string in the form '1 December 2019'", () => {
-      expect(filters.formatForDisplay('2019-10-09')).to.equal('9 October 2019')
+      const testWeek = new Week('2019', '10', '09')
+      expect(filters.formatForDisplay(testWeek)).to.equal('9 October 2019')
     })
   })
 
@@ -68,7 +76,8 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.twentySixWeeksBeforeRelevantWeek(data)).to.equal('2019-03-31')
+      const result = filters.twentySixWeeksBeforeRelevantWeek(data)
+      expect(result.formatForDisplay()).to.equal('31 March 2019')
     })
 
     it('returns 26 weeks before 15 weeks before the start of the birth week for birth parents', () => {
@@ -80,7 +89,59 @@ describe('filters', () => {
         'start-date-year': '2019'
       }
 
-      expect(filters.twentySixWeeksBeforeRelevantWeek(data)).to.equal('2018-12-16')
+      const result = filters.twentySixWeeksBeforeRelevantWeek(data)
+      expect(result.formatForDisplay()).to.equal('16 December 2018')
+    })
+  })
+
+  describe('eightWeeksBeforeRelevantWeek', () => {
+    it('returns 8 weeks before the start of the match week for adopters', () => {
+      sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => false)
+
+      const data = {
+        'start-date-day': '01',
+        'start-date-month': '10',
+        'start-date-year': '2019'
+      }
+
+      const result = filters.eightWeeksBeforeRelevantWeek(data)
+      expect(result.formatForDisplay()).to.equal('4 August 2019')
+    })
+
+    it('returns 8 weeks before 15 weeks before the start of the birth week for birth parents', () => {
+      sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => true)
+
+      const data = {
+        'start-date-day': '01',
+        'start-date-month': '10',
+        'start-date-year': '2019'
+      }
+
+      const result = filters.eightWeeksBeforeRelevantWeek(data)
+      expect(result.formatForDisplay()).to.equal('21 April 2019')
+    })
+  })
+
+  describe('isInPast', () => {
+    it('returns true for a date in the past', () => {
+      const today = moment()
+      const testWeek = new Week(today.subtract(1, 'days'))
+
+      expect(filters.isInPast(testWeek)).to.equal(true)
+    })
+
+    it('returns false for a date in the future', () => {
+      const today = moment()
+      const testWeek = new Week(today)
+
+      expect(filters.isInPast(testWeek)).to.equal(false)
+    })
+
+    it('returns false for the current date', () => {
+      const today = moment()
+      const testWeek = new Week(today.add(1, 'days'))
+
+      expect(filters.isInPast(testWeek)).to.equal(false)
     })
   })
 })
