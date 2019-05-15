@@ -5,7 +5,7 @@ const Day = require('../common/lib/day')
 
 module.exports = function (env) {
   function relevantWeek (data) {
-    const providedDate = startOfProvidedDateWeek(data)
+    const providedDate = getProvidedDate(data)
 
     if (env.getFilter('isBirth')(data)) {
       return providedDate.startOfWeek().subtract(105, 'days')
@@ -39,7 +39,7 @@ module.exports = function (env) {
   }
 }
 
-function startOfProvidedDateWeek (data) {
+function getProvidedDate (data) {
   const {
     'start-date-day': day,
     'start-date-month': month,
