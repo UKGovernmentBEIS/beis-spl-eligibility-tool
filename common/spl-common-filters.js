@@ -18,16 +18,18 @@ module.exports = function (env) {
   }
 
   function currentParentName (data, currentParent) {
-    const primaryNames = [
-      'primary',
-      'mother',
-      'primary-adopter'
-    ]
-
     if (primaryNames.some(name => name === currentParent)) {
       return primaryName(data)
     } else {
       return secondaryName(data)
+    }
+  }
+
+  function otherParentName (data, currentParent) {
+    if (primaryNames.some(name => name === currentParent)) {
+      return secondaryName(data)
+    } else {
+      return primaryName(data)
     }
   }
 
@@ -45,8 +47,15 @@ module.exports = function (env) {
     secondaryName,
     secondaryNameForUrl,
     currentParentName,
+    otherParentName,
     isBirth,
     capitalize,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }
+
+const primaryNames = [
+  'primary',
+  'mother',
+  'primary-adopter'
+]
