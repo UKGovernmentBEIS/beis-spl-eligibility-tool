@@ -5,12 +5,30 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
   }
 
+  function primaryNameForUrl (data) {
+    return primaryName(data).split(' ').join('-')
+  }
+
   function secondaryName (data) {
     return 'partner'
   }
 
+  function secondaryNameForUrl (data) {
+    return secondaryName(data).split(' ').join('-')
+  }
+
   function currentParentName (data, currentParent) {
-    return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
+    const primaryNames = [
+      'primary',
+      'mother',
+      'primary-adopter'
+    ]
+
+    if (primaryNames.some(name => name === currentParent)) {
+      return primaryName(data)
+    } else {
+      return secondaryName(data)
+    }
   }
 
   function isBirth (data) {
@@ -23,7 +41,9 @@ module.exports = function (env) {
 
   return {
     primaryName,
+    primaryNameForUrl,
     secondaryName,
+    secondaryNameForUrl,
     currentParentName,
     isBirth,
     capitalize,
