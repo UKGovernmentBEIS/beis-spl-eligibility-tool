@@ -34,24 +34,26 @@
       {% endset %}
 
       {% set primaryCheckEligibilityButton %}
+        {% set formaction = "results/" + data | primaryNameForUrl %}
         {{ govukButton({
           text: "Check eligibility",
           classes: "govuk-link--no-visited-state button-link",
           role: "link",
           attributes: {
-            formaction: "results/primary"
+            formaction: formaction
           }
         }) }}
         {# <a class="govuk-link" href="check-eligibility/primary">Check eligibility</a> #}
       {% endset %}
 
       {% set secondaryCheckEligibilityButton %}
+        {% set formaction = "results/" + data | secondaryNameForUrl %}
         {{ govukButton({
           text: "Check eligibility",
           classes: "govuk-link--no-visited-state button-link",
           role: "link",
           attributes: {
-            formaction: "results/secondary"
+            formaction: formaction
           }
         }) }}
         {# <a class="govuk-link" href="check-eligibility/secondary">Check eligibility</a> #}

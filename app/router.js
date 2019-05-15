@@ -49,20 +49,20 @@ router.route(paths.results)
   })
 
 router.post(paths.results + '/:current', function (req, res) {
-  res.redirect(paths.employmentStatus + `?current=${req.params['current']}`)
+  res.redirect(paths.employmentStatus + `/${req.params['current']}`)
 })
 
-router.route(paths.employmentStatus)
+router.route(paths.employmentStatus + '/:current')
   .get(function (req, res) {
-    res.render('employment-status', { currentParent: req.query['current'] })
+    res.render('employment-status', { currentParent: req.params['current'] })
   })
   .post(function (req, res) {
-    res.redirect(paths.workAndPay + `?current=${req.query['current']}`)
+    res.redirect(paths.workAndPay + `/${req.params['current']}`)
   })
 
-router.route(paths.workAndPay)
+router.route(paths.workAndPay + '/:current')
   .get(function (req, res) {
-    res.render('work-and-pay', { currentParent: req.query['current'] })
+    res.render('work-and-pay', { currentParent: req.params['current'] })
   })
 
 module.exports = router
