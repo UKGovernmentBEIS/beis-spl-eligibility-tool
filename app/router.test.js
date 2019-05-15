@@ -120,9 +120,9 @@ describe('POST startDate', () => {
 describe('POST results', () => {
   describe('when "current" param supplied', () => {
     it('redirects to employmentStatus and passes "current" param through', done => {
-      app.post(paths.results + '/primary')
+      app.post(paths.results + '/mother')
         .expect(302)
-        .expect('Location', paths.employmentStatus + '?current=primary')
+        .expect('Location', paths.employmentStatus + '/mother')
         .end(done)
     })
   })
