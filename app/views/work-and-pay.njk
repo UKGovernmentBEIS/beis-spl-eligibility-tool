@@ -1,0 +1,140 @@
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle %}
+  Check if you can get shared parental leave and pay
+{% endblock %}
+
+{% block content %}
+
+  {% set headingCaption %}
+    {{ data | currentParentName(currentParent) | capitalize }}’s eligibility
+  {% endset %}
+
+  {% set heading %}
+    {{ data | currentParentName(currentParent) | capitalize }}’s work and pay
+  {% endset %}
+
+  {% set workStartTitle %}
+    Did the {{ data | currentParentName(currentParent) }} start their current or most recent job before
+    {{ data | twentySixWeeksBeforeRelevantWeek | formatForDisplay }}?
+  {% endset %}
+
+  {% set continuousWorkTitle %}
+    {% set didOrWill %}
+      {% if data | relevantWeek | isInPast %}
+        Was the {{ data | currentParentName(currentParent) }} still working
+      {% else %}
+        Will the {{ data | currentParentName(currentParent) }} still be working
+      {% endif %}
+    {% endset %}
+    {{ didOrWill }} in that job on {{ data | relevantWeek | formatForDisplay }}?
+  {% endset %}
+
+  {% set payThresholdTitle %}
+    {% set didOrWill %}
+     {% if data | relevantWeek | isInPast %}
+        Did the {{ data | currentParentName(currentParent) }} earn
+      {% else %}
+        Will the {{ data | currentParentName(currentParent) }} have earned
+      {% endif %}
+    {% endset %}
+    {{ didOrWill }} more than £118 per week in this job between
+    {{ data | eightWeeksBeforeRelevantWeek | formatForDisplay }}
+    and
+    {{ data | relevantWeek | formatForDisplay }}?
+  {% endset %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">{{ headingCaption }}</span>
+        {{ heading }}
+      </h1>
+
+      {% set formaction = "/work-and-pay/" + currentParent %}
+      <form action="{{formaction}}" method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: currentParent + "-work-start",
+            name: currentParent + "-work-start",
+            fieldset: {
+              legend: {
+                text: workStartTitle ,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes"
+              },
+              {
+                value: "no",
+                text: "No"
+              }
+            ]
+          }) }}
+
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: currentParent + "-continuous-work",
+            name: currentParent + "-continuous-work",
+            fieldset: {
+              legend: {
+                text: continuousWorkTitle,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes"
+              },
+              {
+                value: "no",
+                text: "No"
+              }
+            ]
+          }) }}
+
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: currentParent + "-pay-threshold",
+            name: currentParent + "-pay-threshold",
+            fieldset: {
+              legend: {
+                text: payThresholdTitle,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes"
+              },
+              {
+                value: "no",
+                text: "No"
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+
+        {% endcall %}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
