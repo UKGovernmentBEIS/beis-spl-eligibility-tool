@@ -1,35 +1,33 @@
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 
-const Week = require('../common/lib/week')
+const Day = require('../common/lib/day')
 
 module.exports = function (env) {
   function relevantWeek (data) {
-    const providedWeek = buildStartDateWeek(data)
+    const providedDate = startOfProvidedDateWeek(data)
 
     if (env.getFilter('isBirth')(data)) {
-      return providedWeek.start().subtract(105, 'days')
+      return providedDate.startOfWeek().subtract(105, 'days')
     } else {
-      return providedWeek.start()
+      return providedDate.startOfWeek()
     }
   }
 
   function twentySixWeeksBeforeRelevantWeek (data) {
-    const twentySixWeeksBefore = relevantWeek(data).subtract(26 * 7, 'days')
-    return twentySixWeeksBefore
+    return relevantWeek(data).subtract(26 * 7, 'days')
   }
 
   function eightWeeksBeforeRelevantWeek (data) {
-    const startOfEighthWeek = relevantWeek(data).subtract(56, 'days')
-    return startOfEighthWeek
+    return relevantWeek(data).subtract(56, 'days')
   }
 
-  function formatForDisplay (week) {
-    return week.formatForDisplay()
+  function formatForDisplay (day) {
+    return day.formatForDisplay()
   }
 
-  function isInPast (week) {
-    return week.isInPast()
+  function isInPast (day) {
+    return day.isInPast()
   }
 
   return {
@@ -41,12 +39,12 @@ module.exports = function (env) {
   }
 }
 
-function buildStartDateWeek (data) {
+function startOfProvidedDateWeek (data) {
   const {
     'start-date-day': day,
     'start-date-month': month,
     'start-date-year': year
   } = data
 
-  return new Week(year, month, day)
+  return new Day(year, month, day)
 }

@@ -6,7 +6,7 @@ const sinon = require('sinon')
 
 const moment = require('moment')
 
-const Week = require('../common/lib/week')
+const Day = require('../common/lib/day')
 
 describe('filters', () => {
   let filters, environment
@@ -61,7 +61,7 @@ describe('filters', () => {
 
   describe('formatForDisplay', () => {
     it("returns a string in the form '1 December 2019'", () => {
-      const testWeek = new Week('2019', '10', '09')
+      const testWeek = new Day('2019', '10', '09')
       expect(filters.formatForDisplay(testWeek)).to.equal('9 October 2019')
     })
   })
@@ -125,23 +125,23 @@ describe('filters', () => {
   describe('isInPast', () => {
     it('returns true for a date in the past', () => {
       const today = moment()
-      const testWeek = new Week(today.subtract(1, 'days'))
+      const testDay = new Day(today.subtract(1, 'days'))
 
-      expect(filters.isInPast(testWeek)).to.equal(true)
+      expect(filters.isInPast(testDay)).to.equal(true)
     })
 
     it('returns false for a date in the future', () => {
       const today = moment()
-      const testWeek = new Week(today)
+      const testDay = new Day(today)
 
-      expect(filters.isInPast(testWeek)).to.equal(false)
+      expect(filters.isInPast(testDay)).to.equal(false)
     })
 
     it('returns false for the current date', () => {
       const today = moment()
-      const testWeek = new Week(today.add(1, 'days'))
+      const testDay = new Day(today.add(1, 'days'))
 
-      expect(filters.isInPast(testWeek)).to.equal(false)
+      expect(filters.isInPast(testDay)).to.equal(false)
     })
   })
 })
