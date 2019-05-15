@@ -22,6 +22,10 @@ module.exports = function (env) {
     return relevantWeek(data).subtract(56, 'days')
   }
 
+  function sixtySixWeeksBeforeRelevantWeek (data) {
+    return relevantWeek(data).subtract(66 * 7, 'days')
+  }
+
   function formatForDisplay (day) {
     return day.formatForDisplay()
   }
@@ -34,6 +38,7 @@ module.exports = function (env) {
     relevantWeek,
     twentySixWeeksBeforeRelevantWeek,
     eightWeeksBeforeRelevantWeek,
+    sixtySixWeeksBeforeRelevantWeek,
     formatForDisplay,
     isInPast
   }

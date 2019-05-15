@@ -64,5 +64,13 @@ router.route(paths.workAndPay + '/:current')
   .get(function (req, res) {
     res.render('work-and-pay', { currentParent: req.params['current'] })
   })
+  .post(function (req, res) {
+    res.redirect(paths.partnerWorkAndPay + `/${req.params['current']}`)
+  })
+
+router.route(paths.partnerWorkAndPay + '/:current')
+  .get(function (req, res) {
+    res.render('partner-work-and-pay', { currentParent: req.params['current'] })
+  })
 
 module.exports = router
