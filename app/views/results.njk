@@ -34,11 +34,21 @@
       {% endset %}
 
       {% set primaryCheckEligibilityButton %}
-        <a class="govuk-link" href="check-eligibility/primary">Check eligibility</a>
+        {{ govukButton({
+          text: "Check eligibility",
+          classes: "govuk-link--no-visited-state button-link",
+          role: "link"
+        }) }}
+        {# <a class="govuk-link" href="check-eligibility/primary">Check eligibility</a> #}
       {% endset %}
 
       {% set secondaryCheckEligibilityButton %}
-        <a class="govuk-link" href="check-eligibility/secondary">Check eligibility</a>
+        {{ govukButton({
+          text: "Check eligibility",
+          classes: "govuk-link--no-visited-state button-link",
+          role: "link"
+        }) }}
+        {# <a class="govuk-link" href="check-eligibility/secondary">Check eligibility</a> #}
       {% endset %}
 
       {{ govukTable({
