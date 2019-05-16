@@ -1,5 +1,5 @@
 const express = require('express')
-const router = new express.Router()
+const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 
