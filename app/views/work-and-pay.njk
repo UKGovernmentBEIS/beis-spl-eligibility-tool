@@ -58,8 +58,8 @@
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
             classes: "govuk-radios",
-            idPrefix: currentParent + "-work-start",
-            name: currentParent + "-work-start",
+            idPrefix: "work-start",
+            name: "[" + currentParent + "][work-start]",
             fieldset: {
               legend: {
                 text: workStartTitle ,
@@ -81,8 +81,8 @@
 
           {{ govukRadios({
             classes: "govuk-radios",
-            idPrefix: currentParent + "-continuous-work",
-            name: currentParent + "-continuous-work",
+            idPrefix: "continuous-work",
+            name: "["+ currentParent + "][continuous-work]",
             fieldset: {
               legend: {
                 text: continuousWorkTitle,
@@ -104,8 +104,8 @@
 
           {{ govukRadios({
             classes: "govuk-radios",
-            idPrefix: currentParent + "-pay-threshold",
-            name: currentParent + "-pay-threshold",
+            idPrefix: "pay-threshold",
+            name: "[" + currentParent + "][pay-threshold]",
             fieldset: {
               legend: {
                 text: payThresholdTitle,

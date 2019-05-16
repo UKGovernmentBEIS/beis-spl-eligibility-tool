@@ -60,8 +60,8 @@
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
             classes: "govuk-radios",
-            idPrefix: currentParent + "-partner-work",
-            name: currentParent + "-partner-work",
+            idPrefix: "other-parent-work",
+            name: "[" + currentParent + "][other-parent-work]",
             fieldset: {
               legend: {
                 text: partnerWorkTitle,
@@ -86,8 +86,8 @@
 
           {{ govukRadios({
             classes: "govuk-radios",
-            idPrefix: currentParent + "-partner-pay",
-            name: currentParent + "-partner-pay",
+            idPrefix: "other-parent-pay",
+            name: "[" + currentParent + "][other-parent-pay]",
             fieldset: {
               legend: {
                 text: partnerPayTitle,
