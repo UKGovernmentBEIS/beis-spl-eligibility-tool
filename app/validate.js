@@ -1,14 +1,15 @@
 const moment = require('moment')
+const delve = require('dlv')
 
 function birthOrAdoption (req) {
-  if (!req.body['birth-or-adoption']) {
+  if (req.body['birth-or-adoption'] === undefined) {
     req.session.errors = { 'birth-or-adoption': 'Select either birth or adoption' }
   }
   return hasPassedValidation(req)
 }
 
 function caringWithPartner (req) {
-  if (!req.body['caring-with-partner']) {
+  if (req.body['caring-with-partner'] === undefined) {
     req.session.errors = { 'caring-with-partner': 'Select whether or not you are caring for the child with a partner' }
   }
   return hasPassedValidation(req)
@@ -57,7 +58,7 @@ function startDate (req) {
 
 function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
-  if (!req.body[parent] || !req.body[parent]['employment-status']) {
+  if (delve(req.body, [parent, 'employment-status']) === undefined) {
     req.session.errors[parent] = { 'employment-status': 'Please indicate your employment status' }
   }
   return hasPassedValidation(req)
