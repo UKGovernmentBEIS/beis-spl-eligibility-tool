@@ -22,7 +22,6 @@ describe('GET /', () => {
   })
 })
 
-
 describe('POST birthOrAdoption', () => {
   it('redirects back to birth-or-adoption if birth-or-adoption not provided', done => {
     app.post(paths.birthOrAdoption)
@@ -117,13 +116,28 @@ describe('POST startDate', () => {
   })
 })
 
-describe('POST results', () => {
-  describe('when "current" param supplied', () => {
-    it('redirects to employmentStatus and passes "current" param through', done => {
-      app.post(paths.results + '/mother')
-        .expect(302)
-        .expect('Location', paths.employmentStatus + '/mother')
-        .end(done)
-    })
+describe('POST results when "current" param supplied', () => {
+  it('redirects to employmentStatus and passes "current" param through', done => {
+    app.post(paths.results + '/mother')
+      .expect(302)
+      .expect('Location', paths.employmentStatus + '/mother')
+      .end(done)
+  })
+})
+
+describe('POST employmentStatus with a parent', () => {
+  it('redirects back to employmentStatus with the same parent when employment-status not provided', done => {
+    app.post(paths.employmentStatus + '/mother')
+      .expect(302)
+      .expect('Location', paths.employmentStatus + '/mother')
+      .end(done)
+  })
+
+  it('redirects to workAndPay with the same parent when employment-status is provided', done => {
+    app.post(paths.employmentStatus + '/mother')
+      .send({ 'primary': { 'employment-status': 'employee' } })
+      .expect(302)
+      .expect('Location', paths.workAndPay + '/mother')
+      .end(done)
   })
 })

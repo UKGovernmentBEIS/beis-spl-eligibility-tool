@@ -55,7 +55,15 @@ function startDate (req) {
   return hasPassedValidation(req)
 }
 
-const hasPassedValidation = function (req) {
+function employmentStatus (req) {
+  const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
+  if (!req.body[parent] || !req.body[parent]['employment-status']) {
+    req.session.errors[parent] = { 'employment-status': 'Please indicate your employment status' }
+  }
+  return hasPassedValidation(req)
+}
+
+function hasPassedValidation (req) {
   for (let error in req.session.errors) {
     if (req.session.errors.hasOwnProperty(error)) {
       return false
@@ -67,5 +75,6 @@ const hasPassedValidation = function (req) {
 module.exports = {
   birthOrAdoption,
   caringWithPartner,
-  startDate
+  startDate,
+  employmentStatus
 }

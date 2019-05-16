@@ -48,7 +48,9 @@
             hint: {
               html: hintText
             },
-            errorMessage : errors[currentParent]['employment-status'] if errors[currentParent]['employment-status'],
+            errorMessage: {
+              text: errors[currentParent]['employment-status']
+            }  if errors[currentParent]['employment-status'],
             items: [
               {
                 value: "employee",

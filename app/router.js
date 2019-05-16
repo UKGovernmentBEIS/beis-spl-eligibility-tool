@@ -13,7 +13,7 @@ router.route(paths.birthOrAdoption)
   })
   .post(function (req, res) {
     if (!validate.birthOrAdoption(req)) {
-      return res.redirect(paths.birthOrAdoption)
+      return res.redirect(req.url)
     }
     res.redirect(paths.caringWithPartner)
   })
@@ -24,7 +24,7 @@ router.route(paths.caringWithPartner)
   })
   .post(function (req, res) {
     if (!validate.caringWithPartner(req)) {
-      return res.redirect(paths.caringWithPartner)
+      return res.redirect(req.url)
     }
     res.redirect(paths.startDate)
   })
@@ -35,7 +35,7 @@ router.route(paths.startDate)
   })
   .post(function (req, res) {
     if (!validate.startDate(req)) {
-      return res.redirect(paths.startDate)
+      return res.redirect(req.url)
     }
     res.redirect(paths.results)
   })
@@ -54,6 +54,9 @@ router.route(paths.employmentStatus + '/:current')
     res.render('employment-status', { currentParentFromUrl: req.params['current'] })
   })
   .post(function (req, res) {
+    if (!validate.employmentStatus(req)) {
+      return res.redirect(req.url)
+    }
     res.redirect(paths.workAndPay + `/${req.params['current']}`)
   })
 
