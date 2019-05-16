@@ -75,10 +75,10 @@
             rows: [
               [
                 {
-                  text: "hello"
+                  text: data | displayEligiblity('primary', 'spl')
                 },
                 {
-                  text: "hello"
+                  text: data | displayEligiblity('primary', 'shpp')
                 },
                 {
                   html: primaryCheckEligibilityButton
@@ -101,10 +101,10 @@
             rows: [
               [
                 {
-                  text: 'hello'
+                  text: data | displayEligiblity('secondary', 'spl')
                 },
                 {
-                  text: 'hello'
+                  text: data | displayEligiblity('secondary', 'shpp')
                 },
                 {
                   html: secondaryCheckEligibilityButton

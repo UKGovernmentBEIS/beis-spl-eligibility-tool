@@ -2,6 +2,7 @@
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 
 const Day = require('../common/lib/day')
+const isEligible = require('./lib/isEligible')
 
 module.exports = function (env) {
   function relevantWeek (data) {
@@ -42,6 +43,20 @@ module.exports = function (env) {
     }
   }
 
+  function displayEligiblity (data, parent, policy) {
+    const isParentEligible = isEligible(data[parent], policy)
+    switch (isParentEligible) {
+      case true:
+        return 'Eligible ✔'
+      case false:
+        return 'Not eligible ✘'
+      case undefined:
+        return 'Eligibility unknown'
+      default:
+        console.log('unknown eligibility')
+    }
+  }
+
   return {
     relevantWeek,
     twentySixWeeksBeforeRelevantWeek,
@@ -49,7 +64,8 @@ module.exports = function (env) {
     sixtySixWeeksBeforeRelevantWeek,
     formatForDisplay,
     isInPast,
-    getCurrentParentFromUrl
+    getCurrentParentFromUrl,
+    displayEligiblity
   }
 }
 
