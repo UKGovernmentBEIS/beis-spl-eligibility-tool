@@ -70,11 +70,13 @@
             items: [
               {
                 value: "yes",
-                text: "Yes"
+                text: "Yes",
+                checked: data[currentParent]['work-start'] == "yes"
               },
               {
                 value: "no",
-                text: "No"
+                text: "No",
+                checked: data[currentParent]['work-start']  == "no"
               }
             ]
           }) }}
@@ -82,7 +84,7 @@
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "continuous-work",
-            name: "["+ currentParent + "][continuous-work]",
+            name: "[" + currentParent + "][continuous-work]",
             fieldset: {
               legend: {
                 text: continuousWorkTitle,
@@ -93,11 +95,13 @@
             items: [
               {
                 value: "yes",
-                text: "Yes"
+                text: "Yes",
+                checked: data[currentParent]['continuous-work']  == "yes"
               },
               {
                 value: "no",
-                text: "No"
+                text: "No",
+                checked: data[currentParent]['continuous-work']  == "no"
               }
             ]
           }) }}
@@ -116,11 +120,13 @@
             items: [
               {
                 value: "yes",
-                text: "Yes"
+                text: "Yes",
+                checked: data[currentParent]['pay-threshold'] == "yes"
               },
               {
                 value: "no",
-                text: "No"
+                text: "No",
+                checked: data[currentParent]['pay-threshold'] == "no"
               }
             ]
           }) }}

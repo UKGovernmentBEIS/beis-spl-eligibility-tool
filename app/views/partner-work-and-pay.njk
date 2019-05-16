@@ -75,11 +75,13 @@
             items: [
               {
                 value: "yes",
-                text: "Yes"
+                text: "Yes",
+                checked: data[currentParent]['other-parent-work'] == "yes"
               },
               {
                 value: "no",
-                text: "No"
+                text: "No",
+                checked: data[currentParent]['other-parent-work'] == "no"
               }
             ]
           }) }}
@@ -101,11 +103,13 @@
             items: [
               {
                 value: "yes",
-                text: "Yes"
+                text: "Yes",
+                checked: data[currentParent]['other-parent-pay'] == "yes"
               },
               {
                 value: "no",
-                text: "No"
+                text: "No",
+                checked: data[currentParent]['other-parent-pay'] == "no"
               }
             ]
           }) }}
