@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block content %}
+  {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
 
   {% set headingCaption %}
     {{ data | currentParentName(currentParent) | capitalize }}’s eligibility
@@ -52,7 +53,7 @@
         {{ heading }}
       </h1>
 
-      {% set formaction = "/work-and-pay/" + currentParent %}
+      {% set formaction = "/work-and-pay/" + currentParentFromUrl %}
       <form action="{{formaction}}" method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({

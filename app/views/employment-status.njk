@@ -6,7 +6,8 @@
 {% extends "layout.njk" %}
 
 {% block content %}
-  {% set formKey = currentParent + "-employment-status" %}
+  {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
+  {% set formKey = "[" + currentParent + "][employment-status]" %}
 
   {% if errors[formKey] %}
     {{ govukErrorSummary({
@@ -31,7 +32,7 @@
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <span class="govuk-caption-xl">{{ data | currentParentName(currentParent) | capitalize }}’s eligibility</span>
 
-      {% set formaction = "/employment-status/" + currentParent %}
+      {% set formaction = "/employment-status/" + currentParentFromUrl %}
       <form action="{{formaction}}" method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({

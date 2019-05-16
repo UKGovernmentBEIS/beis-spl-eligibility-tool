@@ -34,13 +34,22 @@ module.exports = function (env) {
     return day.isInPast()
   }
 
+  function getCurrentParentFromUrl (urlParent) {
+    if (urlParent === 'mother' || urlParent === 'primary-adopter') {
+      return 'primary'
+    } else {
+      return 'secondary'
+    }
+  }
+
   return {
     relevantWeek,
     twentySixWeeksBeforeRelevantWeek,
     eightWeeksBeforeRelevantWeek,
     sixtySixWeeksBeforeRelevantWeek,
     formatForDisplay,
-    isInPast
+    isInPast,
+    getCurrentParentFromUrl
   }
 }
 
