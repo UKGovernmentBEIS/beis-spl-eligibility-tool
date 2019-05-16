@@ -25,25 +25,21 @@
   {% endset %}
 
   {% set continuousWorkTitle %}
-    {% set didOrWill %}
-      {% if data | relevantWeek | isInPast %}
-        Was the {{ data | currentParentName(currentParent) }} still working
-      {% else %}
-        Will the {{ data | currentParentName(currentParent) }} still be working
-      {% endif %}
-    {% endset %}
-    {{ didOrWill }} in that job on {{ data | relevantWeek | formatForDisplay }}?
+    {% if data | relevantWeek | isInPast %}
+      Was the {{ data | currentParentName(currentParent) }} still working
+    {% else %}
+      Will the {{ data | currentParentName(currentParent) }} still be working
+    {% endif %}
+    in that job on {{ data | relevantWeek | formatForDisplay }}?
   {% endset %}
 
   {% set payThresholdTitle %}
-    {% set didOrWill %}
-     {% if data | relevantWeek | isInPast %}
-        Did the {{ data | currentParentName(currentParent) }} earn
-      {% else %}
-        Will the {{ data | currentParentName(currentParent) }} have earned
-      {% endif %}
-    {% endset %}
-    {{ didOrWill }} more than £118 per week in this job between
+    {% if data | relevantWeek | isInPast %}
+      Did the {{ data | currentParentName(currentParent) }} earn
+    {% else %}
+      Will the {{ data | currentParentName(currentParent) }} have earned
+    {% endif %}
+    more than £118 per week in this job between
     {{ data | eightWeeksBeforeRelevantWeek | formatForDisplay }}
     and
     {{ data | relevantWeek | formatForDisplay }}?
