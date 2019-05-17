@@ -68,12 +68,12 @@ router.route(paths.workAndPay + '/:current')
     if (!validate.workAndPay(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.partnerWorkAndPay + `/${req.params['current']}`)
+    res.redirect(paths.otherParentWorkAndPay + `/${req.params['current']}`)
   })
 
-router.route(paths.partnerWorkAndPay + '/:current')
+router.route(paths.otherParentWorkAndPay + '/:current')
   .get(function (req, res) {
-    res.render('partner-work-and-pay', { currentParentFromUrl: req.params['current'] })
+    res.render('other-parent-work-and-pay', { currentParentFromUrl: req.params['current'] })
   })
   .post(function (req, res) {
     res.redirect(paths.results)

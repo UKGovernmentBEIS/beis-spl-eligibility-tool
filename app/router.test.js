@@ -188,7 +188,7 @@ describe('POST workAndPay with a parent', () => {
       .end(done)
   })
 
-  it('redirects to partnerWorkAndPay with the same parent when employment-status is provided', done => {
+  it('redirects to otherParentWorkAndPay with the same parent when employment-status is provided', done => {
     const payload = {
       primary: {
         'work-start': 'yes',
@@ -200,7 +200,7 @@ describe('POST workAndPay with a parent', () => {
     app.post(paths.workAndPay + '/mother')
       .send(payload)
       .expect(302)
-      .expect('Location', paths.partnerWorkAndPay + '/mother')
+      .expect('Location', paths.otherParentWorkAndPay + '/mother')
       .end(done)
   })
 })

@@ -6,5 +6,5 @@ module.exports = {
   results: '/results',
   employmentStatus: '/employment-status',
   workAndPay: '/work-and-pay',
-  partnerWorkAndPay: '/partner-work-and-pay'
+  otherParentWorkAndPay: '/other-parent-work-and-pay'
 }
