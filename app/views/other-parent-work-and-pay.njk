@@ -19,8 +19,8 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors['other-parent-work'],
-        errors['other-parent-pay']
+        errors["other-parent-work"],
+        errors["other-parent-pay"]
       ]
     }) }}
   {% endif %}
@@ -86,8 +86,8 @@
               }
             },
             errorMessage: {
-              text: errors['other-parent-work']['text']
-            } if errors['other-parent-work'] and errors['other-parent-work']['text'],
+              text: errors["other-parent-work"]["text"]
+            } if errors["other-parent-work"] and errors["other-parent-work"]["text"],
             hint: {
               text: "The 26 weeks don't need to be consecutive. They can be full or partial weeks."
             },
@@ -95,12 +95,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]['other-parent-work'] == "yes"
+                checked: data[currentParent]["other-parent-work"] == "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]['other-parent-work'] == "no"
+                checked: data[currentParent]["other-parent-work"] == "no"
               }
             ]
           }) }}
@@ -117,8 +117,8 @@
               }
             },
             errorMessage: {
-              text: errors['other-parent-pay']['text']
-            } if errors['other-parent-pay'] and errors['other-parent-pay']['text'],
+              text: errors["other-parent-pay"]["text"]
+            } if errors["other-parent-pay"] and errors["other-parent-pay"]["text"],
             hint: {
               text: "The 13 weeks don't need to be consecutive."
             },
@@ -126,12 +126,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]['other-parent-pay'] == "yes"
+                checked: data[currentParent]["other-parent-pay"] == "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]['other-parent-pay'] == "no"
+                checked: data[currentParent]["other-parent-pay"] == "no"
               }
             ]
           }) }}

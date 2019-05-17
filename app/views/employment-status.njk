@@ -9,11 +9,11 @@
   {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
   {% set formKey = "[" + currentParent + "][employment-status]" %}
 
-  {% if errors['employment-status'] %}
+  {% if errors["employment-status"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors['employment-status']
+        errors["employment-status"]
       ]
     }) }}
   {% endif %}
@@ -48,28 +48,28 @@
               html: hintText
             },
             errorMessage: {
-              text: errors['employment-status']['text']
-            }  if errors['employment-status'],
+              text: errors["employment-status"]["text"]
+            }  if errors["employment-status"],
             items: [
               {
                 value: "employee",
                 text: "Employee",
-                checked: data[currentParent]['employment-status'] == 'employee'
+                checked: data[currentParent]["employment-status"] == "employee"
               },
               {
                 value: "worker",
                 text: "Worker",
-                checked: data[currentParent]['employment-status'] == 'worker'
+                checked: data[currentParent]["employment-status"] == "worker"
               },
               {
                 value: "self-employed",
                 text: "Self-employed",
-                checked: data[currentParent]['employment-status'] == 'self-employed'
+                checked: data[currentParent]["employment-status"] == "self-employed"
               },
               {
                 value: "unemployed",
                 text: "Unemployed",
-                checked: data[currentParent]['employment-status'] == 'unemployed'
+                checked: data[currentParent]["employment-status"] == "unemployed"
               }
             ]
           }) }}

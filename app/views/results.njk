@@ -73,10 +73,10 @@
             rows: [
               [
                 {
-                  text: data | displayEligiblity('primary', 'spl')
+                  text: data | displayEligiblity("primary", "spl")
                 },
                 {
-                  text: data | displayEligiblity('primary', 'shpp')
+                  text: data | displayEligiblity("primary", "shpp")
                 },
                 {
                   html: primaryCheckEligibilityButton
@@ -99,10 +99,10 @@
             rows: [
               [
                 {
-                  text: data | displayEligiblity('secondary', 'spl')
+                  text: data | displayEligiblity("secondary", "spl")
                 },
                 {
-                  text: data | displayEligiblity('secondary', 'shpp')
+                  text: data | displayEligiblity("secondary", "shpp")
                 },
                 {
                   html: secondaryCheckEligibilityButton
@@ -114,7 +114,7 @@
           {{ govukButton({
             text: "Continue to planner",
             attributes: {
-              formaction: 'planner'
+              formaction: "planner"
             }
           }) }}
 

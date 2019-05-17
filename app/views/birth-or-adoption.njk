@@ -10,8 +10,8 @@
     {{govukErrorSummary({
       titleText: "There is a problem",
       errorList: [{
-        text: errors['birth-or-adoption'],
-        href: '#birth-or-adoption'
+        text: errors["birth-or-adoption"],
+        href: "#birth-or-adoption"
       }]
     }) }}
   {% endif %}
@@ -21,31 +21,31 @@
       <form method="POST" action="birth-or-adoption">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
-            idPrefix: 'birth-or-adoption',
-            name: 'birth-or-adoption',
+            idPrefix: "birth-or-adoption",
+            name: "birth-or-adoption",
             fieldset: {
               legend: {
-                text: 'Are you having a child through birth or adoption?',
+                text: "Are you having a child through birth or adoption?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
             },
             hint: {
-              text: 'Shared parental leave and pay is available for both birth and adoptive parents.'
+              text: "Shared parental leave and pay is available for both birth and adoptive parents."
             },
             errorMessage: {
-              text: errors['birth-or-adoption']
-            } if errors['birth-or-adoption'],
+              text: errors["birth-or-adoption"]
+            } if errors["birth-or-adoption"],
             items: [
               {
-                value: 'birth',
-                text: 'Birth',
-                checked: data['birth-or-adoption'] == 'birth'
+                value: "birth",
+                text: "Birth",
+                checked: data["birth-or-adoption"] == "birth"
               },
               {
-                value: 'adoption',
-                text: 'Adoption',
-                checked: data['birth-or-adoption'] == 'adoption'
+                value: "adoption",
+                text: "Adoption",
+                checked: data["birth-or-adoption"] == "adoption"
               }
             ]
           }) }}

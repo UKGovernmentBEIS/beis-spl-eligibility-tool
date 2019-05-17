@@ -14,9 +14,9 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
-        errors['work-start'],
-        errors['continuous-work'],
-        errors['pay-threshold']
+        errors["work-start"],
+        errors["continuous-work"],
+        errors["pay-threshold"]
       ]
     }) }}
   {% endif %}
@@ -78,18 +78,18 @@
               }
             },
             errorMessage: {
-              text: errors['work-start']['text']
-            } if errors['work-start'] and errors['work-start']['text'],
+              text: errors["work-start"]["text"]
+            } if errors["work-start"] and errors["work-start"]["text"],
             items: [
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]['work-start'] == "yes"
+                checked: data[currentParent]["work-start"] == "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]['work-start']  == "no"
+                checked: data[currentParent]["work-start"]  == "no"
               }
             ]
           }) }}
@@ -105,18 +105,18 @@
               }
             },
             errorMessage: {
-              text: errors['continuous-work']['text']
-            } if errors['continuous-work'] and errors['continuous-work']['text'],
+              text: errors["continuous-work"]["text"]
+            } if errors["continuous-work"] and errors["continuous-work"]["text"],
             items: [
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]['continuous-work']  == "yes"
+                checked: data[currentParent]["continuous-work"]  == "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]['continuous-work']  == "no"
+                checked: data[currentParent]["continuous-work"]  == "no"
               }
             ]
           }) }}
@@ -132,18 +132,18 @@
               }
             },
             errorMessage: {
-              text: errors['pay-threshold']['text']
-            } if errors['pay-threshold'] and errors['pay-threshold']['text'],
+              text: errors["pay-threshold"]["text"]
+            } if errors["pay-threshold"] and errors["pay-threshold"]["text"],
             items: [
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]['pay-threshold'] == "yes"
+                checked: data[currentParent]["pay-threshold"] == "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]['pay-threshold'] == "no"
+                checked: data[currentParent]["pay-threshold"] == "no"
               }
             ]
           }) }}

@@ -10,8 +10,8 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [{
-        text: errors['caring-with-partner'],
-        href: '#caring-with-partner'
+        text: errors["caring-with-partner"],
+        href: "#caring-with-partner"
       }]
     }) }}
   {% endif %}
@@ -55,17 +55,17 @@
             hint: {
               html: hintText
             },
-            errorMessage : errors['caring-with-partner'] if errors['caring-with-partner'],
+            errorMessage : errors["caring-with-partner"] if errors["caring-with-partner"],
             items: [
               {
                 value: "yes",
                 text: "Yes",
-                checked: data['caring-with-partner'] == 'yes'
+                checked: data["caring-with-partner"] == "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data['caring-with-partner'] == 'no'
+                checked: data["caring-with-partner"] == "no"
               }
             ]
           }) }}
