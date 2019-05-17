@@ -2,14 +2,14 @@ const moment = require('moment')
 const delve = require('dlv')
 
 function birthOrAdoption (req) {
-  if (req.body['birth-or-adoption'] === undefined) {
+  if (!isOneOfValues(req.body['birth-or-adoption'], 'birth', 'adoption')) {
     req.session.errors = { 'birth-or-adoption': 'Select either birth or adoption' }
   }
   return hasPassedValidation(req)
 }
 
 function caringWithPartner (req) {
-  if (req.body['caring-with-partner'] === undefined) {
+  if (!isYesOrNo(req.body['caring-with-partner'])) {
     req.session.errors = { 'caring-with-partner': 'Select whether or not you are caring for the child with a partner' }
   }
   return hasPassedValidation(req)
@@ -26,17 +26,17 @@ function startDate (req) {
   const startDate = moment([year, month, day].join('-'), 'YYYY-MM-DD')
 
   if (startDate.invalidAt() === 2 || day.length === 0 || day.length > 2) {
-    errorMessages.push(buildError('Day must be valid', '#start-date'))
+    errorMessages.push(buildError('Day must be valid', '#start-date-day'))
   }
 
   if (startDate.invalidAt() === 1 || month.length === 0 || month.length > 2) {
-    errorMessages.push(buildError('Month must be valid', '#start-date'))
+    errorMessages.push(buildError('Month must be valid', '#start-date-month'))
   }
 
   if (startDate.invalidAt() === 0) {
-    errorMessages.push(buildError('Year must be valid', '#start-date'))
+    errorMessages.push(buildError('Year must be valid', '#start-date-year'))
   } else if (year.length !== 4) {
-    errorMessages.push(buildError('Year must be in 4 digit form', '#start-date'))
+    errorMessages.push(buildError('Year must be in 4 digit form', '#start-date-year'))
   }
 
   const earliestPermitted = moment().subtract(1, 'year')
@@ -54,7 +54,8 @@ function startDate (req) {
 
 function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
-  if (delve(req.body, [parent, 'employment-status']) === undefined) {
+  const employmentStatusAnswer = delve(req.body, [parent, 'employment-status'])
+  if (!isOneOfValues(employmentStatusAnswer, 'employee', 'worker', 'self-employed', 'unemployed')) {
     req.session.errors['employment-status'] = buildError('Please indicate your employment status', '#employment-status-1')
   }
   return hasPassedValidation(req)
@@ -62,13 +63,16 @@ function employmentStatus (req) {
 
 function workAndPay (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
-  if (delve(req.body, [parent, 'work-start']) === undefined) {
+  const workStart = delve(req.body, [parent, 'work-start'])
+  if (!isYesOrNo(workStart)) {
     req.session.errors['work-start'] = buildError('Please indicate when you started your job', '#work-start-1')
   }
-  if (delve(req.body, [parent, 'continuous-work']) === undefined) {
+  const continuousWork = delve(req.body, [parent, 'continuous-work']);
+  if (!isYesOrNo(continuousWork)) {
     req.session.errors['continuous-work'] = buildError('Please whether your work has been continuous during this time', '#continuous-work-1')
   }
-  if (delve(req.body, [parent, 'pay-threshold']) === undefined) {
+  const payThreshold = delve(req.body, [parent, 'pay-threshold']);
+  if (!isYesOrNo(payThreshold)) {
     req.session.errors['pay-threshold'] = buildError('Please indicate whether you meet this pay threshold', '#pay-threshold-1')
   }
   return hasPassedValidation(req)
@@ -85,6 +89,14 @@ function hasPassedValidation (req) {
 
 function buildError (message, href) {
   return { text: message, href: href }
+}
+
+function isOneOfValues (valueUnderTest, ...values) {
+  return values.includes(valueUnderTest)
+}
+
+function isYesOrNo (value) {
+  return isOneOfValues(value, 'yes', 'no')
 }
 
 module.exports = {
