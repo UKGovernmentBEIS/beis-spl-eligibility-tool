@@ -55,7 +55,8 @@ function startDate (req) {
 function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
   const employmentStatusAnswer = delve(req.body, [parent, 'employment-status'])
-  if (!isOneOfValues(employmentStatusAnswer, 'employee', 'worker', 'self-employed', 'unemployed')) {
+  const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
+  if (!isOneOfValues(employmentStatusAnswer, permittedValues)) {
     req.session.errors['employment-status'] = buildError('Please indicate your employment status', '#employment-status-1')
   }
   return hasPassedValidation(req)
@@ -91,12 +92,12 @@ function buildError (message, href) {
   return { text: message, href: href }
 }
 
-function isOneOfValues (valueUnderTest, ...values) {
+function isOneOfValues (valueUnderTest, values) {
   return values.includes(valueUnderTest)
 }
 
 function isYesOrNo (value) {
-  return isOneOfValues(value, 'yes', 'no')
+  return isOneOfValues(value, ['yes', 'no'])
 }
 
 module.exports = {
