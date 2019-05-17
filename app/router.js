@@ -65,6 +65,9 @@ router.route(paths.workAndPay + '/:current')
     res.render('work-and-pay', { currentParentFromUrl: req.params['current'] })
   })
   .post(function (req, res) {
+    if (!validate.workAndPay(req)) {
+      return res.redirect(req.url)
+    }
     res.redirect(paths.partnerWorkAndPay + `/${req.params['current']}`)
   })
 

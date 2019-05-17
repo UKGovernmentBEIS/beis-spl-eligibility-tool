@@ -141,3 +141,66 @@ describe('POST employmentStatus with a parent', () => {
       .end(done)
   })
 })
+
+describe('POST workAndPay with a parent', () => {
+  it('redirects back to workAndPay with the same parent when work-start not provided', done => {
+    const payload = {
+      primary: {
+        'continuous-work': 'yes',
+        'pay-threshold': 'yes'
+      }
+    }
+
+    app.post(paths.workAndPay + '/mother')
+      .send(payload)
+      .expect(302)
+      .expect('Location', paths.workAndPay + '/mother')
+      .end(done)
+  })
+
+  it('redirects back to workAndPay with the same parent when continuous-work not provided', done => {
+    const payload = {
+      primary: {
+        'work-start': 'yes',
+        'pay-threshold': 'yes'
+      }
+    }
+
+    app.post(paths.workAndPay + '/mother')
+      .send(payload)
+      .expect(302)
+      .expect('Location', paths.workAndPay + '/mother')
+      .end(done)
+  })
+
+  it('redirects back to workAndPay with the same parent when pay-threshold not provided', done => {
+    const payload = {
+      primary: {
+        'work-start': 'yes',
+        'continuous-work': 'yes'
+      }
+    }
+
+    app.post(paths.workAndPay + '/mother')
+      .send(payload)
+      .expect(302)
+      .expect('Location', paths.workAndPay + '/mother')
+      .end(done)
+  })
+
+  it('redirects to partnerWorkAndPay with the same parent when employment-status is provided', done => {
+    const payload = {
+      primary: {
+        'work-start': 'yes',
+        'continuous-work': 'yes',
+        'pay-threshold': 'yes'
+      }
+    }
+
+    app.post(paths.workAndPay + '/mother')
+      .send(payload)
+      .expect(302)
+      .expect('Location', paths.partnerWorkAndPay + '/mother')
+      .end(done)
+  })
+})

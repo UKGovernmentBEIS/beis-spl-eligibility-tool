@@ -10,6 +10,17 @@
 {% endblock %}
 
 {% block content %}
+  {% if errors | length > 0 %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors['work-start'],
+        errors['continuous-work'],
+        errors['pay-threshold']
+      ]
+    }) }}
+  {% endif %}
+
   {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
 
   {% set headingCaption %}
@@ -63,10 +74,12 @@
             fieldset: {
               legend: {
                 text: workStartTitle ,
-                isPageHeading: true,
                 classes: "govuk-fieldset__legend--m"
               }
             },
+            errorMessage: {
+              text: errors['work-start']['text']
+            } if errors['work-start'] and errors['work-start']['text'],
             items: [
               {
                 value: "yes",
@@ -88,10 +101,12 @@
             fieldset: {
               legend: {
                 text: continuousWorkTitle,
-                isPageHeading: true,
                 classes: "govuk-fieldset__legend--m"
               }
             },
+            errorMessage: {
+              text: errors['continuous-work']['text']
+            } if errors['continuous-work'] and errors['continuous-work']['text'],
             items: [
               {
                 value: "yes",
@@ -113,10 +128,12 @@
             fieldset: {
               legend: {
                 text: payThresholdTitle,
-                isPageHeading: true,
                 classes: "govuk-fieldset__legend--m"
               }
             },
+            errorMessage: {
+              text: errors['pay-threshold']['text']
+            } if errors['pay-threshold'] and errors['pay-threshold']['text'],
             items: [
               {
                 value: "yes",
