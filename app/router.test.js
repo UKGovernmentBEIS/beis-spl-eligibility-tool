@@ -135,7 +135,7 @@ describe('POST employmentStatus with a parent', () => {
 
   it('redirects to workAndPay with the same parent when employment-status is provided', done => {
     app.post(paths.employmentStatus + '/mother')
-      .send({ 'primary': { 'employment-status': 'employee' } })
+      .send({ primary: { 'employment-status': 'employee' } })
       .expect(302)
       .expect('Location', paths.workAndPay + '/mother')
       .end(done)

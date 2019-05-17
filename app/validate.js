@@ -22,31 +22,27 @@ function startDate (req) {
     'start-date-day': day
   } = req.body
 
-  const buildError = function (message) {
-    return { text: message, href: '#start-date' }
-  }
-
   const errorMessages = []
   const startDate = moment([year, month, day].join('-'), 'YYYY-MM-DD')
 
   if (startDate.invalidAt() === 2 || day.length === 0 || day.length > 2) {
-    errorMessages.push(buildError('Day must be valid'))
+    errorMessages.push(buildError('Day must be valid', '#start-date'))
   }
 
   if (startDate.invalidAt() === 1 || month.length === 0 || month.length > 2) {
-    errorMessages.push(buildError('Month must be valid'))
+    errorMessages.push(buildError('Month must be valid', '#start-date'))
   }
 
   if (startDate.invalidAt() === 0) {
-    errorMessages.push(buildError('Year must be valid'))
+    errorMessages.push(buildError('Year must be valid', '#start-date'))
   } else if (year.length !== 4) {
-    errorMessages.push(buildError('Year must be in 4 digit form'))
+    errorMessages.push(buildError('Year must be in 4 digit form', '#start-date'))
   }
 
   const earliestPermitted = moment().subtract(1, 'year')
   const latestPermitted = moment().add(1, 'year')
   if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
-    errorMessages.push(buildError('Start date must be within 1 year of today'))
+    errorMessages.push(buildError('Start date must be within 1 year of today', '#start-date'))
   }
 
   if (errorMessages.length > 0) {
@@ -59,7 +55,21 @@ function startDate (req) {
 function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
   if (delve(req.body, [parent, 'employment-status']) === undefined) {
-    req.session.errors[parent] = { 'employment-status': 'Please indicate your employment status' }
+    req.session.errors['employment-status'] = buildError('Please indicate your employment status', '#employment-status-1')
+  }
+  return hasPassedValidation(req)
+}
+
+function workAndPay (req) {
+  const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
+  if (delve(req.body, [parent, 'work-start']) === undefined) {
+    req.session.errors['work-start'] = buildError('Please indicate when you started your job', '#work-start-1')
+  }
+  if (delve(req.body, [parent, 'continuous-work']) === undefined) {
+    req.session.errors['continuous-work'] = buildError('Please whether your work has been continuous during this time', '#continuous-work-1')
+  }
+  if (delve(req.body, [parent, 'pay-threshold']) === undefined) {
+    req.session.errors['pay-threshold'] = buildError('Please indicate whether you meet this pay threshold', '#pay-threshold-1')
   }
   return hasPassedValidation(req)
 }
@@ -73,9 +83,14 @@ function hasPassedValidation (req) {
   return true
 }
 
+function buildError (message, href) {
+  return { text: message, href: href }
+}
+
 module.exports = {
   birthOrAdoption,
   caringWithPartner,
   startDate,
-  employmentStatus
+  employmentStatus,
+  workAndPay
 }
