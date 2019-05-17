@@ -76,6 +76,9 @@ router.route(paths.otherParentWorkAndPay + '/:current')
     res.render('other-parent-work-and-pay', { currentParentFromUrl: req.params['current'] })
   })
   .post(function (req, res) {
+    if (!validate.otherParentWorkAndPay(req)) {
+      return res.redirect(req.url)
+    }
     res.redirect(paths.results)
   })
 

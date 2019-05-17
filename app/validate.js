@@ -68,14 +68,29 @@ function workAndPay (req) {
   if (!isYesOrNo(workStart)) {
     req.session.errors['work-start'] = buildError('Please indicate when you started your job', '#work-start-1')
   }
-  const continuousWork = delve(req.body, [parent, 'continuous-work']);
+  const continuousWork = delve(req.body, [parent, 'continuous-work'])
   if (!isYesOrNo(continuousWork)) {
     req.session.errors['continuous-work'] = buildError('Please whether your work has been continuous during this time', '#continuous-work-1')
   }
-  const payThreshold = delve(req.body, [parent, 'pay-threshold']);
+  const payThreshold = delve(req.body, [parent, 'pay-threshold'])
   if (!isYesOrNo(payThreshold)) {
     req.session.errors['pay-threshold'] = buildError('Please indicate whether you meet this pay threshold', '#pay-threshold-1')
   }
+
+  return hasPassedValidation(req)
+}
+
+function otherParentWorkAndPay (req) {
+  const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
+  const otherParentWork = delve(req.body, [parent, 'other-parent-work'])
+  if (!isYesOrNo(otherParentWork)) {
+    req.session.errors['other-parent-work'] = buildError('Please whether your partner meets the work threshold', '#other-parent-work-1')
+  }
+  const otherParentPay = delve(req.body, [parent, 'other-parent-pay'])
+  if (!isYesOrNo(otherParentPay)) {
+    req.session.errors['other-parent-pay'] = buildError('Please whether your partner meets the pay threshold', '#other-parent-pay-1')
+  }
+
   return hasPassedValidation(req)
 }
 
@@ -105,5 +120,6 @@ module.exports = {
   caringWithPartner,
   startDate,
   employmentStatus,
-  workAndPay
+  workAndPay,
+  otherParentWorkAndPay
 }
