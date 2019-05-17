@@ -7,7 +7,7 @@
 
 {% block content %}
   {% if errors["birth-or-adoption"] %}
-    {{govukErrorSummary({
+    {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [{
         text: errors["birth-or-adoption"],
@@ -18,7 +18,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <form method="POST" action="birth-or-adoption">
+      <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
             idPrefix: "birth-or-adoption",

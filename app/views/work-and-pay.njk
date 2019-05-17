@@ -64,7 +64,6 @@
         {{ heading }}
       </h1>
 
-      {% set formaction = "/work-and-pay/" + currentParentFromUrl %}
       <form action="{{formaction}}" method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({

@@ -71,8 +71,7 @@
         <span class="govuk-caption-xl">{{ headingCaption }}</span>
         {{ heading }}
       </h1>
-      {% set formaction = "/other-parent-work-and-pay/" + currentParentFromUrl %}
-      <form action="{{formaction}}" method="POST">
+      <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
             classes: "govuk-radios",

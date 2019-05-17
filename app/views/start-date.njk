@@ -38,7 +38,7 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <form action="start-date" method="POST">
+      <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukDateInput({
             id: "start-date",
