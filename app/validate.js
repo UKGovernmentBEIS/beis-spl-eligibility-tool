@@ -1,5 +1,11 @@
 const delve = require('dlv')
 const Day = require('../common/lib/day')
+const {
+  hasPassedValidation,
+  buildError,
+  isYesOrNo,
+  prettyList
+} = require('./lib/validationUtils')
 
 function birthOrAdoption (req) {
   if (!['birth', 'adoption'].includes(req.body['birth-or-adoption'])) {
@@ -99,37 +105,6 @@ function otherParentWorkAndPay (req) {
   }
 
   return hasPassedValidation(req)
-}
-
-function hasPassedValidation (req) {
-  for (let error in req.session.errors) {
-    if (req.session.errors.hasOwnProperty(error)) {
-      return false
-    }
-  }
-  return true
-}
-
-function buildError (message, href) {
-  return { text: message, href: href }
-}
-
-function isYesOrNo (value) {
-  return ['yes', 'no'].includes(value)
-}
-
-function prettyList (array) {
-  switch (array.length) {
-    case 0:
-      return ''
-    case 1:
-      return array[0]
-    case 2:
-      return array.join(' and ')
-    default:
-      const finalElement = array.pop()
-      return array.join(', ') + ` and ${finalElement}`
-  }
 }
 
 module.exports = {
