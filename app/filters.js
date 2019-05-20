@@ -1,30 +1,18 @@
-// Existing filters can be imported from env using env.getFilter(name)
-// See https://mozilla.github.io/nunjucks/api.html#getfilter
-
 const Day = require('../common/lib/day')
 const isEligible = require('./lib/isEligible')
 
+// Existing filters can be imported from env using env.getFilter(name)
+// See https://mozilla.github.io/nunjucks/api.html#getfilter
+
 module.exports = function (env) {
+  // The week used as a baseline in eligibility calculations.
+  // For birth parents, this is 15 weeks before the week of the due date.
+  // For adoptive parents, this is the week of the match date.
   function relevantWeek (data) {
+    const isBirth = env.getFilter('isBirth')
     const providedDate = getProvidedDate(data)
-
-    if (env.getFilter('isBirth')(data)) {
-      return providedDate.startOfWeek().subtract(105, 'days')
-    } else {
-      return providedDate.startOfWeek()
-    }
-  }
-
-  function twentySixWeeksBeforeRelevantWeek (data) {
-    return relevantWeek(data).subtract(26 * 7, 'days')
-  }
-
-  function eightWeeksBeforeRelevantWeek (data) {
-    return relevantWeek(data).subtract(56, 'days')
-  }
-
-  function sixtySixWeeksBeforeRelevantWeek (data) {
-    return relevantWeek(data).subtract(66 * 7, 'days')
+    const startOfWeek = providedDate.startOfWeek()
+    return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : providedDate.startOfWeek()
   }
 
   function formatForDisplay (day) {
@@ -36,11 +24,7 @@ module.exports = function (env) {
   }
 
   function getCurrentParentFromUrl (urlParent) {
-    if (urlParent === 'mother' || urlParent === 'primary-adopter') {
-      return 'primary'
-    } else {
-      return 'secondary'
-    }
+    return urlParent === 'mother' || urlParent === 'primary-adopter' ? 'primary' : 'secondary'
   }
 
   function displayEligiblity (data, parent, policy) {
@@ -63,9 +47,6 @@ module.exports = function (env) {
 
   return {
     relevantWeek,
-    twentySixWeeksBeforeRelevantWeek,
-    eightWeeksBeforeRelevantWeek,
-    sixtySixWeeksBeforeRelevantWeek,
     formatForDisplay,
     isInPast,
     getCurrentParentFromUrl,
@@ -74,6 +55,9 @@ module.exports = function (env) {
   }
 }
 
+// The date the user inputs in the form during the workflow.
+// For birth parents, this is the due date.
+// For adoptive parents, this is the match date.
 function getProvidedDate (data) {
   const {
     'start-date-day': day,

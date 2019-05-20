@@ -33,7 +33,7 @@
 
   {% set workStartTitle %}
     Did the {{ data | currentParentName(currentParent) }} start their current or most recent job before
-    {{ data | twentySixWeeksBeforeRelevantWeek | formatForDisplay }}?
+    {{ data | relevantWeek | offsetWeeks(-26) | formatForDisplay }}?
   {% endset %}
 
   {% set continuousWorkTitle %}
@@ -52,7 +52,7 @@
       Will the {{ data | currentParentName(currentParent) }} have earned
     {% endif %}
     more than £118 per week in this job between
-    {{ data | eightWeeksBeforeRelevantWeek | formatForDisplay }}
+    {{ data | relevantWeek | offsetWeeks(-8) | formatForDisplay }}
     and
     {{ data | relevantWeek | formatForDisplay }}?
   {% endset %}

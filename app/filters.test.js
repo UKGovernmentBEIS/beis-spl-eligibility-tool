@@ -66,62 +66,6 @@ describe('filters', () => {
     })
   })
 
-  describe('twentySixWeeksBeforeRelevantWeek', () => {
-    it('returns 26 weeks before the start of the match week for adopters', () => {
-      sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => false)
-
-      const data = {
-        'start-date-day': '01',
-        'start-date-month': '10',
-        'start-date-year': '2019'
-      }
-
-      const result = filters.twentySixWeeksBeforeRelevantWeek(data)
-      expect(result.formatForDisplay()).to.equal('31 March 2019')
-    })
-
-    it('returns 26 weeks before 15 weeks before the start of the birth week for birth parents', () => {
-      sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => true)
-
-      const data = {
-        'start-date-day': '01',
-        'start-date-month': '10',
-        'start-date-year': '2019'
-      }
-
-      const result = filters.twentySixWeeksBeforeRelevantWeek(data)
-      expect(result.formatForDisplay()).to.equal('16 December 2018')
-    })
-  })
-
-  describe('eightWeeksBeforeRelevantWeek', () => {
-    it('returns 8 weeks before the start of the match week for adopters', () => {
-      sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => false)
-
-      const data = {
-        'start-date-day': '01',
-        'start-date-month': '10',
-        'start-date-year': '2019'
-      }
-
-      const result = filters.eightWeeksBeforeRelevantWeek(data)
-      expect(result.formatForDisplay()).to.equal('4 August 2019')
-    })
-
-    it('returns 8 weeks before 15 weeks before the start of the birth week for birth parents', () => {
-      sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => true)
-
-      const data = {
-        'start-date-day': '01',
-        'start-date-month': '10',
-        'start-date-year': '2019'
-      }
-
-      const result = filters.eightWeeksBeforeRelevantWeek(data)
-      expect(result.formatForDisplay()).to.equal('21 April 2019')
-    })
-  })
-
   describe('isInPast', () => {
     it('returns true for a date in the past', () => {
       const today = moment()

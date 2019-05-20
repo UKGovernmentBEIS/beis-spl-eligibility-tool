@@ -11,10 +11,6 @@
 {% endblock %}
 
 {% block content %}
-  {{ data | dump(2) }}
-  <br>
-  {{ errors | dump(2)}}
-
   {% if errors | length > 0 %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
@@ -47,7 +43,7 @@
       {% else %}
         Will the {{ otherParent }} have worked
       {% endif %}
-      for at least 26 weeks between {{ data | sixtySixWeeksBeforeRelevantWeek | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
+      for at least 26 weeks between {{ data | relevantWeek | offsetWeeks(-66) | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
     {% endif %}
   {% endset %}
 
@@ -61,7 +57,7 @@
       {% else %}
         Will the {{ otherParent }} have earned
       {% endif %}
-      a total of £390 or more over 13 weeks between {{ data| sixtySixWeeksBeforeRelevantWeek | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
+      a total of £390 or more over 13 weeks between {{ data | relevantWeek | offsetWeeks(-66) | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
     {% endif %}
   {% endset %}
 
