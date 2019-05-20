@@ -1,5 +1,5 @@
-const moment = require('moment')
 const delve = require('dlv')
+const Day = require('../common/lib/day')
 
 function birthOrAdoption (req) {
   if (!['birth', 'adoption'].includes(req.body['birth-or-adoption'])) {
@@ -37,7 +37,7 @@ function startDate (req) {
     return false
   }
 
-  const startDate = moment.utc([date.year, date.month, date.day].join('-'), 'YYYY-MM-DD')
+  const startDate = new Day(date.year, date.month, date.day)
 
   if (!startDate.isValid()) {
     const errorParts = []
@@ -48,8 +48,11 @@ function startDate (req) {
     return false
   }
 
-  if (!startDate.isBetween(moment().subtract(1, 'year'), moment().add(1, 'year'))) {
-    req.session.errors['start-date'] = [buildDateError('Enter a valid date', '#start-date-day', ['day', 'month', 'year'])]
+  const earliestPermitted = new Day().subtract(1, 'year')
+  const latestPermitted = new Day().add(1, 'year')
+  if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
+    const errorMessage = `Date must be between ${earliestPermitted.formatForDisplay()} and ${latestPermitted.formatForDisplay()}`
+    req.session.errors['start-date'] = [buildDateError(errorMessage, '#start-date-day', ['day', 'month', 'year'])]
     return false
   }
 
@@ -122,7 +125,7 @@ function prettyList (array) {
     case 1:
       return array[0]
     case 2:
-      return `${array[0]} and ${array[1]}`
+      return array.join(' and ')
     default:
       const finalElement = array.pop()
       return array.join(', ') + ` and ${finalElement}`
