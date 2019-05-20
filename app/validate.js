@@ -2,7 +2,7 @@ const moment = require('moment')
 const delve = require('dlv')
 
 function birthOrAdoption (req) {
-  if (!isOneOfValues(req.body['birth-or-adoption'], 'birth', 'adoption')) {
+  if (!['birth', 'adoption'].includes(req.body['birth-or-adoption'])) {
     req.session.errors = { 'birth-or-adoption': 'Select either birth or adoption' }
   }
   return hasPassedValidation(req)
@@ -56,7 +56,7 @@ function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
   const employmentStatusAnswer = delve(req.body, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
-  if (!isOneOfValues(employmentStatusAnswer, permittedValues)) {
+  if (!permittedValues.includes(employmentStatusAnswer))   {
     req.session.errors['employment-status'] = buildError('Please indicate your employment status', '#employment-status-1')
   }
   return hasPassedValidation(req)
@@ -107,12 +107,8 @@ function buildError (message, href) {
   return { text: message, href: href }
 }
 
-function isOneOfValues (valueUnderTest, values) {
-  return values.includes(valueUnderTest)
-}
-
 function isYesOrNo (value) {
-  return isOneOfValues(value, ['yes', 'no'])
+  return ['yes', 'no'].includes(value)
 }
 
 module.exports = {
