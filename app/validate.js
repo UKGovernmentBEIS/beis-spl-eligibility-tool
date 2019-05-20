@@ -16,47 +16,51 @@ function caringWithPartner (req) {
 }
 
 function startDate (req) {
-  const {
-    'start-date-year': year,
-    'start-date-month': month,
-    'start-date-day': day
-  } = req.body
-
-  const errorMessages = []
-  const startDate = moment([year, month, day].join('-'), 'YYYY-MM-DD')
-
-  if (startDate.invalidAt() === 2 || day.length === 0 || day.length > 2) {
-    errorMessages.push(buildError('Day must be valid', '#start-date-day'))
+  function buildDateError (message, href, dateParts) {
+    return Object.assign(buildError(message, href), { dateParts })
   }
 
-  if (startDate.invalidAt() === 1 || month.length === 0 || month.length > 2) {
-    errorMessages.push(buildError('Month must be valid', '#start-date-month'))
+  const date = {
+    year: req.session.data['start-date-year'],
+    month: req.session.data['start-date-month'],
+    day: req.session.data['start-date-day']
   }
 
-  if (startDate.invalidAt() === 0) {
-    errorMessages.push(buildError('Year must be valid', '#start-date-year'))
-  } else if (year.length !== 4) {
-    errorMessages.push(buildError('Year must be in 4 digit form', '#start-date-year'))
+  if ([date.year, date.month, date.day].every(value => value === '')) {
+    req.session.errors['start-date'] = [buildDateError('Enter a date', '#start-date-day', ['day', 'month', 'year'])]
+    return false
   }
 
-  const earliestPermitted = moment().subtract(1, 'year')
-  const latestPermitted = moment().add(1, 'year')
-  if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
-    errorMessages.push(buildError('Start date must be within 1 year of today', '#start-date'))
+  if ([date.year, date.month, date.day].some(value => value === '')) {
+    const errorParts = ['day', 'month', 'year'].filter(datePart => date[datePart] === '')
+    req.session.errors['start-date'] = [buildDateError(`Date must include a ${prettyList(errorParts)}`, `#start-date-${errorParts[0]}`, errorParts)]
+    return false
   }
 
-  if (errorMessages.length > 0) {
-    req.session.errors['start-date'] = errorMessages
+  const startDate = moment.utc([date.year, date.month, date.day].join('-'), 'YYYY-MM-DD')
+
+  if (!startDate.isValid()) {
+    const errorParts = []
+    if (startDate.invalidAt() === 2) { errorParts.push('day') }
+    if (startDate.invalidAt() === 1) { errorParts.push('month') }
+    if (startDate.invalidAt() === 0) { errorParts.push('year') }
+    req.session.errors['start-date'] = [buildDateError('Enter a valid date', `#start-date-${errorParts[0]}`, errorParts)]
+    return false
   }
 
-  return hasPassedValidation(req)
+  if (!startDate.isBetween(moment().subtract(1, 'year'), moment().add(1, 'year'))) {
+    req.session.errors['start-date'] = [buildDateError('Enter a valid date', '#start-date-day', ['day', 'month', 'year'])]
+    return false
+  }
+
+  return true
 }
 
 function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
   const employmentStatusAnswer = delve(req.body, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
-  if (!permittedValues.includes(employmentStatusAnswer))   {
+  if (!permittedValues.includes(employmentStatusAnswer)) {
     req.session.errors['employment-status'] = buildError('Please indicate your employment status', '#employment-status-1')
   }
   return hasPassedValidation(req)
@@ -109,6 +113,20 @@ function buildError (message, href) {
 
 function isYesOrNo (value) {
   return ['yes', 'no'].includes(value)
+}
+
+function prettyList (array) {
+  switch (array.length) {
+    case 0:
+      return ''
+    case 1:
+      return array[0]
+    case 2:
+      return `${array[0]} and ${array[1]}`
+    default:
+      const finalElement = array.pop()
+      return array.join(', ') + ` and ${finalElement}`
+  }
 }
 
 module.exports = {

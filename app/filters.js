@@ -57,6 +57,10 @@ module.exports = function (env) {
     }
   }
 
+  function hasStartDateError (errors, partOfDate) {
+    return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
+  }
+
   return {
     relevantWeek,
     twentySixWeeksBeforeRelevantWeek,
@@ -65,7 +69,8 @@ module.exports = function (env) {
     formatForDisplay,
     isInPast,
     getCurrentParentFromUrl,
-    displayEligiblity
+    displayEligiblity,
+    hasStartDateError
   }
 }
 

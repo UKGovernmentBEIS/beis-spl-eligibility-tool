@@ -58,7 +58,7 @@ describe('POST caringWithPartner', () => {
 
 describe('POST startDate', () => {
   describe('when date is invalid', () => {
-    it('when day is invalid, redirects back to caringWithpartner', done => {
+    it('when day is invalid, redirects back to startDate', done => {
       const payload = {
         'start-date-day': '30',
         'start-date-month': '02',
@@ -72,7 +72,7 @@ describe('POST startDate', () => {
         .end(done)
     })
 
-    it('when month is invalid, redirects back to caringWithpartner', done => {
+    it('when month is invalid, redirects back to startDate', done => {
       const payload = {
         'start-date-day': '02',
         'start-date-month': '13',
@@ -86,7 +86,7 @@ describe('POST startDate', () => {
         .end(done)
     })
 
-    it('when date is more than a year from today, redirects back to caringWithpartner', done => {
+    it('when date is more than a year from today, redirects back to startDate', done => {
       const payload = {
         'start-date-day': '02',
         'start-date-month': '11',
