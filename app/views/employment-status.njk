@@ -7,6 +7,7 @@
 
 {% block content %}
   {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
+  {% set currentParentName = data | currentParentName(currentParent) %}
   {% set formKey = "[" + currentParent + "][employment-status]" %}
 
   {% if errors["employment-status"] %}
@@ -18,17 +19,9 @@
     }) }}
   {% endif %}
 
-  {% set questionText %}
-    What is the {{ data | currentParentName(currentParent) }}’s employment status?
-  {% endset %}
-
-  {% set hintText %}
-    Read about <a href="https://www.gov.uk/employment-status">employment statuses</a> if you aren’t sure which one applies.
-  {% endset %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <span class="govuk-caption-xl">{{ data | currentParentName(currentParent) | capitalize }}’s eligibility</span>
+      <span class="govuk-caption-xl">{{ currentParentName | capitalize }}’s eligibility</span>
 
       <form method="POST">
         {% call appendHiddenFields(data) %}
@@ -38,13 +31,13 @@
             name: formKey,
             fieldset: {
               legend: {
-                text: questionText,
+                text: "What is the " + {{ currentParentName }} + "’s employment status?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
             },
             hint: {
-              html: hintText
+              html: 'Read about <a href="https://www.gov.uk/employment-status">employment statuses</a> if you aren’t sure which one applies.'
             },
             errorMessage: {
               text: errors["employment-status"]["text"]
@@ -53,22 +46,22 @@
               {
                 value: "employee",
                 text: "Employee",
-                checked: data[currentParent]["employment-status"] == "employee"
+                checked: data[currentParent]["employment-status"] === "employee"
               },
               {
                 value: "worker",
                 text: "Worker",
-                checked: data[currentParent]["employment-status"] == "worker"
+                checked: data[currentParent]["employment-status"] === "worker"
               },
               {
                 value: "self-employed",
                 text: "Self-employed",
-                checked: data[currentParent]["employment-status"] == "self-employed"
+                checked: data[currentParent]["employment-status"] === "self-employed"
               },
               {
                 value: "unemployed",
                 text: "Unemployed",
-                checked: data[currentParent]["employment-status"] == "unemployed"
+                checked: data[currentParent]["employment-status"] === "unemployed"
               }
             ]
           }) }}

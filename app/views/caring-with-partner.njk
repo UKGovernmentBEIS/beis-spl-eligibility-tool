@@ -16,24 +16,16 @@
     }) }}
   {% endif %}
 
-  {% set questionText %}
-    Will the {{ data | primaryName }} care for the child with a partner?
-  {% endset %}
+  {% set primaryName = data | primaryName %}
 
   {% set hintText %}
     <p class="govuk-hint">
       The partner is one of the following:
     </p>
     <ul>
-      {% if data | isBirth %}
-        <li>the mother’s husband, wife or civil partner</li>
-        <li>the child’s other parent</li>
-        <li>the mother’s partner (if they live with the mother and the child)</li>
-      {% else %}
-        <li>the primary adopter's husband, wife or civil partner</li>
-        <li>the secondary adopter</li>
-        <li>the primary adopter's partner (if they live with the primary adopter and the child)</li>
-      {% endif %}
+      <li>the {{ primaryName }}‘s husband, wife or civil partner</li>
+      <li>the {{ "child‘s other parent" if (data | isBirth) else "secondary adopter" }}</li>
+      <li>the {{ primaryName }}‘s partner (if they live with the {{ primaryName }} and the child)</li>
     </ul>
   {% endset %}
 
@@ -47,7 +39,7 @@
             name: "caring-with-partner",
             fieldset: {
               legend: {
-                text: questionText,
+                text: "Will the " + primaryName + " care for the child with a partner?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -60,12 +52,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data["caring-with-partner"] == "yes"
+                checked: data["caring-with-partner"] === "yes"
               },
               {
                 value: "no",
                 text: "No",
-                checked: data["caring-with-partner"] == "no"
+                checked: data["caring-with-partner"] === "no"
               }
             ]
           }) }}
