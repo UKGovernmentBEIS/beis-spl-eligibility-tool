@@ -57,17 +57,17 @@
             items: [
               {
                 name: "day",
-                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError('day') else ""),
+                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError("day") else ""),
                 value: data["start-date-day"]
               },
               {
                 name: "month",
-                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError('month') else ""),
+                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError("month") else ""),
                 value: data["start-date-month"]
               },
               {
                 name: "year",
-                classes: "govuk-input--width-4" + (" govuk-input--error" if errors | hasStartDateError('year') else ""),
+                classes: "govuk-input--width-4" + (" govuk-input--error" if errors | hasStartDateError("year") else ""),
                 value: data["start-date-year"]
               }
             ]
