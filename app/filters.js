@@ -5,11 +5,12 @@ const isEligible = require('./lib/isEligible')
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 
 module.exports = function (env) {
+  const isBirth = env.getFilter('isBirth')
+
   // The week used as a baseline in eligibility calculations.
   // For birth parents, this is 15 weeks before the week of the due date.
   // For adoptive parents, this is the week of the match date.
   function relevantWeek (data) {
-    const isBirth = env.getFilter('isBirth')
     const providedDate = getProvidedDate(data)
     const startOfWeek = providedDate.startOfWeek()
     return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : providedDate.startOfWeek()

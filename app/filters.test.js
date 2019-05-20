@@ -15,12 +15,12 @@ describe('filters', () => {
     environment = {
       getFilter: () => {}
     }
-    filters = require('./filters')(environment)
   })
 
   describe('relevantWeek', () => {
     it('returns the start of the match week for adopters', () => {
       sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => false)
+      filters = require('./filters')(environment)
 
       const data = {
         'start-date-day': '01',
@@ -34,6 +34,7 @@ describe('filters', () => {
 
     it('returns 15 weeks before the start of the birth week for birth parents', () => {
       sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => true)
+      filters = require('./filters')(environment)
 
       const data = {
         'start-date-day': '01',
@@ -47,6 +48,7 @@ describe('filters', () => {
 
     it('always returns a sunday', () => {
       sinon.stub(environment, 'getFilter').withArgs('isBirth').returns(() => false)
+      filters = require('./filters')(environment)
 
       const dataWithSunday = {
         'start-date-day': '29',
