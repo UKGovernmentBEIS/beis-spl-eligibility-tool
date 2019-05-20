@@ -4,8 +4,6 @@ const { describe, it, beforeEach } = require('mocha')
 const { expect } = require('chai')
 const sinon = require('sinon')
 
-const moment = require('moment')
-
 const Day = require('../common/lib/day')
 
 describe('filters', () => {
@@ -70,22 +68,19 @@ describe('filters', () => {
 
   describe('isInPast', () => {
     it('returns true for a date in the past', () => {
-      const today = moment()
-      const testDay = new Day(today.subtract(1, 'days'))
+      const testDay = new Day().subtract(1, 'days')
 
       expect(filters.isInPast(testDay)).to.equal(true)
     })
 
     it('returns false for a date in the future', () => {
-      const today = moment()
-      const testDay = new Day(today)
+      const testDay = new Day()
 
       expect(filters.isInPast(testDay)).to.equal(false)
     })
 
     it('returns false for the current date', () => {
-      const today = moment()
-      const testDay = new Day(today.add(1, 'days'))
+      const testDay = new Day().add(1, 'days')
 
       expect(filters.isInPast(testDay)).to.equal(false)
     })
