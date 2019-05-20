@@ -37,6 +37,10 @@ module.exports = function (env) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
+  function offsetWeeks (baseDay, numberOfWeeks) {
+    return baseDay.add(numberOfWeeks, 'weeks')
+  }
+
   return {
     primaryName,
     primaryNameForUrl,
@@ -47,6 +51,7 @@ module.exports = function (env) {
     isBirth,
     isAdoption,
     capitalize,
+    offsetWeeks,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }
