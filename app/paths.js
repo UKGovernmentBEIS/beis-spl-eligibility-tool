@@ -6,5 +6,6 @@ module.exports = {
   results: '/results',
   employmentStatus: '/employment-status',
   workAndPay: '/work-and-pay',
-  otherParentWorkAndPay: '/other-parent-work-and-pay'
+  otherParentWorkAndPay: '/other-parent-work-and-pay',
+  back: '/back'
 }
