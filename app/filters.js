@@ -47,7 +47,7 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
   }
 
-  function getPath (pathKey, currentParent) {
+  function getBackPath (pathKey, currentParent) {
     return '/back' + paths[pathKey] + (currentParent ? `/${currentParent}` : '')
   }
 
@@ -58,7 +58,7 @@ module.exports = function (env) {
     getCurrentParentFromUrl,
     displayEligiblity,
     hasStartDateError,
-    getPath
+    getBackPath
   }
 }
 
