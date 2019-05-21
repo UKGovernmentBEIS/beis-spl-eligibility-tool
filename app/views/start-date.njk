@@ -6,10 +6,16 @@
 
 {% extends "layout.njk" %}
 
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "caringWithPartner" | getPath + backQuery if backQuery
+  }) }}
+{% endblock %}
+
 {% block pageTitle %}
   Plan leave and pay when you have a child
 {% endblock %}
-
 
 {% block content %}
 

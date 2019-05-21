@@ -1,9 +1,17 @@
 {% from "radios/macro.njk" import govukRadios %}
+{% from "radios/macro.njk" import govukRadios %}
 {% from "button/macro.njk" import govukButton %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 
 {% extends "layout.njk" %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: 'root' | getPath + backQuery
+  }) }}
+{% endblock %}
 
 {% block content %}
   {% if errors["birth-or-adoption"] %}

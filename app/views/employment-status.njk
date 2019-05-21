@@ -5,6 +5,14 @@
 
 {% extends "layout.njk" %}
 
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "results" | getPath + backQuery
+  }) }}
+{% endblock %}
+
 {% block content %}
   {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
   {% set currentParentName = data | currentParentName(currentParent) %}

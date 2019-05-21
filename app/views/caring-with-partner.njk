@@ -5,6 +5,14 @@
 
 {% extends "layout.njk" %}
 
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: "birthOrAdoption" | getPath + backQuery
+  }) }}
+{% endblock %}
+
 {% block content %}
   {% if errors["caring-with-partner"] %}
     {{ govukErrorSummary({
