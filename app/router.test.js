@@ -16,7 +16,7 @@ beforeEach(() => {
 describe('GET /', () => {
   it('returns 200 status', done => {
     supertest(getApp())
-      .get('/')
+      .get(paths.getPath('root'))
       .expect(200)
       .end(done)
   })
@@ -24,34 +24,34 @@ describe('GET /', () => {
 
 describe('POST birthOrAdoption', () => {
   it('redirects back to birth-or-adoption if birth-or-adoption not provided', done => {
-    app.post(paths.birthOrAdoption)
+    app.post(paths.getPath('birthOrAdoption'))
       .expect(302)
-      .expect('Location', paths.birthOrAdoption)
+      .expect('Location', paths.getPath('birthOrAdoption'))
       .end(done)
   })
 
   it('redirects to caringWithPartner if birth-or-adoption provided', done => {
-    app.post(paths.birthOrAdoption)
+    app.post(paths.getPath('birthOrAdoption'))
       .send({ 'birth-or-adoption': 'birth' })
       .expect(302)
-      .expect('Location', paths.caringWithPartner)
+      .expect('Location', paths.getPath('caringWithPartner'))
       .end(done)
   })
 })
 
 describe('POST caringWithPartner', () => {
   it('redirects back to caringWithPartner if caring-with-partner not provided', done => {
-    app.post(paths.caringWithPartner)
+    app.post(paths.getPath('caringWithPartner'))
       .expect(302)
-      .expect('Location', paths.caringWithPartner)
+      .expect('Location', paths.getPath('caringWithPartner'))
       .end(done)
   })
 
   it('redirects to startDate if caring-with-partner provided', done => {
-    app.post(paths.caringWithPartner)
+    app.post(paths.getPath('caringWithPartner'))
       .send({ 'caring-with-partner': 'yes' })
       .expect(302)
-      .expect('Location', paths.startDate)
+      .expect('Location', paths.getPath('startDate'))
       .end(done)
   })
 })
@@ -65,10 +65,10 @@ describe('POST startDate', () => {
         'start-date-year': '2019'
       }
 
-      app.post(paths.startDate)
+      app.post(paths.getPath('startDate'))
         .send(payload)
         .expect(302)
-        .expect('Location', paths.startDate)
+        .expect('Location', paths.getPath('startDate'))
         .end(done)
     })
 
@@ -79,10 +79,10 @@ describe('POST startDate', () => {
         'start-date-year': '2019'
       }
 
-      app.post(paths.startDate)
+      app.post(paths.getPath('startDate'))
         .send(payload)
         .expect(302)
-        .expect('Location', paths.startDate)
+        .expect('Location', paths.getPath('startDate'))
         .end(done)
     })
 
@@ -93,10 +93,10 @@ describe('POST startDate', () => {
         'start-date-year': new Date().getFullYear() + 2
       }
 
-      app.post(paths.startDate)
+      app.post(paths.getPath('startDate'))
         .send(payload)
         .expect(302)
-        .expect('Location', paths.startDate)
+        .expect('Location', paths.getPath('startDate'))
         .end(done)
     })
   })
@@ -108,36 +108,36 @@ describe('POST startDate', () => {
       'start-date-year': new Date().getFullYear().toString()
     }
 
-    app.post(paths.startDate)
+    app.post(paths.getPath('startDate'))
       .send(payload)
       .expect(302)
-      .expect('Location', paths.results)
+      .expect('Location', paths.getPath('results'))
       .end(done)
   })
 })
 
 describe('POST results when "current" param supplied', () => {
   it('redirects to employmentStatus and passes "current" param through', done => {
-    app.post(paths.results + '/mother')
+    app.post(paths.getPath('results') + '/mother')
       .expect(302)
-      .expect('Location', paths.employmentStatus + '/mother')
+      .expect('Location', paths.getPath('employmentStatus') + '/mother')
       .end(done)
   })
 })
 
 describe('POST employmentStatus with a parent', () => {
   it('redirects back to employmentStatus with the same parent when employment-status not provided', done => {
-    app.post(paths.employmentStatus + '/mother')
+    app.post(paths.getPath('employmentStatus') + '/mother')
       .expect(302)
-      .expect('Location', paths.employmentStatus + '/mother')
+      .expect('Location', paths.getPath('employmentStatus') + '/mother')
       .end(done)
   })
 
   it('redirects to workAndPay with the same parent when employment-status is provided', done => {
-    app.post(paths.employmentStatus + '/mother')
+    app.post(paths.getPath('employmentStatus') + '/mother')
       .send({ primary: { 'employment-status': 'employee' } })
       .expect(302)
-      .expect('Location', paths.workAndPay + '/mother')
+      .expect('Location', paths.getPath('workAndPay') + '/mother')
       .end(done)
   })
 })
@@ -151,10 +151,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.workAndPay + '/mother')
+    app.post(paths.getPath('workAndPay') + '/mother')
       .send(payload)
       .expect(302)
-      .expect('Location', paths.workAndPay + '/mother')
+      .expect('Location', paths.getPath('workAndPay') + '/mother')
       .end(done)
   })
 
@@ -166,10 +166,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.workAndPay + '/mother')
+    app.post(paths.getPath('workAndPay') + '/mother')
       .send(payload)
       .expect(302)
-      .expect('Location', paths.workAndPay + '/mother')
+      .expect('Location', paths.getPath('workAndPay') + '/mother')
       .end(done)
   })
 
@@ -181,10 +181,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.workAndPay + '/mother')
+    app.post(paths.getPath('workAndPay') + '/mother')
       .send(payload)
       .expect(302)
-      .expect('Location', paths.workAndPay + '/mother')
+      .expect('Location', paths.getPath('workAndPay') + '/mother')
       .end(done)
   })
 
@@ -197,10 +197,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.workAndPay + '/mother')
+    app.post(paths.getPath('workAndPay') + '/mother')
       .send(payload)
       .expect(302)
-      .expect('Location', paths.otherParentWorkAndPay + '/mother')
+      .expect('Location', paths.getPath('otherParentWorkAndPay') + '/mother')
       .end(done)
   })
 })

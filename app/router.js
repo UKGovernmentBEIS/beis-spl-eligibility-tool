@@ -3,11 +3,13 @@ const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 
-router.get(paths.root, function (req, res) {
+router.get('*', require('./step-validation'))
+
+router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
 })
 
-router.route(paths.birthOrAdoption)
+router.route(paths.getPath('birthOrAdoption'))
   .get(function (req, res) {
     res.render('birth-or-adoption')
   })
@@ -15,10 +17,10 @@ router.route(paths.birthOrAdoption)
     if (!validate.birthOrAdoption(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.caringWithPartner)
+    res.redirect(paths.getPath('caringWithPartner'))
   })
 
-router.route(paths.caringWithPartner)
+router.route(paths.getPath('caringWithPartner'))
   .get(function (req, res) {
     res.render('caring-with-partner')
   })
@@ -26,10 +28,10 @@ router.route(paths.caringWithPartner)
     if (!validate.caringWithPartner(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.startDate)
+    res.redirect(paths.getPath('startDate'))
   })
 
-router.route(paths.startDate)
+router.route(paths.getPath('startDate'))
   .get(function (req, res) {
     res.render('start-date')
   })
@@ -38,19 +40,19 @@ router.route(paths.startDate)
       return res.redirect(req.url)
     }
     addRouteToSession(req, res)
-    res.redirect(paths.results)
+    res.redirect(paths.getPath('results'))
   })
 
-router.route(paths.results)
+router.route(paths.getPath('results'))
   .get(function (req, res) {
     res.render('results')
   })
 
-router.post(paths.results + '/:current', function (req, res) {
-  res.redirect(paths.employmentStatus + `/${req.params['current']}`)
+router.post(paths.getPath('results') + '/:current', function (req, res) {
+  res.redirect(paths.getPath('employmentStatus') + `/${req.params['current']}`)
 })
 
-router.route(paths.employmentStatus + '/:current')
+router.route(paths.getPath('employmentStatus') + '/:current')
   .get(function (req, res) {
     res.render('employment-status', { currentParentFromUrl: req.params['current'] })
   })
@@ -58,10 +60,10 @@ router.route(paths.employmentStatus + '/:current')
     if (!validate.employmentStatus(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.workAndPay + `/${req.params['current']}`)
+    res.redirect(paths.getPath('workAndPay') + `/${req.params['current']}`)
   })
 
-router.route(paths.workAndPay + '/:current')
+router.route(paths.getPath('workAndPay') + '/:current')
   .get(function (req, res) {
     res.render('work-and-pay', { currentParentFromUrl: req.params['current'] })
   })
@@ -69,10 +71,10 @@ router.route(paths.workAndPay + '/:current')
     if (!validate.workAndPay(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.otherParentWorkAndPay + `/${req.params['current']}`)
+    res.redirect(paths.getPath('otherParentWorkAndPay') + `/${req.params['current']}`)
   })
 
-router.route(paths.otherParentWorkAndPay + '/:current')
+router.route(paths.getPath('otherParentWorkAndPay') + '/:current')
   .get(function (req, res) {
     res.render('other-parent-work-and-pay', { currentParentFromUrl: req.params['current'] })
   })
@@ -81,7 +83,7 @@ router.route(paths.otherParentWorkAndPay + '/:current')
       return res.redirect(req.url)
     }
     addRouteToSession(req, res)
-    res.redirect(paths.results)
+    res.redirect(paths.getPath('results'))
   })
 
 module.exports = router

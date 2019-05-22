@@ -132,7 +132,8 @@ function initialisePublic (app) {
 }
 
 function initialiseRoutes (app) {
-  app.locals.paths = paths
+  const routes = paths.getPaths()
+  app.locals.paths = routes
   app.use('/', router)
 }
 
