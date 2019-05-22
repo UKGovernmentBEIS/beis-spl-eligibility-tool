@@ -8,20 +8,26 @@ const {
 } = require('./lib/validationUtils')
 
 function birthOrAdoption (req) {
-  if (!['birth', 'adoption'].includes(req.body['birth-or-adoption'])) {
+  console.log('validate birthOrAdoption called')
+  if (!['birth', 'adoption'].includes(req.session.data['birth-or-adoption'])) {
     req.session.errors = { 'birth-or-adoption': 'Select either birth or adoption' }
+    return false
   }
-  return hasPassedValidation(req)
+  return true
 }
 
 function caringWithPartner (req) {
-  if (!isYesOrNo(req.body['caring-with-partner'])) {
+  console.log('validate caringWithPartner called')
+
+  if (!isYesOrNo(req.session.data['caring-with-partner'])) {
     req.session.errors = { 'caring-with-partner': 'Select whether or not you are caring for the child with a partner' }
   }
   return hasPassedValidation(req)
 }
 
 function startDate (req) {
+  console.log('validate startDate called')
+
   function buildDateError (message, href, dateParts) {
     return Object.assign(buildError(message, href), { dateParts })
   }
@@ -67,7 +73,7 @@ function startDate (req) {
 
 function employmentStatus (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
-  const employmentStatusAnswer = delve(req.body, [parent, 'employment-status'])
+  const employmentStatusAnswer = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
   if (!permittedValues.includes(employmentStatusAnswer)) {
     req.session.errors['employment-status'] = buildError('Please indicate your employment status', '#employment-status-1')
@@ -77,15 +83,15 @@ function employmentStatus (req) {
 
 function workAndPay (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
-  const workStart = delve(req.body, [parent, 'work-start'])
+  const workStart = delve(req.session.data, [parent, 'work-start'])
   if (!isYesOrNo(workStart)) {
     req.session.errors['work-start'] = buildError('Please indicate when you started your job', '#work-start-1')
   }
-  const continuousWork = delve(req.body, [parent, 'continuous-work'])
+  const continuousWork = delve(req.session.data, [parent, 'continuous-work'])
   if (!isYesOrNo(continuousWork)) {
     req.session.errors['continuous-work'] = buildError('Please whether your work has been continuous during this time', '#continuous-work-1')
   }
-  const payThreshold = delve(req.body, [parent, 'pay-threshold'])
+  const payThreshold = delve(req.session.data, [parent, 'pay-threshold'])
   if (!isYesOrNo(payThreshold)) {
     req.session.errors['pay-threshold'] = buildError('Please indicate whether you meet this pay threshold', '#pay-threshold-1')
   }
@@ -95,11 +101,11 @@ function workAndPay (req) {
 
 function otherParentWorkAndPay (req) {
   const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
-  const otherParentWork = delve(req.body, [parent, 'other-parent-work'])
+  const otherParentWork = delve(req.session.data, [parent, 'other-parent-work'])
   if (!isYesOrNo(otherParentWork)) {
     req.session.errors['other-parent-work'] = buildError('Please whether your partner meets the work threshold', '#other-parent-work-1')
   }
-  const otherParentPay = delve(req.body, [parent, 'other-parent-pay'])
+  const otherParentPay = delve(req.session.data, [parent, 'other-parent-pay'])
   if (!isYesOrNo(otherParentPay)) {
     req.session.errors['other-parent-pay'] = buildError('Please whether your partner meets the pay threshold', '#other-parent-pay-1')
   }
