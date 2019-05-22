@@ -42,6 +42,10 @@ module.exports = function (env) {
     }
   }
 
+  function hasCheckedEligibility (data, parent) {
+    return isEligible(data[parent], 'spl') !== undefined
+  }
+
   function hasStartDateError (errors, partOfDate) {
     return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
   }
@@ -56,6 +60,7 @@ module.exports = function (env) {
     isInPast,
     getCurrentParentFromUrl,
     displayEligiblity,
+    hasCheckedEligibility,
     hasStartDateError,
     startDateName
   }
