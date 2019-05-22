@@ -43,14 +43,14 @@
       {% set primaryCheckEligibilityButton %}
         {% set formaction = "results/" + data | primaryNameForUrl %}
         <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{formaction}}">
-          {{"Re-check" if data | hasCheckedEligibility('primary') else "Check" }} eligibility
+          {{"Re-check" if data | hasCheckedEligibility("primary") else "Check" }} eligibility
         </button>
       {% endset %}
 
       {% set secondaryCheckEligibilityButton %}
         {% set formaction = "results/" + data | secondaryNameForUrl %}
         <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{formaction}}">
-          {{"Re-check" if data | hasCheckedEligibility('secondary') else "Check" }} eligibility
+          {{"Re-check" if data | hasCheckedEligibility("secondary") else "Check" }} eligibility
         </button>
       {% endset %}
 
@@ -108,26 +108,28 @@
             ]
           }) }}
 
-          {{ govukButton({
-            text: "Continue to planner",
-            attributes: {
-              formaction: "planner"
-            }
-          }) }}
 
-          {# {% set hasCheckedEligibility = data["primary-eligibility"] or data["secondary-eligibility"] %}
-
-          {% if hasCheckedEligibility and (data['primary-eligibility']['spl'] === false or data['primary-eligibility']['shpp'] === false or data['secondary-eligibility']['spl'] === false or data['secondary-eligibility']['shpp'] === false) %}
+          {% set hasCheckedEligibility = data | hasCheckedEligibility("primary") or data | hasCheckedEligibility("secondary") %}
+          {% if hasCheckedEligibility and data | coupleHasAnyInelligibility %}
             <p>
-              To understand why you or your partner aren't eligible for shared parental leave or shared parental pay, you can check the guidelines on
+              To understand why you or your partner aren‘t eligible for shared parental leave or shared parental pay, you can check the guidelines on
               {% if data | isBirth %}
+              {# TODO fix href of these links #}
                 <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
               {% else %}
                 <a href="/shared-parental-leave-and-pay/eligibility-for-adopters">eligibility for adopters</a>.
               {% endif %}
             </p>
-          {% endif %} #}
+          {% endif %}
         {% endcall %}
+
+        {{ govukButton({
+          text: "Continue to planner",
+          attributes: {
+            formaction: "planner"
+          }
+        }) }}
+
       </form>
     </div>
   </div>

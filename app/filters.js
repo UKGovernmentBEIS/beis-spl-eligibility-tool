@@ -29,8 +29,7 @@ module.exports = function (env) {
   }
 
   function displayEligiblity (data, parent, policy) {
-    const isParentEligible = isEligible(data[parent], policy)
-    switch (isParentEligible) {
+    switch (isParentEligible(data, parent, policy)) {
       case true:
         return 'Eligible ✔'
       case false:
@@ -43,7 +42,16 @@ module.exports = function (env) {
   }
 
   function hasCheckedEligibility (data, parent) {
-    return isEligible(data[parent], 'spl') !== undefined
+    return isParentEligible(data, parent, 'spl') !== undefined
+  }
+
+  function coupleHasAnyInelligibility (data) {
+    return (
+      !isParentEligible(data, 'primary', 'spl') ||
+      !isParentEligible(data, 'primary', 'shpp') ||
+      !isParentEligible(data, 'secondary', 'spl') ||
+      !isParentEligible(data, 'secondary', 'shpp')
+    )
   }
 
   function hasStartDateError (errors, partOfDate) {
@@ -61,6 +69,7 @@ module.exports = function (env) {
     getCurrentParentFromUrl,
     displayEligiblity,
     hasCheckedEligibility,
+    coupleHasAnyInelligibility,
     hasStartDateError,
     startDateName
   }
@@ -77,4 +86,8 @@ function getProvidedDate (data) {
   } = data
 
   return new Day(year, month, day)
+}
+
+function isParentEligible (data, parent, policy) {
+  return isEligible(data[parent], policy)
 }
