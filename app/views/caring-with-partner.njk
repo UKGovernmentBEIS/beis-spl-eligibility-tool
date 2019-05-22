@@ -9,7 +9,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: "birthOrAdoption" | getBackPath + backQuery
+    href: withData('birth-or-adoption')
   }) }}
 {% endblock %}
 

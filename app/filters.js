@@ -47,18 +47,13 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
   }
 
-  function getBackPath (pathKey, currentParent) {
-    return '/back' + paths[pathKey] + (currentParent ? `/${currentParent}` : '')
-  }
-
   return {
     relevantWeek,
     formatForDisplay,
     isInPast,
     getCurrentParentFromUrl,
     displayEligiblity,
-    hasStartDateError,
-    getBackPath
+    hasStartDateError
   }
 }
 

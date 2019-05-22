@@ -9,7 +9,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: "caringWithPartner" | getBackPath + backQuery if backQuery
+    href: withData("caring-with-partner")
   }) }}
 {% endblock %}
 

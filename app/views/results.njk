@@ -8,7 +8,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: backPath + backQuery
+    href: withData("start-date")
   }) }}
 {% endblock %}
 
