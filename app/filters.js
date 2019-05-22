@@ -1,6 +1,5 @@
 const Day = require('../common/lib/day')
 const isEligible = require('./lib/isEligible')
-const paths = require('./paths')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -47,13 +46,18 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
   }
 
+  function startDateName (data) {
+    return isBirth(data) ? 'due date' : 'match date'
+  }
+
   return {
     relevantWeek,
     formatForDisplay,
     isInPast,
     getCurrentParentFromUrl,
     displayEligiblity,
-    hasStartDateError
+    hasStartDateError,
+    startDateName
   }
 }
 
