@@ -153,8 +153,8 @@ function initialise () {
   initialiseProxy(app)
   initialiseGlobalMiddleware(app)
   initialiseTemplateEngine(app)
-  initialiseRoutes(app)
   initialisePublic(app)
+  initialiseRoutes(app)
   return app
 }
 
