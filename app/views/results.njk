@@ -42,26 +42,16 @@
 
       {% set primaryCheckEligibilityButton %}
         {% set formaction = "results/" + data | primaryNameForUrl %}
-        {{ govukButton({
-          text: "Check eligibility",
-          classes: "govuk-link--no-visited-state button-link",
-          role: "link",
-          attributes: {
-            formaction: formaction
-          }
-        }) }}
+        <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{formaction}}">
+          Check eligibility
+        </button>
       {% endset %}
 
       {% set secondaryCheckEligibilityButton %}
         {% set formaction = "results/" + data | secondaryNameForUrl %}
-        {{ govukButton({
-          text: "Check eligibility",
-          classes: "govuk-link--no-visited-state button-link",
-          role: "link",
-          attributes: {
-            formaction: formaction
-          }
-        }) }}
+        <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{formaction}}">
+          Check eligibility
+        </button>
       {% endset %}
 
       <form method="POST">
