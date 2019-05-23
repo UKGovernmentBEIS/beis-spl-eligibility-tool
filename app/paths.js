@@ -1,6 +1,6 @@
 class Paths {
   constructor () {
-    this.paths = [
+    this.pathObjects = [
       {
         path: '/',
         name: 'root'
@@ -45,21 +45,36 @@ class Paths {
   }
 
   getIndex (pathOrName) {
-    return this.paths.findIndex(path => path.path === pathOrName || path.name === pathOrName)
+    return this.pathObjects.findIndex(pathObject => pathObject.path === pathOrName || pathObject.name === pathOrName)
+  }
+
+  getPreviousPath (currentPathNameOrIndex) {
+    if (this._isRoot(currentPathNameOrIndex)) { return null }
+
+    if (Number.isInteger(currentPathNameOrIndex)) {
+      return this.getPath(currentPathNameOrIndex - 1)
+    } else {
+      const previousIndex = this.getIndex(currentPathNameOrIndex) - 1
+      return this.getPath(previousIndex)
+    }
   }
 
   getPaths () {
-    return this.paths.reduce((pathsObject, currentPath) => {
-      pathsObject[currentPath.name] = currentPath.path
-      return pathsObject
+    return this.pathObjects.reduce((pathObject, currentPath) => {
+      pathObject[currentPath.name] = currentPath.path
+      return pathObject
     }, {})
+  }
+
+  _isRoot (pathNameOrIndex) {
+    return [0, '/', 'root'].includes(pathNameOrIndex)
   }
 
   _get (pathNameOrIndex) {
     if (Number.isInteger(pathNameOrIndex)) {
-      return this.paths[pathNameOrIndex]
+      return this.pathObjects[pathNameOrIndex]
     } else {
-      return this.paths.find(path => path.path === pathNameOrIndex || path.name === pathNameOrIndex)
+      return this.pathObjects.find(pathObject => pathObject.path === pathNameOrIndex || pathObject.name === pathNameOrIndex)
     }
   }
 }
