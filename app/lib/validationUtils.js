@@ -1,12 +1,3 @@
-function hasPassedValidation (req) {
-  for (let error in req.session.errors) {
-    if (req.session.errors.hasOwnProperty(error)) {
-      return false
-    }
-  }
-  return true
-}
-
 function buildError (message, href) {
   return { text: message, href: href }
 }
@@ -30,7 +21,6 @@ function prettyList (array) {
 }
 
 module.exports = {
-  hasPassedValidation,
   buildError,
   isYesOrNo,
   prettyList
