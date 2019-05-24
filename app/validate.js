@@ -65,8 +65,8 @@ function startDate (req) {
   return true
 }
 
-function employmentStatus (req) {
-  const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
+function employmentStatus (req, parentFromUrl) {
+  const parent = parentFromUrl === 'partner' ? 'secondary' : 'primary'
   const employmentStatusAnswer = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
   if (!permittedValues.includes(employmentStatusAnswer)) {
@@ -76,9 +76,9 @@ function employmentStatus (req) {
   return true
 }
 
-function workAndPay (req) {
+function workAndPay (req, parentFromUrl) {
   let isValid = true
-  const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
+  const parent = parentFromUrl === 'partner' ? 'secondary' : 'primary'
   const workStart = delve(req.session.data, [parent, 'work-start'])
   if (!isYesOrNo(workStart)) {
     req.session.errors['work-start'] = buildError('Please indicate when you started your job', '#work-start-1')
@@ -97,9 +97,9 @@ function workAndPay (req) {
   return isValid
 }
 
-function otherParentWorkAndPay (req) {
+function otherParentWorkAndPay (req, parentFromUrl) {
   let isValid = true
-  const parent = req.params['current'] === 'partner' ? 'secondary' : 'primary'
+  const parent = parentFromUrl === 'partner' ? 'secondary' : 'primary'
   const otherParentWork = delve(req.session.data, [parent, 'other-parent-work'])
   if (!isYesOrNo(otherParentWork)) {
     req.session.errors['other-parent-work'] = buildError('Please whether your partner meets the work threshold', '#other-parent-work-1')
