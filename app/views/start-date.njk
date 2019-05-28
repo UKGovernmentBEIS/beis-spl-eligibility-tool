@@ -57,23 +57,23 @@
               }
             },
             hint: {
-              text: "For example, 27 08 2019"
+              text: "For example, " + null | exampleDate
             },
             errorMessage: { html: errorHtml } if errorHtml,
             items: [
               {
                 name: "day",
-                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError("day") else ""),
+                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError("day")),
                 value: data["start-date-day"]
               },
               {
                 name: "month",
-                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError("month") else ""),
+                classes: "govuk-input--width-2" + (" govuk-input--error" if errors | hasStartDateError("month")),
                 value: data["start-date-month"]
               },
               {
                 name: "year",
-                classes: "govuk-input--width-4" + (" govuk-input--error" if errors | hasStartDateError("year") else ""),
+                classes: "govuk-input--width-4" + (" govuk-input--error" if errors | hasStartDateError("year")),
                 value: data["start-date-year"]
               }
             ]
