@@ -1,5 +1,5 @@
 const Day = require('../common/lib/day')
-const isEligible = require('./lib/isEligible')
+const { ELIGIBILITY, isEligible } = require('./lib/eligibility')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -30,19 +30,17 @@ module.exports = function (env) {
 
   function displayEligiblity (data, parent, policy) {
     switch (isParentEligible(data, parent, policy)) {
-      case true:
+      case ELIGIBILITY.ELIGIBLE:
         return 'Eligible ✔'
-      case false:
+      case ELIGIBILITY.NOT_ELIGIBLE:
         return 'Not eligible ✘'
-      case undefined:
-        return 'Eligibility unknown'
       default:
-        console.log('unknown eligibility')
+        return 'Eligibility unknown'
     }
   }
 
   function hasCheckedEligibility (data, parent) {
-    return isParentEligible(data, parent, 'spl') !== undefined
+    return isParentEligible(data, parent, 'spl') !== ELIGIBILITY.UNKNOWN
   }
 
   function coupleHasAnyInelligibility (data) {

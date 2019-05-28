@@ -1,5 +1,13 @@
+const ELIGIBILITY = Object.freeze({
+  ELIGIBLE: 'eligible',
+  NOT_ELIGIBLE: 'not eligible',
+  UNKNOWN: 'unknown'
+})
+
 function isEligible (eligibilityData, policy) {
-  if (eligibilityData === undefined) { return }
+  if (eligibilityData === undefined) {
+    return ELIGIBILITY.UNKNOWN
+  }
 
   const isYes = field => field === 'yes'
   const isNo = field => field === 'no'
@@ -18,7 +26,7 @@ function isEligible (eligibilityData, policy) {
       isNo(otherParentPay) ||
       isNo(otherParentWork)
   ) {
-    return false
+    return ELIGIBILITY.NOT_ELIGIBLE
   }
 
   if ([
@@ -29,15 +37,24 @@ function isEligible (eligibilityData, policy) {
     otherParentWork,
     otherParentPay
   ].some(value => value === undefined)) {
-    return undefined
+    return ELIGIBILITY.UNKNOWN
   }
 
   if (policy === 'spl') {
-    if (employmentStatus === 'worker') { return false }
-    return isYes(workStart) && isYes(continuousWork)
+    if (employmentStatus === 'worker') {
+      return ELIGIBILITY.NOT_ELIGIBLE
+    }
+    return isYes(workStart) && isYes(continuousWork) ? ELIGIBILITY.ELIGIBLE : ELIGIBILITY.NOT_ELIGIBLE
   } else if (policy === 'shpp') {
-    return isYes(workStart) && isYes(continuousWork) && isYes(payThreshold)
+    if (isYes(workStart) && isYes(continuousWork) && isYes(payThreshold)) {
+      return ELIGIBILITY.ELIGIBLE
+    } else {
+      return ELIGIBILITY.NOT_ELIGIBLE
+    }
   }
 }
 
-module.exports = isEligible
+module.exports = {
+  ELIGIBILITY,
+  isEligible
+}

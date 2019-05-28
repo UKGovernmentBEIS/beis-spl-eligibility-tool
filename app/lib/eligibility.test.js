@@ -1,10 +1,10 @@
 const { describe, it } = require('mocha')
 const { expect } = require('chai')
 
-const isEligible = require('./isEligible')
+const { isEligible, ELIGIBILITY } = require('./eligibility')
 
 describe('isEligible', () => {
-  it('returns false if other parent does not meet work threshold', () => {
+  it('returns not eligible if other parent does not meet work threshold', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': 'yes',
@@ -14,11 +14,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(false)
-    expect(isEligible(testData, 'shpp')).to.equal(false)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
   })
 
-  it('returns false if other parent does not meet pay threshold', () => {
+  it('returns not eligible if other parent does not meet pay threshold', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': 'yes',
@@ -28,11 +28,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'no'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(false)
-    expect(isEligible(testData, 'shpp')).to.equal(false)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
   })
 
-  it('returns undefined if employment-status not provided', () => {
+  it('returns unknown if employment-status not provided', () => {
     const testData = {
       'employment-status': undefined,
       'work-start': 'yes',
@@ -42,11 +42,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(undefined)
-    expect(isEligible(testData, 'shpp')).to.equal(undefined)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
-  it('returns undefined if work-start not provided', () => {
+  it('returns unknown if work-start not provided', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': undefined,
@@ -56,11 +56,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(undefined)
-    expect(isEligible(testData, 'shpp')).to.equal(undefined)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
-  it('returns undefined if continuous-work not provided', () => {
+  it('returns unknown if continuous-work not provided', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': 'yes',
@@ -70,11 +70,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(undefined)
-    expect(isEligible(testData, 'shpp')).to.equal(undefined)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
-  it('returns undefined if pay-threshold not provided', () => {
+  it('returns unknown if pay-threshold not provided', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': 'yes',
@@ -84,11 +84,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(undefined)
-    expect(isEligible(testData, 'shpp')).to.equal(undefined)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
-  it('returns undefined if other-parent-work not provided', () => {
+  it('returns unknown if other-parent-work not provided', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': 'yes',
@@ -98,11 +98,11 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(undefined)
-    expect(isEligible(testData, 'shpp')).to.equal(undefined)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
-  it('returns undefined if other-parent-pay not provided', () => {
+  it('returns unknown if other-parent-pay not provided', () => {
     const testData = {
       'employment-status': 'employee',
       'work-start': 'yes',
@@ -112,12 +112,12 @@ describe('isEligible', () => {
       'other-parent-pay': undefined
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(undefined)
-    expect(isEligible(testData, 'shpp')).to.equal(undefined)
+    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   describe('for spl', () => {
-    it('returns false if employment status is "worker"', () => {
+    it('returns not eligible if employment status is "worker"', () => {
       const testData = {
         'employment-status': 'worker',
         'work-start': 'yes',
@@ -127,11 +127,11 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'spl')).to.equal(false)
+      expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
     describe('when emploment status is "employee"', () => {
-      it('returns false if work-start === "no"', () => {
+      it('returns not eligible if work-start === "no"', () => {
         const testData = {
           'employment-status': 'employee',
           'work-start': 'no',
@@ -141,10 +141,10 @@ describe('isEligible', () => {
           'other-parent-pay': 'yes'
         }
 
-        expect(isEligible(testData, 'spl')).to.equal(false)
+        expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
       })
 
-      it('returns false if continuous-work === "no"', () => {
+      it('returns not eligible if continuous-work === "no"', () => {
         const testData = {
           'employment-status': 'employee',
           'work-start': 'yes',
@@ -154,10 +154,10 @@ describe('isEligible', () => {
           'other-parent-pay': 'yes'
         }
 
-        expect(isEligible(testData, 'spl')).to.equal(false)
+        expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
       })
 
-      it('returns true if continuous-work === "yes" and work-start === "yes"', () => {
+      it('returns eligible if continuous-work === "yes" and work-start === "yes"', () => {
         const testData = {
           'employment-status': 'employee',
           'work-start': 'yes',
@@ -167,13 +167,13 @@ describe('isEligible', () => {
           'other-parent-pay': 'yes'
         }
 
-        expect(isEligible(testData, 'spl')).to.equal(true)
+        expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.ELIGIBLE)
       })
     })
   })
 
   describe('for shpp', () => {
-    it('returns false if work-start === "no"', () => {
+    it('returns not eligible if work-start === "no"', () => {
       const testData = {
         'employment-status': 'employee',
         'work-start': 'no',
@@ -183,10 +183,10 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(false)
+      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
-    it('returns false if continuous-work === "no"', () => {
+    it('returns not eligible if continuous-work === "no"', () => {
       const testData = {
         'employment-status': 'employee',
         'work-start': 'yes',
@@ -196,10 +196,10 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(false)
+      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
-    it('returns false if pay-threshold === "no"', () => {
+    it('returns not eligible if pay-threshold === "no"', () => {
       const testData = {
         'employment-status': 'employee',
         'work-start': 'yes',
@@ -209,10 +209,10 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(false)
+      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
-    it('returns true if work-start, continuous-work and pay-threshold are all yes', () => {
+    it('returns eligible if work-start, continuous-work and pay-threshold are all yes', () => {
       const testData = {
         'employment-status': 'employee',
         'work-start': 'yes',
@@ -222,7 +222,7 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(true)
+      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.ELIGIBLE)
     })
   })
 })
