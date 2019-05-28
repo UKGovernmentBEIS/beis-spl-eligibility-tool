@@ -45,6 +45,10 @@ class Day {
   formatForDisplay () {
     return this.moment.format('D MMMM YYYY')
   }
+
+  formatForExample () {
+    return this.moment.format('D M YYYY')
+  }
 }
 
 module.exports = Day

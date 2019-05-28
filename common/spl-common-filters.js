@@ -1,3 +1,5 @@
+const Day = require('./lib/day')
+
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 module.exports = function (env) {
@@ -41,6 +43,10 @@ module.exports = function (env) {
     return baseDay.add(numberOfWeeks, 'weeks')
   }
 
+  function exampleDate () {
+    return new Day().add(30, 'days').formatForExample()
+  }
+
   return {
     primaryName,
     primaryNameForUrl,
@@ -52,6 +58,7 @@ module.exports = function (env) {
     isAdoption,
     capitalize,
     offsetWeeks,
+    exampleDate,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }
