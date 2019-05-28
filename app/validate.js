@@ -58,7 +58,7 @@ function startDate (req) {
   const earliestPermitted = new Day().subtract(1, 'year')
   const latestPermitted = new Day().add(1, 'year')
   if (!startDate.isBetween(earliestPermitted, latestPermitted)) {
-    const errorMessage = `Date must be between ${earliestPermitted.formatForDisplay()} and ${latestPermitted.formatForDisplay()}`
+    const errorMessage = 'Date must be within one year of today'
     req.session.errors['start-date'] = [buildDateError(errorMessage, '#start-date-day', ['day', 'month', 'year'])]
     return false
   }
