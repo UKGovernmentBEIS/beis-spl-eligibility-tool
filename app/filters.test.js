@@ -73,13 +73,13 @@ describe('filters', () => {
       expect(filters.isInPast(testDay)).to.equal(true)
     })
 
-    it('returns false for a date in the future', () => {
+    it('returns false for a the current date', () => {
       const testDay = new Day()
 
       expect(filters.isInPast(testDay)).to.equal(false)
     })
 
-    it('returns false for the current date', () => {
+    it('returns false for a date in the future', () => {
       const testDay = new Day().add(1, 'days')
 
       expect(filters.isInPast(testDay)).to.equal(false)
