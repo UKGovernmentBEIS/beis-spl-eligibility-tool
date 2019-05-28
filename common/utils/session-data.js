@@ -16,7 +16,7 @@ module.exports = function (req, res, next) {
   res.locals.data = req.session.data
   res.locals.withData = function (path) {
     const queryData = { 'data-in-query': true, ...req.session.data }
-    return `${path}?${qs.stringify(queryData)}`
+    return `/${path}?${qs.stringify(queryData)}`
   }
   next()
 }
