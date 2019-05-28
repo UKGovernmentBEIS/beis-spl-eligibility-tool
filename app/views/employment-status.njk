@@ -16,7 +16,7 @@
 {% block content %}
   {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
   {% set currentParentName = data | currentParentName(currentParent) %}
-  {% set formKey = "[" + currentParent + "][employment-status]" %}
+  {% set formKey = currentParent + "[employment-status]" %}
 
   {% if errors["employment-status"] %}
     {{ govukErrorSummary({

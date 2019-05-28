@@ -76,7 +76,7 @@
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "work-start",
-            name: "[" + currentParent + "][work-start]",
+            name: currentParent + "[work-start]",
             fieldset: {
               legend: {
                 text: workStartTitle ,
@@ -103,7 +103,7 @@
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "continuous-work",
-            name: "[" + currentParent + "][continuous-work]",
+            name: currentParent + "[continuous-work]",
             fieldset: {
               legend: {
                 text: continuousWorkTitle,
@@ -130,7 +130,7 @@
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "pay-threshold",
-            name: "[" + currentParent + "][pay-threshold]",
+            name: currentParent + "[pay-threshold]",
             fieldset: {
               legend: {
                 text: payThresholdTitle,

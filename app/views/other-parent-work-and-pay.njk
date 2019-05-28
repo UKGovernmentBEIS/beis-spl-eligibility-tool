@@ -79,7 +79,7 @@
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "other-parent-work",
-            name: "[" + currentParent + "][other-parent-work]",
+            name: currentParent + "[other-parent-work]",
             fieldset: {
               legend: {
                 text: otherParentWorkTitle,
@@ -110,7 +110,7 @@
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "other-parent-pay",
-            name: "[" + currentParent + "][other-parent-pay]",
+            name: currentParent + "[other-parent-pay]",
             fieldset: {
               legend: {
                 text: otherParentPayTitle,

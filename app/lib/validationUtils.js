@@ -12,8 +12,6 @@ function prettyList (array) {
       return ''
     case 1:
       return array[0]
-    case 2:
-      return array.join(' and ')
     default:
       const finalElement = array.pop()
       return array.join(', ') + ` and ${finalElement}`
