@@ -39,12 +39,24 @@ module.exports = function (env) {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
+  function startDateName (data) {
+    return isBirth(data) ? 'due date' : 'match date'
+  }
+
   function offsetWeeks (baseDay, numberOfWeeks) {
     return baseDay.add(numberOfWeeks, 'weeks')
   }
 
   function exampleDate () {
     return new Day().add(30, 'days').formatForExample()
+  }
+
+  function formatForDisplay (day) {
+    return day.formatForDisplay()
+  }
+
+  function isInPast (day) {
+    return day.isInPast()
   }
 
   return {
@@ -57,8 +69,11 @@ module.exports = function (env) {
     isBirth,
     isAdoption,
     capitalize,
+    startDateName,
     offsetWeeks,
     exampleDate,
+    formatForDisplay,
+    isInPast,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }

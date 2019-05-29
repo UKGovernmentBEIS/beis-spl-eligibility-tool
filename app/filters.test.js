@@ -58,31 +58,4 @@ describe('filters', () => {
       expect(result.formatForDisplay()).to.equal('29 September 2019')
     })
   })
-
-  describe('formatForDisplay', () => {
-    it("returns a string in the form '1 December 2019'", () => {
-      const testWeek = new Day('2019', '10', '09')
-      expect(filters.formatForDisplay(testWeek)).to.equal('9 October 2019')
-    })
-  })
-
-  describe('isInPast', () => {
-    it('returns true for a date in the past', () => {
-      const testDay = new Day().subtract(1, 'days')
-
-      expect(filters.isInPast(testDay)).to.equal(true)
-    })
-
-    it('returns false for a the current date', () => {
-      const testDay = new Day()
-
-      expect(filters.isInPast(testDay)).to.equal(false)
-    })
-
-    it('returns false for a date in the future', () => {
-      const testDay = new Day().add(1, 'days')
-
-      expect(filters.isInPast(testDay)).to.equal(false)
-    })
-  })
 })

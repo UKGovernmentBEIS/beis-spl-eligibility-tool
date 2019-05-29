@@ -16,14 +16,6 @@ module.exports = function (env) {
     return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : providedDate.startOfWeek()
   }
 
-  function formatForDisplay (day) {
-    return day.formatForDisplay()
-  }
-
-  function isInPast (day) {
-    return day.isInPast()
-  }
-
   function getCurrentParentFromUrl (urlParent) {
     return urlParent === 'mother' || urlParent === 'primary-adopter' ? 'primary' : 'secondary'
   }
@@ -56,20 +48,13 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].some(err => err.dateParts.includes(partOfDate))
   }
 
-  function startDateName (data) {
-    return isBirth(data) ? 'due date' : 'match date'
-  }
-
   return {
     relevantWeek,
-    formatForDisplay,
-    isInPast,
     getCurrentParentFromUrl,
     displayEligiblity,
     hasCheckedEligibility,
     coupleHasAnyInelligibility,
-    hasStartDateError,
-    startDateName
+    hasStartDateError
   }
 }
 
