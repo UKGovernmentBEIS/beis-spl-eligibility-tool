@@ -136,12 +136,13 @@ class Paths {
   }
 
   getPreviousWorkFlowPath (url) {
-    return this.getPathObjectFromUrl(url)['workflowParentPath']
+    const pathObject = this.getPathObjectFromUrl(url)
+    return pathObject ? pathObject.workflowParentPath : undefined
   }
 
   getPath (location) {
     const pathLocation = location.split('.')
-    return delve(this.pathObjects, pathLocation)['url']
+    return delve(this.pathObjects, pathLocation.concat(['url']))
   }
 
   getAllPaths () {
