@@ -2,6 +2,38 @@ const delve = require('dlv')
 const validate = require('./validate')
 const isString = require('lodash/isString')
 
+/*
+ * This class is used to manage all paths in the app.
+ * An example pathObjects is given below:
+ * {
+ *    root: {
+ *      url: '/'
+ *    },
+ *    firstPage: {
+ *      url: '/first-page',
+ *      workflowParentPath: '/'
+ *      validator: firstPageValidatorFunction
+ *    },
+ *    secondPage: {
+ *      firstCategory: {
+ *        url: '/second-page/first-category,
+ *        workflowParentPath: '/first-page',
+ *        validator: secondPageValidatorFunction
+ *      }
+ *      secondCategory: {
+ *        url: '/second-page/second-category,
+ *        workflowParentPath: '/first-page',
+ *        validator: secondPageValidatorFunction
+ *      }
+ *    }
+ * }
+ *
+ * A path can be accessed using #getPath and passing a . seperated string of the necessary keys. For example,
+ * paths.getAllPaths('secondPage.firstCategory') returns '/secondPage/first-category
+ *
+ * A path object can be accessed by passing the url to getPathObjectFromUrl
+*/
+
 class Paths {
   constructor () {
     this.pathObjects = {
@@ -107,17 +139,31 @@ class Paths {
     return this.getPathObjectFromUrl(url)['workflowParentPath']
   }
 
-  getName (path) {
-    return Object.keys(this.pathObjects).find(name => this.pathObjects[name] === path)
-  }
-
   getPath (location) {
     const pathLocation = location.split('.')
     return delve(this.pathObjects, pathLocation)['url']
   }
 
-  getPaths () {
-    return Object.values(this.pathObjects)
+  getAllPaths () {
+    function searchForUrl (obj) {
+      let output = []
+      for (let key in obj) {
+        const subObj = obj[key]
+
+        if (isString(subObj)) {
+          continue
+        }
+
+        if (subObj.url) {
+          output.push(subObj.url)
+        }
+
+        output = output.concat(searchForUrl(subObj))
+      }
+      return output
+    }
+
+    return searchForUrl(this.pathObjects)
   }
 
   getValidator (url) {
