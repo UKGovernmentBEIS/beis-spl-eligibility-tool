@@ -1,4 +1,4 @@
-const paths = require('./paths')
+const paths = require('../../app/paths')
 
 module.exports = function (req, res, next) {
   const earliestPathWithValidationErrors = getEarliestPathWithValidationErrors(paths.getPreviousWorkFlowPath(req.path), req)
