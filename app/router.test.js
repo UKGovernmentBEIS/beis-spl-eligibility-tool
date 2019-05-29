@@ -120,24 +120,24 @@ describe('POST results when "current" param supplied', () => {
   it('redirects to employmentStatus and passes "current" param through', done => {
     app.post(paths.getPath('results') + '/mother')
       .expect(302)
-      .expect('Location', paths.getPath('employmentStatus') + '/mother')
+      .expect('Location', paths.getPath('employmentStatus.mother'))
       .end(done)
   })
 })
 
 describe('POST employmentStatus with a parent', () => {
   it('redirects back to employmentStatus with the same parent when employment-status not provided', done => {
-    app.post(paths.getPath('employmentStatus') + '/mother')
+    app.post(paths.getPath('employmentStatus.mother'))
       .expect(302)
-      .expect('Location', paths.getPath('employmentStatus') + '/mother')
+      .expect('Location', paths.getPath('employmentStatus.mother'))
       .end(done)
   })
 
   it('redirects to workAndPay with the same parent when employment-status is provided', done => {
-    app.post(paths.getPath('employmentStatus') + '/mother')
+    app.post(paths.getPath('employmentStatus.mother'))
       .send({ primary: { 'employment-status': 'employee' } })
       .expect(302)
-      .expect('Location', paths.getPath('workAndPay') + '/mother')
+      .expect('Location', paths.getPath('workAndPay.mother'))
       .end(done)
   })
 })
@@ -151,10 +151,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.getPath('workAndPay') + '/mother')
+    app.post(paths.getPath('workAndPay.mother'))
       .send(payload)
       .expect(302)
-      .expect('Location', paths.getPath('workAndPay') + '/mother')
+      .expect('Location', paths.getPath('workAndPay.mother'))
       .end(done)
   })
 
@@ -166,10 +166,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.getPath('workAndPay') + '/mother')
+    app.post(paths.getPath('workAndPay.mother'))
       .send(payload)
       .expect(302)
-      .expect('Location', paths.getPath('workAndPay') + '/mother')
+      .expect('Location', paths.getPath('workAndPay.mother'))
       .end(done)
   })
 
@@ -181,10 +181,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.getPath('workAndPay') + '/mother')
+    app.post(paths.getPath('workAndPay.mother'))
       .send(payload)
       .expect(302)
-      .expect('Location', paths.getPath('workAndPay') + '/mother')
+      .expect('Location', paths.getPath('workAndPay.mother'))
       .end(done)
   })
 
@@ -197,10 +197,10 @@ describe('POST workAndPay with a parent', () => {
       }
     }
 
-    app.post(paths.getPath('workAndPay') + '/mother')
+    app.post(paths.getPath('workAndPay.mother'))
       .send(payload)
       .expect(302)
-      .expect('Location', paths.getPath('otherParentWorkAndPay') + '/mother')
+      .expect('Location', paths.getPath('otherParentWorkAndPay.mother'))
       .end(done)
   })
 })
