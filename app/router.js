@@ -49,6 +49,17 @@ router.post(paths.getPath('results') + '/:current', function (req, res) {
   res.redirect(paths.getPath(`employmentStatus.${req.params.current}`))
 })
 
+function employmentStatusGet (parent, req, res) {
+  res.render('employment-status', { currentParentFromUrl: parent })
+}
+
+function employmentStatusPost (parent, req, res) {
+  if (!validate.employmentStatus(req, parent)) {
+    return res.redirect(req.url)
+  }
+  res.redirect(paths.getPath(`workAndPay.${parent}`))
+}
+
 router.route(paths.getPath('employmentStatus.mother'))
   .get(employmentStatusGet.bind(this, 'mother'))
   .post(employmentStatusPost.bind(this, 'mother'))
@@ -61,15 +72,15 @@ router.route(paths.getPath('employmentStatus.partner'))
   .get(employmentStatusGet.bind(this, 'partner'))
   .post(employmentStatusPost.bind(this, 'partner'))
 
-function employmentStatusGet (parent, req, res) {
-  res.render('employment-status', { currentParentFromUrl: parent })
+function workAndPayGet (parent, req, res) {
+  res.render('work-and-pay', { currentParentFromUrl: parent })
 }
 
-function employmentStatusPost (parent, req, res) {
-  if (!validate.employmentStatus(req, parent)) {
+function workAndPayPost (parent, req, res) {
+  if (!validate.workAndPay(req, parent)) {
     return res.redirect(req.url)
   }
-  res.redirect(paths.getPath(`workAndPay.${parent}`))
+  res.redirect(paths.getPath(`otherParentWorkAndPay.${parent}`))
 }
 
 router.route(paths.getPath('workAndPay.mother'))
@@ -84,15 +95,16 @@ router.route(paths.getPath('workAndPay.partner'))
   .get(workAndPayGet.bind(this, 'partner'))
   .post(workAndPayPost.bind(this, 'partner'))
 
-function workAndPayGet (parent, req, res) {
-  res.render('work-and-pay', { currentParentFromUrl: parent })
+function otherParentWorkAndPayGet (parent, req, res) {
+  res.render('other-parent-work-and-pay', { currentParentFromUrl: parent })
 }
 
-function workAndPayPost (parent, req, res) {
-  if (!validate.workAndPay(req, parent)) {
+function otherParentWorkAndPayPost (parent, req, res) {
+  if (!validate.otherParentWorkAndPay(req, parent)) {
     return res.redirect(req.url)
   }
-  res.redirect(paths.getPath(`otherParentWorkAndPay.${parent}`))
+
+  res.redirect(paths.getPath('results'))
 }
 
 router.route(paths.getPath('otherParentWorkAndPay.mother'))
@@ -106,17 +118,5 @@ router.route(paths.getPath('otherParentWorkAndPay.primary-adopter'))
 router.route(paths.getPath('otherParentWorkAndPay.partner'))
   .get(otherParentWorkAndPayGet.bind(this, 'partner'))
   .post(otherParentWorkAndPayPost.bind(this, 'partner'))
-
-function otherParentWorkAndPayGet (parent, req, res) {
-  res.render('other-parent-work-and-pay', { currentParentFromUrl: parent })
-}
-
-function otherParentWorkAndPayPost (parent, req, res) {
-  if (!validate.otherParentWorkAndPay(req, parent)) {
-    return res.redirect(req.url)
-  }
-
-  res.redirect(paths.getPath('results'))
-}
 
 module.exports = router
