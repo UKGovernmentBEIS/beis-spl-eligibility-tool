@@ -3,8 +3,6 @@ const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 
-router.get('*', require('../common/middleware/step-validation'))
-
 router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
 })

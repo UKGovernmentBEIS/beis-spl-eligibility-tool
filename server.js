@@ -85,6 +85,8 @@ function initialiseGlobalMiddleware (app) {
   }
 
   handleViewErrors(app)
+
+  app.get('*', require('./common/middleware/step-validation'))
 }
 
 function initialiseProxy (app) {
