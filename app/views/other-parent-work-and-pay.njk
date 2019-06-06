@@ -1,0 +1,149 @@
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle %}
+  Check if you can get shared parental leave and pay
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: withData("work-and-pay/" + currentParentFromUrl)
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors | length > 0 %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["other-parent-work"],
+        errors["other-parent-pay"]
+      ]
+    }) }}
+  {% endif %}
+
+  {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
+
+  {% set otherParent = data | otherParentName(currentParent) %}
+
+  {% set headingCaption %}
+    {{ data | currentParentName(currentParent) | capitalize }}’s eligibility
+  {% endset %}
+
+  {% set heading %}
+    {{ otherParent | capitalize }}’s work and pay
+  {% endset %}
+
+  {% set otherParentWorkTitle %}
+    {% if data | isAdoption %}
+      Did the {{ otherParent }} work (or will they have worked) for at least 26 weeks during the 66 weeks ending with your placement date?
+    {% else %}
+      {% if data | relevantWeek | isInPast %}
+        Did the {{ otherParent }} work
+      {% else %}
+        Will the {{ otherParent }} have worked
+      {% endif %}
+      for at least 26 weeks between {{ data | relevantWeek | offsetWeeks(-66) | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
+    {% endif %}
+  {% endset %}
+
+  {% set otherParentPayTitle %}
+    {% if data | isAdoption%}
+      Did the {{ otherParent }} earn (or will they have earned) a
+      total of £390 or more in any 13 weeks during the 66 weeks ending with your placement date?
+    {% else %}
+      {% if data | relevantWeek | isInPast %}
+        Did the {{ otherParent }} earn
+      {% else %}
+        Will the {{ otherParent }} have earned
+      {% endif %}
+      a total of £390 or more over 13 weeks between {{ data | relevantWeek | offsetWeeks(-66) | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
+    {% endif %}
+  {% endset %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">{{ headingCaption }}</span>
+        {{ heading }}
+      </h1>
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "other-parent-work",
+            name: currentParent + "[other-parent-work]",
+            fieldset: {
+              legend: {
+                text: otherParentWorkTitle,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            errorMessage: {
+              text: errors["other-parent-work"]["text"]
+            } if errors["other-parent-work"] and errors["other-parent-work"]["text"],
+            hint: {
+              text: "The 26 weeks don‘t need to be consecutive. They can be full or partial weeks."
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data[currentParent]["other-parent-work"] === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data[currentParent]["other-parent-work"] === "no"
+              }
+            ]
+          }) }}
+
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "other-parent-pay",
+            name: currentParent + "[other-parent-pay]",
+            fieldset: {
+              legend: {
+                text: otherParentPayTitle,
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            errorMessage: {
+              text: errors["other-parent-pay"]["text"]
+            } if errors["other-parent-pay"] and errors["other-parent-pay"]["text"],
+            hint: {
+              text: "The 13 weeks don‘t need to be consecutive."
+            },
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data[currentParent]["other-parent-pay"] === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data[currentParent]["other-parent-pay"] === "no"
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+
+        {% endcall %}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

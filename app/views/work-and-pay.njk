@@ -1,0 +1,167 @@
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle %}
+  Check if you can get shared parental leave and pay
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: withData("employment-status/" + currentParentFromUrl)
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors | length > 0 %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["work-start"],
+        errors["continuous-work"],
+        errors["pay-threshold"]
+      ]
+    }) }}
+  {% endif %}
+
+  {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
+
+  {% set headingCaption %}
+    {{ data | currentParentName(currentParent) | capitalize }}’s eligibility
+  {% endset %}
+
+  {% set heading %}
+    {{ data | currentParentName(currentParent) | capitalize }}’s work and pay
+  {% endset %}
+
+  {% set workStartTitle %}
+    Did the {{ data | currentParentName(currentParent) }} start their current or most recent job before
+    {{ data | relevantWeek | offsetWeeks(-26) | formatForDisplay }}?
+  {% endset %}
+
+  {% set continuousWorkTitle %}
+    {% if data | relevantWeek | isInPast %}
+      Was the {{ data | currentParentName(currentParent) }} still working
+    {% else %}
+      Will the {{ data | currentParentName(currentParent) }} still be working
+    {% endif %}
+    in that job on {{ data | relevantWeek | formatForDisplay }}?
+  {% endset %}
+
+  {% set payThresholdTitle %}
+    {% if data | relevantWeek | isInPast %}
+      Did the {{ data | currentParentName(currentParent) }} earn
+    {% else %}
+      Will the {{ data | currentParentName(currentParent) }} have earned
+    {% endif %}
+    more than £118 per week in this job between
+    {{ data | relevantWeek | offsetWeeks(-8) | formatForDisplay }}
+    and
+    {{ data | relevantWeek | formatForDisplay }}?
+  {% endset %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-xl">
+        <span class="govuk-caption-xl">{{ headingCaption }}</span>
+        {{ heading }}
+      </h1>
+
+      <form action="{{formaction}}" method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "work-start",
+            name: currentParent + "[work-start]",
+            fieldset: {
+              legend: {
+                text: workStartTitle ,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            errorMessage: {
+              text: errors["work-start"]["text"]
+            } if errors["work-start"] and errors["work-start"]["text"],
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data[currentParent]["work-start"] === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data[currentParent]["work-start"]  === "no"
+              }
+            ]
+          }) }}
+
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "continuous-work",
+            name: currentParent + "[continuous-work]",
+            fieldset: {
+              legend: {
+                text: continuousWorkTitle,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            errorMessage: {
+              text: errors["continuous-work"]["text"]
+            } if errors["continuous-work"] and errors["continuous-work"]["text"],
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data[currentParent]["continuous-work"]  === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data[currentParent]["continuous-work"]  === "no"
+              }
+            ]
+          }) }}
+
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "pay-threshold",
+            name: currentParent + "[pay-threshold]",
+            fieldset: {
+              legend: {
+                text: payThresholdTitle,
+                classes: "govuk-fieldset__legend--m"
+              }
+            },
+            errorMessage: {
+              text: errors["pay-threshold"]["text"]
+            } if errors["pay-threshold"] and errors["pay-threshold"]["text"],
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data[currentParent]["pay-threshold"] === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data[currentParent]["pay-threshold"] === "no"
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+
+        {% endcall %}
+      </form>
+    </div>
+  </div>
+
+{% endblock %}

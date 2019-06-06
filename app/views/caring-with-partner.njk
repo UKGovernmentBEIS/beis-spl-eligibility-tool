@@ -1,0 +1,82 @@
+{% from "radios/macro.njk" import govukRadios %}
+{% from "button/macro.njk" import govukButton %}
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+
+{% extends "layout.njk" %}
+
+
+{% block beforeContent %}
+  {{ govukBackLink({
+    text: "Back",
+    href: withData("birth-or-adoption")
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors["caring-with-partner"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [{
+        text: errors["caring-with-partner"],
+        href: "#caring-with-partner"
+      }]
+    }) }}
+  {% endif %}
+
+  {% set primaryName = data | primaryName %}
+
+  {% set hintText %}
+    <p class="govuk-hint">
+      The partner is one of the following:
+    </p>
+    <ul>
+      <li>the {{ primaryName }}‘s husband, wife or civil partner</li>
+      <li>the {{ "child‘s other parent" if (data | isBirth) else "secondary adopter" }}</li>
+      <li>the {{ primaryName }}‘s partner (if they live with the {{ primaryName }} and the child)</li>
+    </ul>
+  {% endset %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            classes: "govuk-radios",
+            idPrefix: "caring-with-partner",
+            name: "caring-with-partner",
+            fieldset: {
+              legend: {
+                text: "Will the " + primaryName + " care for the child with a partner?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            hint: {
+              html: hintText
+            },
+            errorMessage : errors["caring-with-partner"] if errors["caring-with-partner"],
+            items: [
+              {
+                value: "yes",
+                text: "Yes",
+                checked: data["caring-with-partner"] === "yes"
+              },
+              {
+                value: "no",
+                text: "No",
+                checked: data["caring-with-partner"] === "no"
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+
+        {% endcall %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
