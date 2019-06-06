@@ -1,5 +1,5 @@
 applications:
-- name: common
+- name: eligibility-tool
   memory: 1G
   buildpacks:
     - nodejs_buildpack
