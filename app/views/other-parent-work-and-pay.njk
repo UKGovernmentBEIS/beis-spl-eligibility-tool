@@ -82,9 +82,7 @@
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            errorMessage: {
-              text: errors["other-parent-work"]["text"]
-            } if errors["other-parent-work"] and errors["other-parent-work"]["text"],
+            errorMessage: errors["other-parent-work"],
             hint: {
               text: "The 26 weeks don‘t need to be consecutive. They can be full or partial weeks."
             },
@@ -113,9 +111,7 @@
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            errorMessage: {
-              text: errors["other-parent-pay"]["text"]
-            } if errors["other-parent-pay"] and errors["other-parent-pay"]["text"],
+            errorMessage: errors["other-parent-pay"],
             hint: {
               text: "The 13 weeks don‘t need to be consecutive."
             },

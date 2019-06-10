@@ -17,10 +17,9 @@
   {% if errors["birth-or-adoption"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
-      errorList: [{
-        text: errors["birth-or-adoption"],
-        href: "#birth-or-adoption"
-      }]
+      errorList: [
+        errors["birth-or-adoption"]
+      ]
     }) }}
   {% endif %}
 
@@ -41,9 +40,7 @@
             hint: {
               text: "Shared parental leave and pay is available for both birth and adoptive parents."
             },
-            errorMessage: {
-              text: errors["birth-or-adoption"]
-            } if errors["birth-or-adoption"],
+            errorMessage: errors["birth-or-adoption"],
             items: [
               {
                 value: "birth",

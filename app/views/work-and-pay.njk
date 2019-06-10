@@ -80,9 +80,7 @@
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            errorMessage: {
-              text: errors["work-start"]["text"]
-            } if errors["work-start"] and errors["work-start"]["text"],
+            errorMessage: errors["work-start"],
             items: [
               {
                 value: "yes",
@@ -107,9 +105,7 @@
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            errorMessage: {
-              text: errors["continuous-work"]["text"]
-            } if errors["continuous-work"] and errors["continuous-work"]["text"],
+            errorMessage: errors["continuous-work"],
             items: [
               {
                 value: "yes",
@@ -134,9 +130,7 @@
                 classes: "govuk-fieldset__legend--m"
               }
             },
-            errorMessage: {
-              text: errors["pay-threshold"]["text"]
-            } if errors["pay-threshold"] and errors["pay-threshold"]["text"],
+            errorMessage: errors["pay-threshold"],
             items: [
               {
                 value: "yes",

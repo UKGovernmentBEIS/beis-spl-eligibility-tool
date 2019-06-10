@@ -1,7 +1,3 @@
-function buildError (message, href) {
-  return { text: message, href: href }
-}
-
 function isYesOrNo (value) {
   return ['yes', 'no'].includes(value)
 }
@@ -13,13 +9,12 @@ function prettyList (array) {
     case 1:
       return array[0]
     default:
-      const finalElement = array.pop()
-      return array.join(', ') + ` and ${finalElement}`
+      const finalElement = array[array.length - 1]
+      return array.slice(0, -1).join(', ') + ` and ${finalElement}`
   }
 }
 
 module.exports = {
-  buildError,
   isYesOrNo,
   prettyList
 }

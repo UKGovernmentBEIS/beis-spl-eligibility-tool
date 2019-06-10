@@ -18,10 +18,9 @@
   {% if errors["caring-with-partner"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
-      errorList: [{
-        text: errors["caring-with-partner"],
-        href: "#caring-with-partner"
-      }]
+      errorList: [
+        errors["caring-with-partner"]
+      ]
     }) }}
   {% endif %}
 
@@ -56,7 +55,7 @@
             hint: {
               html: hintText
             },
-            errorMessage : errors["caring-with-partner"] if errors["caring-with-partner"],
+            errorMessage : errors["caring-with-partner"],
             items: [
               {
                 value: "yes",
