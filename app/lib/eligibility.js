@@ -4,13 +4,10 @@ const ELIGIBILITY = Object.freeze({
   UNKNOWN: 'unknown'
 })
 
-function isEligible (eligibilityData, policy) {
+function getEligibility (eligibilityData, policy) {
   if (eligibilityData === undefined) {
     return ELIGIBILITY.UNKNOWN
   }
-
-  const isYes = field => field === 'yes'
-  const isNo = field => field === 'no'
 
   const {
     'employment-status': employmentStatus,
@@ -54,7 +51,15 @@ function isEligible (eligibilityData, policy) {
   }
 }
 
+function isYes (value) {
+  return value === 'yes'
+}
+
+function isNo (value) {
+  return value === 'no'
+}
+
 module.exports = {
   ELIGIBILITY,
-  isEligible
+  getEligibility
 }

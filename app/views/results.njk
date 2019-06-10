@@ -106,7 +106,7 @@
 
 
           {% set hasCheckedEligibility = data | hasCheckedEligibility("primary") or data | hasCheckedEligibility("secondary") %}
-          {% if hasCheckedEligibility and data | coupleHasAnyInelligibility %}
+          {% if hasCheckedEligibility and data | coupleHasAnyIneligibility %}
             <p>
               To understand why you or your partner aren‘t eligible for shared parental leave or shared parental pay, you can check the guidelines on
               {% if data | isBirth %}

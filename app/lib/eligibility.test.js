@@ -1,9 +1,9 @@
 const { describe, it } = require('mocha')
 const { expect } = require('chai')
 
-const { isEligible, ELIGIBILITY } = require('./eligibility')
+const { getEligibility, ELIGIBILITY } = require('./eligibility')
 
-describe('isEligible', () => {
+describe('getEligibility', () => {
   it('returns not eligible if other parent does not meet work threshold', () => {
     const testData = {
       'employment-status': 'employee',
@@ -14,8 +14,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
   })
 
   it('returns not eligible if other parent does not meet pay threshold', () => {
@@ -28,8 +28,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'no'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
   })
 
   it('returns unknown if employment-status not provided', () => {
@@ -42,8 +42,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   it('returns unknown if work-start not provided', () => {
@@ -56,8 +56,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   it('returns unknown if continuous-work not provided', () => {
@@ -70,8 +70,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   it('returns unknown if pay-threshold not provided', () => {
@@ -84,8 +84,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   it('returns unknown if other-parent-work not provided', () => {
@@ -98,8 +98,8 @@ describe('isEligible', () => {
       'other-parent-pay': 'yes'
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   it('returns unknown if other-parent-pay not provided', () => {
@@ -112,8 +112,8 @@ describe('isEligible', () => {
       'other-parent-pay': undefined
     }
 
-    expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
-    expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   describe('for spl', () => {
@@ -127,7 +127,7 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+      expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
     describe('when emploment status is "employee"', () => {
@@ -141,7 +141,7 @@ describe('isEligible', () => {
           'other-parent-pay': 'yes'
         }
 
-        expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+        expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
       })
 
       it('returns not eligible if continuous-work === "no"', () => {
@@ -154,7 +154,7 @@ describe('isEligible', () => {
           'other-parent-pay': 'yes'
         }
 
-        expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+        expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
       })
 
       it('returns eligible if continuous-work === "yes" and work-start === "yes"', () => {
@@ -167,7 +167,7 @@ describe('isEligible', () => {
           'other-parent-pay': 'yes'
         }
 
-        expect(isEligible(testData, 'spl')).to.equal(ELIGIBILITY.ELIGIBLE)
+        expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.ELIGIBLE)
       })
     })
   })
@@ -183,7 +183,7 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+      expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
     it('returns not eligible if continuous-work === "no"', () => {
@@ -196,7 +196,7 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+      expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
     it('returns not eligible if pay-threshold === "no"', () => {
@@ -209,7 +209,7 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+      expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
     it('returns eligible if work-start, continuous-work and pay-threshold are all yes', () => {
@@ -222,7 +222,7 @@ describe('isEligible', () => {
         'other-parent-pay': 'yes'
       }
 
-      expect(isEligible(testData, 'shpp')).to.equal(ELIGIBILITY.ELIGIBLE)
+      expect(getEligibility(testData, 'shpp')).to.equal(ELIGIBILITY.ELIGIBLE)
     })
   })
 })

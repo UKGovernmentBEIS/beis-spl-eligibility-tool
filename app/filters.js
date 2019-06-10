@@ -1,5 +1,5 @@
 const Day = require('../common/lib/day')
-const { ELIGIBILITY, isEligible } = require('./lib/eligibility')
+const { ELIGIBILITY, getEligibility } = require('./lib/eligibility')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -21,7 +21,7 @@ module.exports = function (env) {
   }
 
   function displayEligiblity (data, parent, policy) {
-    switch (isParentEligible(data, parent, policy)) {
+    switch (getParentEligibility(data, parent, policy)) {
       case ELIGIBILITY.ELIGIBLE:
         return 'Eligible ✔'
       case ELIGIBILITY.NOT_ELIGIBLE:
@@ -32,15 +32,15 @@ module.exports = function (env) {
   }
 
   function hasCheckedEligibility (data, parent) {
-    return isParentEligible(data, parent, 'spl') !== ELIGIBILITY.UNKNOWN
+    return getParentEligibility(data, parent, 'spl') !== ELIGIBILITY.UNKNOWN
   }
 
-  function coupleHasAnyInelligibility (data) {
+  function coupleHasAnyIneligibility (data) {
     return (
-      !isParentEligible(data, 'primary', 'spl') ||
-      !isParentEligible(data, 'primary', 'shpp') ||
-      !isParentEligible(data, 'secondary', 'spl') ||
-      !isParentEligible(data, 'secondary', 'shpp')
+      !isParentEligile(data, 'primary', 'spl') ||
+      !isParentEligile(data, 'primary', 'shpp') ||
+      !isParentEligile(data, 'secondary', 'spl') ||
+      !isParentEligile(data, 'secondary', 'shpp')
     )
   }
 
@@ -53,7 +53,7 @@ module.exports = function (env) {
     getCurrentParentFromUrl,
     displayEligiblity,
     hasCheckedEligibility,
-    coupleHasAnyInelligibility,
+    coupleHasAnyIneligibility,
     hasStartDateError
   }
 }
@@ -71,6 +71,10 @@ function getProvidedDate (data) {
   return new Day(year, month, day)
 }
 
-function isParentEligible (data, parent, policy) {
-  return isEligible(data[parent], policy)
+function isParentEligile (data, parent, policy) {
+  return getParentEligibility(data, parent, policy) === ELIGIBILITY.ELIGIBLE
+}
+
+function getParentEligibility (data, parent, policy) {
+  return getEligibility(data[parent], policy)
 }
