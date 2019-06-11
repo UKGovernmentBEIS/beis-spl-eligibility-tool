@@ -13,7 +13,7 @@ router.route(paths.getPath('birthOrAdoption'))
   })
   .post(function (req, res) {
     if (!validate.birthOrAdoption(req)) {
-      return res.redirect('back')
+      return res.redirect(req.url)
     }
     res.redirect(paths.getPath('caringWithPartner'))
   })
@@ -24,7 +24,7 @@ router.route(paths.getPath('caringWithPartner'))
   })
   .post(function (req, res) {
     if (!validate.caringWithPartner(req)) {
-      return res.redirect('back')
+      return res.redirect(req.url)
     }
     res.redirect(paths.getPath('startDate'))
   })
@@ -35,7 +35,7 @@ router.route(paths.getPath('startDate'))
   })
   .post(function (req, res) {
     if (!validate.startDate(req)) {
-      return res.redirect('back')
+      return res.redirect(req.url)
     }
     res.redirect(paths.getPath('results'))
   })
@@ -59,7 +59,7 @@ registerRouteForEachParent('employmentStatus', {
   post: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
     if (!validate.employmentStatus(req, currentParent)) {
-      return res.redirect('back')
+      return res.redirect(req.url)
     }
     res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
   }
@@ -73,7 +73,7 @@ registerRouteForEachParent('workAndPay', {
   post: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
     if (!validate.workAndPay(req, currentParent)) {
-      return res.redirect('back')
+      return res.redirect(req.url)
     }
     res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
   }
@@ -87,7 +87,7 @@ registerRouteForEachParent('otherParentWorkAndPay', {
   post: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
     if (!validate.otherParentWorkAndPay(req, currentParent)) {
-      return res.redirect('back')
+      return res.redirect(req.url)
     }
     res.redirect(paths.getPath('results'))
   }
