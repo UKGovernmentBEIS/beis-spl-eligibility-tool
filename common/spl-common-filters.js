@@ -11,11 +11,7 @@ module.exports = function (env) {
     return 'partner'
   }
 
-  function parentName (data, parent) {
-    return currentParentName(data, parent)
-  }
-
-  function currentParentName (data, currentParent) {
+  function parentName (data, currentParent) {
     return currentParent === 'primary' ? primaryName(data) : secondaryName(data)
   }
 
@@ -24,7 +20,7 @@ module.exports = function (env) {
   }
 
   function parentNameForUrl (data, parent) {
-    return currentParentName(data, parent).split(' ').join('-')
+    return parentName(data, parent).split(' ').join('-')
   }
 
   function isBirth (data) {
@@ -52,18 +48,26 @@ module.exports = function (env) {
   }
 
   function formatForDisplay (day) {
-    return day.formatForDisplay()
+    return day.format('D MMMM YYYY')
+  }
+
+  function formatForExample (day) {
+    return day.format('D M YYYY')
   }
 
   function isInPast (day) {
     return day.isInPast()
   }
 
+  function removeEmpty (array) {
+    return array.filter(element => !!element)
+  }
+
   return {
     primaryName,
     secondaryName,
     parentName,
-    currentParentName,
+    currentParentName: parentName, // Alias.
     otherParentName,
     parentNameForUrl,
     isBirth,
@@ -73,7 +77,9 @@ module.exports = function (env) {
     offsetWeeks,
     exampleDate,
     formatForDisplay,
+    formatForExample,
     isInPast,
+    removeEmpty,
     ...require('./macros/hidden-fields/filters')(env)
   }
 }
