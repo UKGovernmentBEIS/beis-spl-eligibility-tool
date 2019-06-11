@@ -69,17 +69,15 @@
         <p>
           To understand why you or your partner are not eligible for shared parental leave or shared parental pay, you can check the guidelines on
           {% if data | isBirth %}
-          {# TODO fix href of these links #}
-            <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
+            <a href="{{ mainstream_guidance_root_path }}/eligibility-for-birth-parents">eligibility for birth parents</a>.
           {% else %}
-            <a href="/shared-parental-leave-and-pay/eligibility-for-adopters">eligibility for adopters</a>.
+            <a href="{{ mainstream_guidance_root_path }}/eligibility-for-adopters">eligibility for adopters</a>.
           {% endif %}
         </p>
       {% endif %}
       <p>
-        {# TODO fix href of these links #}
         If you or your partner are eligible, you can
-        <a href="/shared-parental-leave-planner">plan how to take shared parental leave and pay</a>.
+        <a href="{{ planner_root_path }}">plan how to take shared parental leave and pay</a>.
       </p>
     </div>
   </div>
