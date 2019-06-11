@@ -13,11 +13,11 @@ module.exports = function (env) {
   function relevantWeek (data) {
     const providedDate = getProvidedDate(data)
     const startOfWeek = providedDate.startOfWeek()
-    return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : providedDate.startOfWeek()
+    return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : startOfWeek
   }
 
   function getCurrentParentFromUrl (urlParent) {
-    return urlParent === 'mother' || urlParent === 'primary-adopter' ? 'primary' : 'secondary'
+    return (urlParent === 'mother' || urlParent === 'primary-adopter') ? 'primary' : 'secondary'
   }
 
   function displayEligiblity (data, parent, policy) {
@@ -37,10 +37,10 @@ module.exports = function (env) {
 
   function coupleHasAnyIneligibility (data) {
     return (
-      !isParentEligile(data, 'primary', 'spl') ||
-      !isParentEligile(data, 'primary', 'shpp') ||
-      !isParentEligile(data, 'secondary', 'spl') ||
-      !isParentEligile(data, 'secondary', 'shpp')
+      isParentIneligile(data, 'primary', 'spl') ||
+      isParentIneligile(data, 'primary', 'shpp') ||
+      isParentIneligile(data, 'secondary', 'spl') ||
+      isParentIneligile(data, 'secondary', 'shpp')
     )
   }
 
@@ -71,8 +71,8 @@ function getProvidedDate (data) {
   return new Day(year, month, day)
 }
 
-function isParentEligile (data, parent, policy) {
-  return getParentEligibility(data, parent, policy) === ELIGIBILITY.ELIGIBLE
+function isParentIneligile (data, parent, policy) {
+  return getParentEligibility(data, parent, policy) === ELIGIBILITY.NOT_ELIGIBLE
 }
 
 function getParentEligibility (data, parent, policy) {
