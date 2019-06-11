@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
+const { getParent, registerRouteForEachParent } = require('./lib/routerUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
@@ -45,13 +46,13 @@ router.route(paths.getPath('results'))
     res.render('results')
   })
 
-registerRouteForEachParent('checkEligibility', {
+registerRouteForEachParent(router, 'checkEligibility', {
   post: function (parentUrlPart, req, res) {
     res.redirect(paths.getPath(`employmentStatus.${parentUrlPart}`))
   }
 })
 
-registerRouteForEachParent('employmentStatus', {
+registerRouteForEachParent(router, 'employmentStatus', {
   get: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
     res.render('employment-status', { currentParent })
@@ -65,7 +66,7 @@ registerRouteForEachParent('employmentStatus', {
   }
 })
 
-registerRouteForEachParent('workAndPay', {
+registerRouteForEachParent(router, 'workAndPay', {
   get: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
     res.render('work-and-pay', { currentParent })
@@ -79,7 +80,7 @@ registerRouteForEachParent('workAndPay', {
   }
 })
 
-registerRouteForEachParent('otherParentWorkAndPay', {
+registerRouteForEachParent(router, 'otherParentWorkAndPay', {
   get: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
     res.render('other-parent-work-and-pay', { currentParent })
@@ -92,22 +93,5 @@ registerRouteForEachParent('otherParentWorkAndPay', {
     res.redirect(paths.getPath('results'))
   }
 })
-
-function registerRouteForEachParent (path, handlers) {
-  const parents = ['mother', 'primary-adopter', 'partner']
-  for (const parent of parents) {
-    const route = router.route(paths.getPath(`${path}.${parent}`))
-    if (handlers.get) {
-      route.get(handlers.get.bind(this, parent))
-    }
-    if (handlers.post) {
-      route.post(handlers.post.bind(this, parent))
-    }
-  }
-}
-
-function getParent (parentUrlPart) {
-  return parentUrlPart === 'partner' ? 'secondary' : 'primary'
-}
 
 module.exports = router
