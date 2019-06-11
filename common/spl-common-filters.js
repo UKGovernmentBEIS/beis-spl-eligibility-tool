@@ -7,16 +7,12 @@ module.exports = function (env) {
     return data['birth-or-adoption'] === 'birth' ? 'mother' : 'primary adopter'
   }
 
-  function primaryNameForUrl (data) {
-    return primaryName(data).split(' ').join('-')
-  }
-
   function secondaryName (data) {
     return 'partner'
   }
 
-  function secondaryNameForUrl (data) {
-    return secondaryName(data).split(' ').join('-')
+  function parentName (data, parent) {
+    return currentParentName(data, parent)
   }
 
   function currentParentName (data, currentParent) {
@@ -25,6 +21,10 @@ module.exports = function (env) {
 
   function otherParentName (data, currentParent) {
     return currentParent === 'primary' ? secondaryName(data) : primaryName(data)
+  }
+
+  function parentNameForUrl (data, parent) {
+    return currentParentName(data, parent).split(' ').join('-')
   }
 
   function isBirth (data) {
@@ -61,11 +61,11 @@ module.exports = function (env) {
 
   return {
     primaryName,
-    primaryNameForUrl,
     secondaryName,
-    secondaryNameForUrl,
+    parentName,
     currentParentName,
     otherParentName,
+    parentNameForUrl,
     isBirth,
     isAdoption,
     capitalize,

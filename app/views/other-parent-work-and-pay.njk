@@ -4,6 +4,8 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 
+{% from "components/date-explanation-hint.njk" import dateExplanationHint %}
+
 {% extends "layout.njk" %}
 
 {% block beforeContent %}
@@ -24,54 +26,51 @@
     }) }}
   {% endif %}
 
-  {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
-
-  {% set otherParent = data | otherParentName(currentParent) %}
-
-  {% set headingCaption %}
-    {{ data | currentParentName(currentParent) | capitalize }}’s eligibility
-  {% endset %}
-
-  {% set heading %}
-    {{ otherParent | capitalize }}’s work and pay
-  {% endset %}
+  {% set currentParentName = data | currentParentName(currentParent) %}
+  {% set otherParentName = data | otherParentName(currentParent) %}
+  {% set relevantWeek = data | relevantWeek %}
 
   {% set otherParentWorkTitle %}
-    {% if data | isAdoption %}
-      Did the {{ otherParent }} work (or will they have worked) for at least 26 weeks during the 66 weeks ending with your placement date?
+    {% if (data | isAdoption) %}
+      Did the {{ otherParentName }} work (or will they have worked) for at least
+      26 weeks during the 66 weeks ending with your placement date?
     {% else %}
-      {% if data | relevantWeek | isInPast %}
-        Did the {{ otherParent }} work
+      {% if (relevantWeek | isInPast) %}
+        Did the {{ otherParentName }} work
       {% else %}
-        Will the {{ otherParent }} have worked
+        Will the {{ otherParentName }} have worked
       {% endif %}
-      for at least 26 weeks between {{ data | relevantWeek | offsetWeeks(-66) | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
+      for at least 26 weeks between
+      {{ relevantWeek | offsetWeeks(-66) | formatForDisplay }}
+      and {{ relevantWeek | formatForDisplay }}?
     {% endif %}
   {% endset %}
 
   {% set otherParentPayTitle %}
-    {% if data | isAdoption%}
-      Did the {{ otherParent }} earn (or will they have earned) a
-      total of £390 or more in any 13 weeks during the 66 weeks ending with your placement date?
+    {% if (data | isAdoption) %}
+      Did the {{ otherParentName }} earn (or will they have earned) a total of £390
+      or more in any 13 weeks during the 66 weeks ending with your placement date?
     {% else %}
       {% if data | relevantWeek | isInPast %}
-        Did the {{ otherParent }} earn
+        Did the {{ otherParentName }} earn
       {% else %}
-        Will the {{ otherParent }} have earned
+        Will the {{ otherParentName }} have earned
       {% endif %}
-      a total of £390 or more over 13 weeks between {{ data | relevantWeek | offsetWeeks(-66) | formatForDisplay }} and {{ data | relevantWeek | formatForDisplay }}?
+      a total of £390 or more over 13 weeks between
+      {{ relevantWeek | offsetWeeks(-66) | formatForDisplay }}
+      and {{ relevantWeek | formatForDisplay }}?
     {% endif %}
   {% endset %}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-xl">{{ headingCaption }}</span>
-        {{ heading }}
+        <span class="govuk-caption-xl">
+          {{ currentParentName | capitalize }}’s eligibility
+        </span>
+        {{ otherParentName | capitalize }}’s work and pay
       </h1>
-      <p class="govuk-hint">
-        Dates shown on this page are based on the due date you entered and the eligibilty rules for shared parental leave and pay.
-      </p>
+      {{ dateExplanationHint(data) }}
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
@@ -102,7 +101,6 @@
               }
             ]
           }) }}
-
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "other-parent-pay",
@@ -131,11 +129,9 @@
               }
             ]
           }) }}
-
           {{ govukButton({
             text: "Continue"
           }) }}
-
         {% endcall %}
       </form>
     </div>

@@ -6,6 +6,7 @@ const { ELIGIBILITY, getEligibility } = require('./lib/eligibility')
 
 module.exports = function (env) {
   const isBirth = env.getFilter('isBirth')
+  const isInPast = env.getFilter('isInPast')
 
   // The week used as a baseline in eligibility calculations.
   // For birth parents, this is 15 weeks before the week of the due date.
@@ -16,11 +17,15 @@ module.exports = function (env) {
     return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : startOfWeek
   }
 
-  function getCurrentParentFromUrl (urlParent) {
-    return urlParent === 'partner' ? 'secondary' : 'primary'
+  function providedDateName (data) {
+    if (isBirth(data)) {
+      return isInPast(relevantWeek(data)) ? 'birth' : 'due'
+    } else {
+      return 'match'
+    }
   }
 
-  function displayEligiblity (data, parent, policy) {
+  function eligibility (data, parent, policy) {
     switch (getParentEligibility(data, parent, policy)) {
       case ELIGIBILITY.ELIGIBLE:
         return 'Eligible ✔'
@@ -50,8 +55,8 @@ module.exports = function (env) {
 
   return {
     relevantWeek,
-    getCurrentParentFromUrl,
-    displayEligiblity,
+    providedDateName,
+    eligibility,
     hasCheckedEligibility,
     coupleHasAnyIneligibility,
     hasStartDateError

@@ -14,15 +14,6 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors["caring-with-partner"] %}
-    {{ govukErrorSummary({
-      titleText: "There is a problem",
-      errorList: [
-        errors["caring-with-partner"]
-      ]
-    }) }}
-  {% endif %}
-
   {% set primaryName = data | primaryName %}
   {% set hintText %}
     <p class="govuk-hint">
@@ -35,6 +26,14 @@
     </ul>
   {% endset %}
 
+  {% if errors["caring-with-partner"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["caring-with-partner"]
+      ]
+    }) }}
+  {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">

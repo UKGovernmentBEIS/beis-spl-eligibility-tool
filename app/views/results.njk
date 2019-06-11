@@ -18,109 +18,69 @@
       <h1 class="govuk-heading-xl">
         Check if you can get shared parental leave and pay
       </h1>
-
       <p>
         Choose which parent you want to check eligibility for below.
       </p>
-
-      {% set primaryTableCaption %}
-        {{ data | primaryName | capitalize }}
-      {% endset %}
-
-      {% set secondaryTableCaption %}
-        {{ data | secondaryName | capitalize }}
-      {% endset %}
-
-      {% set primaryCheckEligibilityButton %}
-        {% set formaction = "results/" + data | primaryNameForUrl %}
-        <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{formaction}}">
-          {{"Re-check" if data | hasCheckedEligibility("primary") else "Check" }} eligibility
+      {% macro eligibilityButton(options) %}
+        {% set formAction = "results/" + data | parentNameForUrl(options.parent) %}
+        <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{ formAction }}">
+          {{ "Re-check" if data | hasCheckedEligibility(options.parent) else "Check" }} eligibility
         </button>
-      {% endset %}
-
-      {% set secondaryCheckEligibilityButton %}
-        {% set formaction = "results/" + data | secondaryNameForUrl %}
-        <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{formaction}}">
-          {{"Re-check" if data | hasCheckedEligibility("secondary") else "Check" }} eligibility
-        </button>
-      {% endset %}
-
+      {% endmacro %}
       <form method="POST">
         {% call appendHiddenFields(data) %}
-          {{ govukTable({
-            caption: primaryTableCaption,
-            head: [
-              {
-                text: "Shared parental leave"
-              },
-              {
-                text: "Statutory shared parental pay"
-              },
-              {}
-            ],
-            rows: [
-              [
+          {% for parent in ["primary", "secondary"] %}
+            {{ govukTable({
+              caption: data | parentName(parent) | capitalize,
+              head: [
                 {
-                  text: data | displayEligiblity("primary", "spl")
+                  text: "Shared parental leave"
                 },
                 {
-                  text: data | displayEligiblity("primary", "shpp")
+                  text: "Statutory shared parental pay"
                 },
                 {
-                  html: primaryCheckEligibilityButton
+                  text: ""
                 }
+              ],
+              rows: [
+                [
+                  {
+                    text: data | eligibility(parent, "spl")
+                  },
+                  {
+                    text: data | eligibility(parent, "shpp")
+                  },
+                  {
+                    html: eligibilityButton({
+                      parent: parent
+                    })
+                  }
+                ]
               ]
-            ]
-          }) }}
-
-          {{ govukTable({
-            caption: secondaryTableCaption,
-            head: [
-              {
-                text: "Shared parental leave"
-              },
-              {
-                text: "Statutory shared parental pay"
-              },
-              {}
-            ],
-            rows: [
-              [
-                {
-                  text: data | displayEligiblity("secondary", "spl")
-                },
-                {
-                  text: data | displayEligiblity("secondary", "shpp")
-                },
-                {
-                  html: secondaryCheckEligibilityButton
-                }
-              ]
-            ]
-          }) }}
-
-
-          {% set hasCheckedEligibility = data | hasCheckedEligibility("primary") or data | hasCheckedEligibility("secondary") %}
-          {% if hasCheckedEligibility and data | coupleHasAnyIneligibility %}
-            <p>
-              To understand why you or your partner are not eligible for shared parental leave or shared parental pay, you can check the guidelines on
-              {% if data | isBirth %}
-              {# TODO fix href of these links #}
-                <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
-              {% else %}
-                <a href="/shared-parental-leave-and-pay/eligibility-for-adopters">eligibility for adopters</a>.
-              {% endif %}
-            </p>
-          {% endif %}
+            }) }}
+          {% endfor %}
         {% endcall %}
-
+      </form>
+      <h2 class="govuk-heading-m">
+        Next steps
+      </h2>
+      {% if data | coupleHasAnyIneligibility %}
+        <p>
+          To understand why you or your partner are not eligible for shared parental leave or shared parental pay, you can check the guidelines on
+          {% if data | isBirth %}
+          {# TODO fix href of these links #}
+            <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
+          {% else %}
+            <a href="/shared-parental-leave-and-pay/eligibility-for-adopters">eligibility for adopters</a>.
+          {% endif %}
+        </p>
+      {% endif %}
       <p>
+        {# TODO fix href of these links #}
         If you or your partner are eligible, you can
         <a href="/shared-parental-leave-planner">plan how to take shared parental leave and pay</a>.
       </p>
-
-      </form>
     </div>
   </div>
-
 {% endblock %}

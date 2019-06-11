@@ -1,8 +1,10 @@
-{% from "hidden-fields/macro.njk" import appendHiddenFields %}
-{% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "back-link/macro.njk" import govukBackLink %}
-{% from "radios/macro.njk" import govukRadios %}
 {% from "button/macro.njk" import govukButton %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "radios/macro.njk" import govukRadios %}
+
+{% from "components/date-explanation-hint.njk" import dateExplanationHint %}
 
 {% extends "layout.njk" %}
 
@@ -14,6 +16,35 @@
 {% endblock %}
 
 {% block content %}
+  {% set currentParentName = data | currentParentName(currentParent) %}
+  {% set relevantWeek = data | relevantWeek %}
+
+  {% set workStartTitle %}
+    Did the {{ currentParentName }} start their current or most recent job before
+    {{ relevantWeek | offsetWeeks(-26) | formatForDisplay }}?
+  {% endset %}
+
+  {% set continuousWorkTitle %}
+    {% if (relevantWeek | isInPast) %}
+      Was the {{ currentParentName }} still working
+    {% else %}
+      Will the {{ currentParentName }} still be working
+    {% endif %}
+    in this job on {{ relevantWeek | formatForDisplay }}?
+  {% endset %}
+
+  {% set payThresholdTitle %}
+    {% if data | relevantWeek | isInPast %}
+      Did the {{ currentParentName }} earn
+    {% else %}
+      Will the {{ currentParentName }} have earned
+    {% endif %}
+    more than £118 per week in this job between
+    {{ relevantWeek | offsetWeeks(-8) | formatForDisplay }}
+    and
+    {{ relevantWeek | formatForDisplay }}?
+  {% endset %}
+
   {% if errors | length > 0 %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
@@ -24,52 +55,15 @@
       ]
     }) }}
   {% endif %}
-
-  {% set currentParent = currentParentFromUrl | getCurrentParentFromUrl %}
-
-  {% set headingCaption %}
-    {{ data | currentParentName(currentParent) | capitalize }}’s eligibility
-  {% endset %}
-
-  {% set heading %}
-    {{ data | currentParentName(currentParent) | capitalize }}’s work and pay
-  {% endset %}
-
-  {% set workStartTitle %}
-    Did the {{ data | currentParentName(currentParent) }} start their current or most recent job before
-    {{ data | relevantWeek | offsetWeeks(-26) | formatForDisplay }}?
-  {% endset %}
-
-  {% set continuousWorkTitle %}
-    {% if data | relevantWeek | isInPast %}
-      Was the {{ data | currentParentName(currentParent) }} still working
-    {% else %}
-      Will the {{ data | currentParentName(currentParent) }} still be working
-    {% endif %}
-    in this job on {{ data | relevantWeek | formatForDisplay }}?
-  {% endset %}
-
-  {% set payThresholdTitle %}
-    {% if data | relevantWeek | isInPast %}
-      Did the {{ data | currentParentName(currentParent) }} earn
-    {% else %}
-      Will the {{ data | currentParentName(currentParent) }} have earned
-    {% endif %}
-    more than £118 per week in this job between
-    {{ data | relevantWeek | offsetWeeks(-8) | formatForDisplay }}
-    and
-    {{ data | relevantWeek | formatForDisplay }}?
-  {% endset %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        <span class="govuk-caption-xl">{{ headingCaption }}</span>
-        {{ heading }}
+        <span class="govuk-caption-xl">
+          {{ currentParentName | capitalize }}’s eligibility
+        </span>
+        {{ currentParentName | capitalize }}’s work and pay
       </h1>
-      <p class="govuk-hint">
-        Dates shown on this page are based on the due date you entered and the eligibilty rules for shared parental leave and pay.
-      </p>
+      {{ dateExplanationHint(data) }}
       <form action="{{formaction}}" method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
@@ -96,7 +90,6 @@
               }
             ]
           }) }}
-
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "continuous-work",
@@ -121,7 +114,6 @@
               }
             ]
           }) }}
-
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "pay-threshold",
@@ -146,11 +138,9 @@
               }
             ]
           }) }}
-
           {{ govukButton({
             text: "Continue"
           }) }}
-
         {% endcall %}
       </form>
     </div>

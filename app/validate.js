@@ -64,10 +64,10 @@ function addStartDateError (req, message, dateParts) {
   addError(req, 'start-date', message, href, { dateParts })
 }
 
-function employmentStatus (req, parentFromUrl) {
-  const parent = parentFromUrl === 'partner' ? 'secondary' : 'primary'
+function employmentStatus (req, parent) {
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
+  console.log(parent, employmentStatus)
   if (!permittedValues.includes(employmentStatus)) {
     addError(req, 'employment-status', 'Select your employment status', '#employment-status-1')
     return false
@@ -75,8 +75,7 @@ function employmentStatus (req, parentFromUrl) {
   return true
 }
 
-function workAndPay (req, parentFromUrl) {
-  const parent = parentFromUrl === 'partner' ? 'secondary' : 'primary'
+function workAndPay (req, parent) {
   return validateParentYesNoFields(req, parent, {
     'work-start': 'Select whether or not you started your job before the date given',
     'continuous-work': 'Select whether or not your work has been continuous during the period given',
@@ -84,8 +83,7 @@ function workAndPay (req, parentFromUrl) {
   })
 }
 
-function otherParentWorkAndPay (req, parentFromUrl) {
-  const parent = parentFromUrl === 'partner' ? 'secondary' : 'primary'
+function otherParentWorkAndPay (req, parent) {
   return validateParentYesNoFields(req, parent, {
     'other-parent-work': 'Select whether or not your partner meets the work threshold',
     'other-parent-pay': 'Select whether or not your partner meets the pay threshold'
