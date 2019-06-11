@@ -16,13 +16,13 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors | length > 0 %}
+  {% if (errors["other-parent-work"] or errors["other-parent-pay"]) %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
         errors["other-parent-work"],
         errors["other-parent-pay"]
-      ]
+      ] | removeEmpty
     }) }}
   {% endif %}
 

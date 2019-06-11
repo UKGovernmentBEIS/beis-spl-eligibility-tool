@@ -45,14 +45,14 @@
     {{ relevantWeek | formatForDisplay }}?
   {% endset %}
 
-  {% if errors | length > 0 %}
+  {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
         errors["work-start"],
         errors["continuous-work"],
         errors["pay-threshold"]
-      ]
+      ] | removeEmpty
     }) }}
   {% endif %}
   <div class="govuk-grid-row">
