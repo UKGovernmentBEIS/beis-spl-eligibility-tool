@@ -17,7 +17,7 @@ module.exports = function (env) {
   }
 
   function getCurrentParentFromUrl (urlParent) {
-    return (urlParent === 'mother' || urlParent === 'primary-adopter') ? 'primary' : 'secondary'
+    return urlParent === 'partner' ? 'secondary' : 'primary'
   }
 
   function displayEligiblity (data, parent, policy) {

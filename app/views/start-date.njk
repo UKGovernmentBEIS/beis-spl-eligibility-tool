@@ -14,24 +14,14 @@
 {% endblock %}
 
 {% block content %}
-
   {% if errors["start-date"] %}
-    {{govukErrorSummary({
+    {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: [
         errors["start-date"]
       ]
     }) }}
   {% endif %}
-
-  {% set questionText %}
-    {% if data | isBirth %}
-      When is the baby due, or when was the baby born?
-    {% else %}
-      When is or was your match date?
-    {% endif %}
-  {% endset %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <form method="POST">
@@ -41,13 +31,13 @@
             namePrefix: "start-date",
             fieldset: {
               legend: {
-                text: questionText,
+                text: "When is the baby due, or when was the baby born?" if (data | isBirth) else "What is, or what was your match date?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
             },
             hint: {
-              text: "For example, " + null | exampleDate + "."
+              text: "For example, " + (null | exampleDate) + "."
             },
             errorMessage: errors["start-date"],
             items: [
@@ -68,11 +58,9 @@
               }
             ]
           }) }}
-
           {{ govukButton({
             text: "Continue"
           }) }}
-
         {% endcall %}
       </form>
     </div>
