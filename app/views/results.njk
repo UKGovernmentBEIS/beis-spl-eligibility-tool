@@ -22,11 +22,6 @@
       <p>
         Choose which parent you want to check eligibility for below.
       </p>
-      <p>
-        Once you know what each parent can get, you can
-        <a href="/shared-parental-leave-planner">plan how to take leave and pay</a>
-        when you have a child.
-      </p>
 
       {% set primaryTableCaption %}
         {{ data | primaryName | capitalize }}
@@ -108,7 +103,7 @@
           {% set hasCheckedEligibility = data | hasCheckedEligibility("primary") or data | hasCheckedEligibility("secondary") %}
           {% if hasCheckedEligibility and data | coupleHasAnyIneligibility %}
             <p>
-              To understand why you or your partner aren‘t eligible for shared parental leave or shared parental pay, you can check the guidelines on
+              To understand why you or your partner are not eligible for shared parental leave or shared parental pay, you can check the guidelines on
               {% if data | isBirth %}
               {# TODO fix href of these links #}
                 <a href="/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligibility for birth parents</a>.
@@ -119,12 +114,10 @@
           {% endif %}
         {% endcall %}
 
-        {{ govukButton({
-          text: "Continue to planner",
-          attributes: {
-            formaction: "planner"
-          }
-        }) }}
+      <p>
+        If you or your partner are eligible, you can
+        <a href="/shared-parental-leave-planner">plan how to take shared parental leave and pay</a>.
+      </p>
 
       </form>
     </div>

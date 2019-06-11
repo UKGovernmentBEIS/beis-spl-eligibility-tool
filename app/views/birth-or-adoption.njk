@@ -22,7 +22,6 @@
       ]
     }) }}
   {% endif %}
-
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <form method="POST">
@@ -38,7 +37,7 @@
               }
             },
             hint: {
-              text: "Shared parental leave and pay is available for both birth and adoptive parents."
+              text: "Shared parental leave and pay is available for birth and adoptive parents."
             },
             errorMessage: errors["birth-or-adoption"],
             items: [
@@ -54,11 +53,9 @@
               }
             ]
           }) }}
-
           {{ govukButton({
             text: "Continue"
           }) }}
-
         {% endcall %}
       </form>
     </div>

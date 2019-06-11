@@ -69,6 +69,9 @@
         <span class="govuk-caption-xl">{{ headingCaption }}</span>
         {{ heading }}
       </h1>
+      <p class="govuk-hint">
+        Dates shown on this page are based on the due date you entered and the eligibilty rules for shared parental leave and pay.
+      </p>
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
@@ -84,7 +87,7 @@
             },
             errorMessage: errors["other-parent-work"],
             hint: {
-              text: "The 26 weeks don‘t need to be consecutive. They can be full or partial weeks."
+              text: "The 26 weeks do not need to be consecutive. They can be full or partial weeks."
             },
             items: [
               {
@@ -113,7 +116,7 @@
             },
             errorMessage: errors["other-parent-pay"],
             hint: {
-              text: "The 13 weeks don‘t need to be consecutive."
+              text: "The 13 weeks do not need to be consecutive."
             },
             items: [
               {

@@ -46,7 +46,7 @@
     {% else %}
       Will the {{ data | currentParentName(currentParent) }} still be working
     {% endif %}
-    in that job on {{ data | relevantWeek | formatForDisplay }}?
+    in this job on {{ data | relevantWeek | formatForDisplay }}?
   {% endset %}
 
   {% set payThresholdTitle %}
@@ -67,7 +67,9 @@
         <span class="govuk-caption-xl">{{ headingCaption }}</span>
         {{ heading }}
       </h1>
-
+      <p class="govuk-hint">
+        Dates shown on this page are based on the due date you entered and the eligibilty rules for shared parental leave and pay.
+      </p>
       <form action="{{formaction}}" method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
@@ -76,7 +78,7 @@
             name: currentParent + "[work-start]",
             fieldset: {
               legend: {
-                text: workStartTitle ,
+                text: workStartTitle,
                 classes: "govuk-fieldset__legend--m"
               }
             },
