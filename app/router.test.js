@@ -116,9 +116,9 @@ describe('POST startDate', () => {
   })
 })
 
-describe('POST results when "current" param supplied', () => {
-  it('redirects to employmentStatus and passes "current" param through', done => {
-    app.post(paths.getPath('results') + '/mother')
+describe('POST checkEligiblity with a parent', () => {
+  it('redirects to employmentStatus with the same parent', done => {
+    app.post(paths.getPath('checkEligibility.mother'))
       .expect(302)
       .expect('Location', paths.getPath('employmentStatus.mother'))
       .end(done)

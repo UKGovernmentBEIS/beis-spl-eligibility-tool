@@ -4,8 +4,6 @@ const { describe, it, beforeEach } = require('mocha')
 const { expect } = require('chai')
 const sinon = require('sinon')
 
-const Day = require('../common/lib/day')
-
 describe('filters', () => {
   let filters, environment
 
@@ -27,7 +25,7 @@ describe('filters', () => {
       }
 
       const result = filters.relevantWeek(data)
-      expect(result.formatForDisplay()).to.equal('29 September 2019')
+      expect(result.format('YYYY-MM-DD')).to.equal('2019-09-29')
     })
 
     it('returns 15 weeks before the start of the birth week for birth parents', () => {
@@ -41,7 +39,7 @@ describe('filters', () => {
       }
 
       const result = filters.relevantWeek(data)
-      expect(result.formatForDisplay()).to.equal('16 June 2019')
+      expect(result.format('YYYY-MM-DD')).to.equal('2019-06-16')
     })
 
     it('always returns a sunday', () => {
@@ -55,7 +53,7 @@ describe('filters', () => {
       }
 
       const result = filters.relevantWeek(dataWithSunday)
-      expect(result.formatForDisplay()).to.equal('29 September 2019')
+      expect(result.format('YYYY-MM-DD')).to.equal('2019-09-29')
     })
   })
 })
