@@ -22,7 +22,7 @@
         Choose which parent you want to check eligibility for below.
       </p>
       {% macro eligibilityButton(options) %}
-        {% set formAction = "results/" + data | parentNameForUrl(options.parent) %}
+        {% set formAction = '/' + (data | parentNameForUrl(options.parent)) + '/check-eligibility' %}
         <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{ formAction }}">
           {{ "Re-check" if data | hasCheckedEligibility(options.parent) else "Check" }} eligibility
         </button>

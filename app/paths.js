@@ -59,54 +59,65 @@ class Paths {
         url: '/results',
         workflowParentPath: '/start-date'
       },
+      checkEligibility: {
+        mother: {
+          url: '/mother/check-eligibility'
+        },
+        'primary-adopter': {
+          url: '/primary-adopter/check-eligibility'
+        },
+        partner: {
+          url: '/partner/check-eligibility'
+        }
+      },
       employmentStatus: {
         mother: {
-          url: '/employment-status/mother',
+          url: '/mother/employment-status',
           workflowParentPath: '/results',
           validator: req => validate.employmentStatus(req, 'primary')
         },
         'primary-adopter': {
-          url: '/employment-status/primary-adopter',
+          url: '/primary-adopter/employment-status',
           workflowParentPath: '/results',
           validator: req => validate.employmentStatus(req, 'primary')
         },
         partner: {
-          url: '/employment-status/partner',
+          url: '/partner/employment-status',
           workflowParentPath: '/results',
           validator: req => validate.employmentStatus(req, 'secondary')
         }
       },
       workAndPay: {
         mother: {
-          url: '/work-and-pay/mother',
-          workflowParentPath: '/employment-status/mother',
+          url: '/mother/work-and-pay',
+          workflowParentPath: '/mother/employment-status',
           validator: req => validate.workAndPay(req, 'primary')
         },
         'primary-adopter': {
-          url: '/work-and-pay/primary-adopter',
-          workflowParentPath: '/employment-status/primary-adopter',
+          url: '/primary-adopter/work-and-pay',
+          workflowParentPath: '/primary-adopter/employment-status',
           validator: req => validate.workAndPay(req, 'primary')
         },
         partner: {
-          url: '/work-and-pay/partner',
-          workflowParentPath: '/employment-status/partner',
+          url: '/partner/work-and-pay',
+          workflowParentPath: '/partner/employment-status',
           validator: req => validate.workAndPay(req, 'secondary')
         }
       },
       otherParentWorkAndPay: {
         mother: {
-          url: '/other-parent-work-and-pay/mother',
-          workflowParentPath: '/work-and-pay/mother',
+          url: '/mother/other-parent-work-and-pay',
+          workflowParentPath: '/mother/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'primary')
         },
         'primary-adopter': {
-          url: '/other-parent-work-and-pay/primary-adopter',
-          workflowParentPath: '/work-and-pay/primary-adopter',
+          url: '/primary-adopter/other-parent-work-and-pay',
+          workflowParentPath: '/primary-adopter/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'primary')
         },
         partner: {
-          url: '/other-parent-work-and-pay/partner',
-          workflowParentPath: '/work-and-pay/partner',
+          url: '/partner/other-parent-work-and-pay',
+          workflowParentPath: '/partner/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'secondary')
         }
       }
