@@ -3,6 +3,7 @@ const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
 const { getParent, registerRouteForEachParent } = require('./lib/routerUtils')
+const { isNo } = require('../common/lib/dataUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
@@ -26,6 +27,9 @@ router.route(paths.getPath('caringWithPartner'))
   .post(function (req, res) {
     if (!validate.caringWithPartner(req)) {
       return res.redirect(req.url)
+    }
+    if (isNo(req.session.data['caring-with-partner'])) {
+      return res.redirect(paths.getPath('notCaringWithPartner'))
     }
     res.redirect(paths.getPath('startDate'))
   })
@@ -93,5 +97,10 @@ registerRouteForEachParent(router, 'otherParentWorkAndPay', {
     res.redirect(paths.getPath('results'))
   }
 })
+
+router.route(paths.getPath('notCaringWithPartner'))
+  .get(function (req, res) {
+    res.render('not-caring-with-partner')
+  })
 
 module.exports = router
