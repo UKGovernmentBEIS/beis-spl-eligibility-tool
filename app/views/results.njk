@@ -2,6 +2,7 @@
 {% from "table/macro.njk" import govukTable %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
+{% from "./components/parent-eligibility-results.njk" import parentEligibilityResults %}
 
 {% extends "layout.njk" %}
 
@@ -21,43 +22,12 @@
       <p>
         Choose which parent you want to check eligibility for below.
       </p>
-      {% macro eligibilityButton(options) %}
-        {% set formAction = '/' + (data | parentNameForUrl(options.parent)) + '/check-eligibility' %}
-        <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{ formAction }}">
-          {{ "Re-check" if data | hasCheckedEligibility(options.parent) else "Check" }} eligibility
-        </button>
-      {% endmacro %}
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {% for parent in ["primary", "secondary"] %}
-            {{ govukTable({
-              caption: data | parentName(parent) | capitalize,
-              head: [
-                {
-                  text: "Shared parental leave"
-                },
-                {
-                  text: "Statutory shared parental pay"
-                },
-                {
-                  text: ""
-                }
-              ],
-              rows: [
-                [
-                  {
-                    text: data | eligibility(parent, "spl")
-                  },
-                  {
-                    text: data | eligibility(parent, "shpp")
-                  },
-                  {
-                    html: eligibilityButton({
-                      parent: parent
-                    })
-                  }
-                ]
-              ]
+            {{ parentEligibilityResults({
+              data: data,
+              parent: parent
             }) }}
           {% endfor %}
         {% endcall %}

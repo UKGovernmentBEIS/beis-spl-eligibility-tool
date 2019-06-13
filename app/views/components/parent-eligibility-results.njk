@@ -1,0 +1,43 @@
+{% from "table/macro.njk" import govukTable %}
+{% from "./check-eligibility-button.njk" import checkEligibilityButton %}
+{% from "inset-text/macro.njk" import govukInsetText %}
+{% macro parentEligibilityResults(options) %}
+  {{ govukTable({
+    caption: options.data | parentName(options.parent) | capitalize,
+    head: [
+      {
+        text: "Shared parental leave"
+      },
+      {
+        text: "Statutory shared parental pay"
+      },
+      {
+        text: ""
+      }
+    ],
+    rows: [
+      [
+        {
+          text: options.data | eligibility(parent, "spl")
+        },
+        {
+          text: options.data | eligibility(parent, "shpp")
+        },
+        {
+          html: checkEligibilityButton({
+            data: options.data,
+            parent: options.parent
+          })
+        }
+      ]
+    ]
+  }) }}
+  {% if
+    options.data[options.parent]["employment-status"] === "self-employed" or
+    options.data[options.parent]["employment-status"] === "unemployed"
+  %}
+    {{ govukInsetText({
+      text: "You cannot get shared parental leave or pay if you are self employed or unemployed."
+    }) }}
+  {% endif %}
+{% endmacro %}
