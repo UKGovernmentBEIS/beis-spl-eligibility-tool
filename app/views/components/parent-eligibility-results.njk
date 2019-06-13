@@ -2,8 +2,10 @@
 {% from "./check-eligibility-button.njk" import checkEligibilityButton %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 {% macro parentEligibilityResults(options) %}
+  {% set parent = options.parent %}
+  {% set data = options.data %}
   {{ govukTable({
-    caption: options.data | parentName(options.parent) | capitalize,
+    caption: data | parentName(parent) | capitalize,
     head: [
       {
         text: "Shared parental leave"
@@ -18,26 +20,50 @@
     rows: [
       [
         {
-          text: options.data | eligibility(parent, "spl")
+          text: data | eligibility(parent, "spl")
         },
         {
-          text: options.data | eligibility(parent, "shpp")
+          text: data | eligibility(parent, "shpp")
         },
         {
           html: checkEligibilityButton({
-            data: options.data,
-            parent: options.parent
+            data: data,
+            parent: parent
           })
         }
       ]
     ]
   }) }}
   {% if
-    options.data[options.parent]["employment-status"] === "self-employed" or
-    options.data[options.parent]["employment-status"] === "unemployed"
+    data[parent]["employment-status"] === "self-employed" or
+    data[parent]["employment-status"] === "unemployed"
   %}
     {{ govukInsetText({
       text: "You cannot get shared parental leave or pay if you are self employed or unemployed."
+    }) }}
+  {% endif %}
+
+  {% if data[parent]["employment-status"] === "worker" %}
+    {{ govukInsetText({
+      text: "You must be an employee to get shared parental leave"
+    }) }}
+  {% endif %}
+
+  {% if data[parent]["work-start"] | isNo or data[parent]["continuous-work"] | isNo %}
+    {{ govukInsetText({
+      text: "To get shared parental leave and pay the " + data | currentParentName(parent) + " must have been employed continuously by the same employer for at least 26 weeks by the end of the 15th week before the " + data | startDateName + "."
+    }) }}
+  {% endif %}
+
+  {% if data[parent]["pay-threshold"] | isNo %}
+    {{ govukInsetText({
+      text: "To be eligible for shared parental pay the " + data | currentParentName(parent) + " must have earned on average at least £118 in that job in the 8 weeks prior to the 15th week before the " + data | startDateName + "."
+    }) }}
+  {% endif %}
+
+  {% if data[parent]['other-parent-work'] | isNo or data[parent]['other-parent-pay'] | isNo %}
+    {{ govukInsetText({
+      text: "The " + data | currentParentName(parent) + " is not eligible for shared parental leave or pay because the " + data | otherParentName(parent) + ' has not met the work and pay criteria.'
     }) }}
   {% endif %}
 {% endmacro %}
