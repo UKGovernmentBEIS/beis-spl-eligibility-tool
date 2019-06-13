@@ -1,3 +1,5 @@
+const { isYes, isNo } = require('../../common/lib/dataUtils')
+
 const ELIGIBILITY = Object.freeze({
   ELIGIBLE: 'eligible',
   NOT_ELIGIBLE: 'not eligible',
@@ -49,14 +51,6 @@ function getEligibility (eligibilityData, policy) {
       return ELIGIBILITY.NOT_ELIGIBLE
     }
   }
-}
-
-function isYes (value) {
-  return value === 'yes'
-}
-
-function isNo (value) {
-  return value === 'no'
 }
 
 module.exports = {

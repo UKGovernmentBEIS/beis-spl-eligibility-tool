@@ -11,7 +11,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: withData("work-and-pay/" + currentParentFromUrl)
+    href: backPath()
   }) }}
 {% endblock %}
 
@@ -70,7 +70,9 @@
         </span>
         {{ otherParentName | capitalize }}’s work and pay
       </h1>
-      {{ dateExplanationHint(data) }}
+      {% if data | isBirth %}
+        {{ dateExplanationHint(data) }}
+      {% endif %}
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
@@ -92,12 +94,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]["other-parent-work"] === "yes"
+                checked: data[currentParent]["other-parent-work"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]["other-parent-work"] === "no"
+                checked: data[currentParent]["other-parent-work"] | isNo
               }
             ]
           }) }}
@@ -120,12 +122,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]["other-parent-pay"] === "yes"
+                checked: data[currentParent]["other-parent-pay"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]["other-parent-pay"] === "no"
+                checked: data[currentParent]["other-parent-pay"] | isNo
               }
             ]
           }) }}
