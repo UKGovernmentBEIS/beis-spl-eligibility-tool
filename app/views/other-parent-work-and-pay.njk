@@ -11,7 +11,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: withData("work-and-pay/" + currentParentFromUrl)
+    href: backPath()
   }) }}
 {% endblock %}
 
