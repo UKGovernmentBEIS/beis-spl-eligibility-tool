@@ -69,7 +69,6 @@ function addStartDateError (req, message, dateParts) {
 function employmentStatus (req, parent) {
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
-  console.log(parent, employmentStatus)
   if (!permittedValues.includes(employmentStatus)) {
     addError(req, 'employment-status', 'Select your employment status', '#employment-status-1')
     return false

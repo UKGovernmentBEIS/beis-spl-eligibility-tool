@@ -66,6 +66,10 @@ registerRouteForEachParent(router, 'employmentStatus', {
     if (!validate.employmentStatus(req, currentParent)) {
       return res.redirect(req.url)
     }
+    const parent = req.session.data[getParent(parentUrlPart)]
+    if (['self-employed', 'unemployed'].includes(parent['employment-status'])) {
+      return res.redirect(paths.getPath('results'))
+    }
     res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
   }
 })
