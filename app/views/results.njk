@@ -31,7 +31,7 @@
         {% call appendHiddenFields(data) %}
           {% for parent in ["primary", "secondary"] %}
             {{ govukTable({
-              caption: data | parentName(parent) | capitalize,
+              caption: data | parentName(parent) | capitalise,
               head: [
                 {
                   text: "Shared parental leave"
