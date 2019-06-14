@@ -26,7 +26,7 @@
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <span class="govuk-caption-xl">{{ currentParentName | capitalize }}’s eligibility</span>
+      <span class="govuk-caption-xl">{{ currentParentName | capitalise }}’s eligibility</span>
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
