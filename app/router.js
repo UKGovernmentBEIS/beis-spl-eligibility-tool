@@ -5,7 +5,7 @@ const validate = require('./validate')
 const {
   getParent,
   registerRouteForEachParent,
-  parentMeetsContinuousWorkCriteria,
+  parentMeetsContinuousWorkThreshold,
   parentMeetsPayThreshold
 } = require('./lib/routerUtils')
 const { isNo } = require('../common/lib/dataUtils')
@@ -90,7 +90,7 @@ registerRouteForEachParent(router, 'workAndPay', {
       return res.redirect(req.url)
     }
     if (
-      !parentMeetsContinuousWorkCriteria(req.session.data, currentParent) ||
+      !parentMeetsContinuousWorkThreshold(req.session.data, currentParent) ||
       !parentMeetsPayThreshold(req.session.data, currentParent)
     ) {
       return res.redirect(paths.getPath('results'))

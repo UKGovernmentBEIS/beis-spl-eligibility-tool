@@ -19,7 +19,7 @@ function getParent (parentUrlPart) {
   return parentUrlPart === 'partner' ? 'secondary' : 'primary'
 }
 
-function parentMeetsContinuousWorkCriteria (data, parent) {
+function parentMeetsContinuousWorkThreshold (data, parent) {
   return isYes(delve(data, [parent, 'work-start'])) && isYes(delve(data, [parent, 'continuous-work']))
 }
 
@@ -31,5 +31,5 @@ module.exports = {
   registerRouteForEachParent,
   getParent,
   parentMeetsPayThreshold,
-  parentMeetsContinuousWorkCriteria
+  parentMeetsContinuousWorkThreshold
 }
