@@ -2,7 +2,12 @@ const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
-const { getParent, registerRouteForEachParent } = require('./lib/routerUtils')
+const {
+  getParent,
+  registerRouteForEachParent,
+  parentMeetsContinuousWorkCriteria,
+  parentMeetsPayThreshold
+} = require('./lib/routerUtils')
 const { isNo } = require('../common/lib/dataUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
@@ -83,6 +88,12 @@ registerRouteForEachParent(router, 'workAndPay', {
     const currentParent = getParent(parentUrlPart)
     if (!validate.workAndPay(req, currentParent)) {
       return res.redirect(req.url)
+    }
+    if (
+      !parentMeetsContinuousWorkCriteria(req.session.data, currentParent) ||
+      !parentMeetsPayThreshold(req.session.data, currentParent)
+    ) {
+      return res.redirect(paths.getPath('results'))
     }
     res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
   }

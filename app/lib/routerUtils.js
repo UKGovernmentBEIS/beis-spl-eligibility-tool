@@ -1,3 +1,5 @@
+const delve = require('dlv')
+const { isYes } = require('../../common/lib/dataUtils')
 const paths = require('../paths')
 
 function registerRouteForEachParent (router, path, handlers) {
@@ -17,7 +19,17 @@ function getParent (parentUrlPart) {
   return parentUrlPart === 'partner' ? 'secondary' : 'primary'
 }
 
+function parentMeetsContinuousWorkCriteria (data, parent) {
+  return isYes(delve(data, [parent, 'work-start'])) && isYes(delve(data, [parent, 'continuous-work']))
+}
+
+function parentMeetsPayThreshold (data, parent) {
+  return delve(data, [parent, 'employment-status']) === 'employee' && isYes(delve(data, [parent, 'pay-threshold']))
+}
+
 module.exports = {
   registerRouteForEachParent,
-  getParent
+  getParent,
+  parentMeetsPayThreshold,
+  parentMeetsContinuousWorkCriteria
 }
