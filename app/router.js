@@ -34,9 +34,10 @@ router.route(paths.getPath('caringWithPartner'))
       return res.redirect(req.url)
     }
     if (isNo(req.session.data['caring-with-partner'])) {
-      return res.redirect(paths.getPath('notCaringWithPartner'))
+      res.redirect(paths.getPath('notCaringWithPartner'))
+    } else {
+      res.redirect(paths.getPath('startDate'))
     }
-    res.redirect(paths.getPath('startDate'))
   })
 
 router.route(paths.getPath('startDate'))
@@ -71,11 +72,12 @@ registerRouteForEachParent(router, 'employmentStatus', {
     if (!validate.employmentStatus(req, currentParent)) {
       return res.redirect(req.url)
     }
-    const parent = req.session.data[getParent(parentUrlPart)]
+    const parent = req.session.data[currentParent]
     if (['self-employed', 'unemployed'].includes(parent['employment-status'])) {
-      return res.redirect(paths.getPath('results'))
+      res.redirect(paths.getPath('results'))
+    } else {
+      res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
     }
-    res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
   }
 })
 
@@ -93,9 +95,10 @@ registerRouteForEachParent(router, 'workAndPay', {
       !parentMeetsContinuousWorkThreshold(req.session.data, currentParent) ||
       !parentMeetsPayThreshold(req.session.data, currentParent)
     ) {
-      return res.redirect(paths.getPath('results'))
+      res.redirect(paths.getPath('results'))
+    } else {
+      res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
     }
-    res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
   }
 })
 
