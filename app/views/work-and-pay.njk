@@ -11,7 +11,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: withData("employment-status/" + currentParentFromUrl)
+    href: backPath()
   }) }}
 {% endblock %}
 
@@ -59,9 +59,9 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
         <span class="govuk-caption-xl">
-          {{ currentParentName | capitalize }}’s eligibility
+          {{ currentParentName | capitalise }}’s eligibility
         </span>
-        {{ currentParentName | capitalize }}’s work and pay
+        {{ currentParentName | capitalise }}’s work and pay
       </h1>
       {{ dateExplanationHint(data) }}
       <form action="{{formaction}}" method="POST">
@@ -81,12 +81,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]["work-start"] === "yes"
+                checked: data[currentParent]["work-start"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]["work-start"]  === "no"
+                checked: data[currentParent]["work-start"]  | isNo
               }
             ]
           }) }}
@@ -105,12 +105,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]["continuous-work"]  === "yes"
+                checked: data[currentParent]["continuous-work"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]["continuous-work"]  === "no"
+                checked: data[currentParent]["continuous-work"] | isNo
               }
             ]
           }) }}
@@ -129,12 +129,12 @@
               {
                 value: "yes",
                 text: "Yes",
-                checked: data[currentParent]["pay-threshold"] === "yes"
+                checked: data[currentParent]["pay-threshold"] | isYes
               },
               {
                 value: "no",
                 text: "No",
-                checked: data[currentParent]["pay-threshold"] === "no"
+                checked: data[currentParent]["pay-threshold"] | isNo
               }
             ]
           }) }}

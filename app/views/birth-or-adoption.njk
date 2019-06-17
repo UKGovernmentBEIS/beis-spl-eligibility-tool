@@ -9,7 +9,7 @@
 {% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: withData("/")
+    href: backPath()
   }) }}
 {% endblock %}
 
@@ -44,12 +44,12 @@
               {
                 value: "birth",
                 text: "Birth",
-                checked: data["birth-or-adoption"] === "birth"
+                checked: data | isBirth
               },
               {
                 value: "adoption",
                 text: "Adoption",
-                checked: data["birth-or-adoption"] === "adoption"
+                checked: data | isAdoption
               }
             ]
           }) }}
