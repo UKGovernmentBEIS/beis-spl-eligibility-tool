@@ -5,7 +5,7 @@
   {% set parent = options.parent %}
   {% set data = options.data %}
   {{ govukTable({
-    caption: data | parentName(parent) | capitalize,
+    caption: data | parentName(parent) | capitalise,
     head: [
       {
         text: "Shared parental leave"
