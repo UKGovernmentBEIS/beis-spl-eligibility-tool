@@ -120,6 +120,10 @@ class Paths {
           workflowParentPath: '/partner/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'secondary')
         }
+      },
+      notCaringWithPartner: {
+        url: '/not-caring-with-partner',
+        workflowParentPath: '/caring-with-partner'
       }
     }
   }
