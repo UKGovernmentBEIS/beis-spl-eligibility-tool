@@ -120,7 +120,7 @@ function initialiseTemplateEngine (app) {
   // Paths to external resources and tools.
   // TODO: Update fallback with final path of planner tool.
   nunjucksEnvironment.addGlobal('mainstream_guidance_root_path', process.env.MAINSTREAM_GUIDANCE_ROOT_PATH || 'https://www.gov.uk/shared-parental-leave-and-pay')
-  nunjucksEnvironment.addGlobal('planner_root_path', process.env.PLANNER_ROOT_PATH || 'https://beis-spl-eligibility-tool.london.cloudapps.digital')
+  nunjucksEnvironment.addGlobal('planner_root_path', process.env.PLANNER_ROOT_PATH || 'https://beis-spl-planner.london.cloudapps.digital')
 
   // Add filters
   const commonFilters = require('./common/spl-common-filters')(nunjucksEnvironment)
