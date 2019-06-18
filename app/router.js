@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
-const { getParent, registerRouteForEachParent } = require('./lib/routerUtils')
+const { getParent, registerRouteForEachParent, plannerQueryString } = require('./lib/routerUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
@@ -43,7 +43,7 @@ router.route(paths.getPath('startDate'))
 
 router.route(paths.getPath('results'))
   .get(function (req, res) {
-    res.render('results')
+    res.render('results', { plannerQueryString: plannerQueryString(req.session.data) })
   })
 
 registerRouteForEachParent(router, 'checkEligibility', {

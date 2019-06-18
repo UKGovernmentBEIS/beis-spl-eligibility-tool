@@ -1,4 +1,8 @@
+const qs = require('qs')
 const paths = require('../paths')
+const { isBirth } = require('../../common/lib/dataUtils')
+const Day = require('../../common/lib/day')
+const { getEligibility, ELIGIBILITY } = require('./eligibility')
 
 function registerRouteForEachParent (router, path, handlers) {
   const parents = ['mother', 'primary-adopter', 'partner']
@@ -17,7 +21,35 @@ function getParent (parentUrlPart) {
   return parentUrlPart === 'partner' ? 'secondary' : 'primary'
 }
 
+function plannerQueryString (data) {
+  function convertEligibility (eligibility) {
+    switch (eligibility) {
+      case ELIGIBILITY.ELIGIBLE:
+        return 'yes'
+      case ELIGIBILITY.NOT_ELIGIBLE:
+        return 'no'
+      default:
+        return 'unknown'
+    }
+  }
+
+  const dataForPlanner = { 'birth-or-adoption': data['birth-or-adoption'] }
+
+  if (isBirth(data)) {
+    dataForPlanner['due-date'] = new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).format('YYYY-MM-DD')
+  }
+
+  ['primary', 'secondary'].forEach(parent => {
+    ['spl', 'shpp'].forEach(policy => {
+      dataForPlanner[`${parent}-${policy}-eligible`] = convertEligibility(getEligibility(data[parent], policy))
+    })
+  })
+
+  return qs.stringify(dataForPlanner)
+}
+
 module.exports = {
   registerRouteForEachParent,
-  getParent
+  getParent,
+  plannerQueryString
 }
