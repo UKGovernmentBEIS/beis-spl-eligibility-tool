@@ -2,7 +2,14 @@ const express = require('express')
 const router = express.Router()
 const paths = require('./paths')
 const validate = require('./validate')
-const { getParent, registerRouteForEachParent, plannerQueryString } = require('./lib/routerUtils')
+const {
+  getParent,
+  registerRouteForEachParent,
+  parentMeetsContinuousWorkThreshold,
+  parentMeetsPayThreshold,
+  plannerQueryString
+} = require('./lib/routerUtils')
+const { isNo } = require('../common/lib/dataUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
@@ -27,7 +34,11 @@ router.route(paths.getPath('caringWithPartner'))
     if (!validate.caringWithPartner(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.getPath('startDate'))
+    if (isNo(req.session.data['caring-with-partner'])) {
+      res.redirect(paths.getPath('notCaringWithPartner'))
+    } else {
+      res.redirect(paths.getPath('startDate'))
+    }
   })
 
 router.route(paths.getPath('startDate'))
@@ -62,7 +73,12 @@ registerRouteForEachParent(router, 'employmentStatus', {
     if (!validate.employmentStatus(req, currentParent)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
+    const parent = req.session.data[currentParent]
+    if (['self-employed', 'unemployed'].includes(parent['employment-status'])) {
+      res.redirect(paths.getPath('results'))
+    } else {
+      res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
+    }
   }
 })
 
@@ -76,7 +92,14 @@ registerRouteForEachParent(router, 'workAndPay', {
     if (!validate.workAndPay(req, currentParent)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
+    if (
+      !parentMeetsContinuousWorkThreshold(req.session.data, currentParent) ||
+      !parentMeetsPayThreshold(req.session.data, currentParent)
+    ) {
+      res.redirect(paths.getPath('results'))
+    } else {
+      res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
+    }
   }
 })
 
@@ -93,5 +116,10 @@ registerRouteForEachParent(router, 'otherParentWorkAndPay', {
     res.redirect(paths.getPath('results'))
   }
 })
+
+router.route(paths.getPath('notCaringWithPartner'))
+  .get(function (req, res) {
+    res.render('not-caring-with-partner')
+  })
 
 module.exports = router

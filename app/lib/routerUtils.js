@@ -1,7 +1,8 @@
 const qs = require('qs')
 const { pick } = require('lodash')
+const delve = require('dlv')
 const paths = require('../paths')
-const { isBirth } = require('../../common/lib/dataUtils')
+const { isBirth, isYes } = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
 const { getEligibility, ELIGIBILITY } = require('./eligibility')
 
@@ -49,8 +50,18 @@ function plannerQueryString (data) {
   return qs.stringify(dataForPlanner)
 }
 
+function parentMeetsContinuousWorkThreshold (data, parent) {
+  return isYes(delve(data, [parent, 'work-start'])) && isYes(delve(data, [parent, 'continuous-work']))
+}
+
+function parentMeetsPayThreshold (data, parent) {
+  return delve(data, [parent, 'employment-status']) === 'employee' && isYes(delve(data, [parent, 'pay-threshold']))
+}
+
 module.exports = {
   registerRouteForEachParent,
   getParent,
-  plannerQueryString
+  plannerQueryString,
+  parentMeetsPayThreshold,
+  parentMeetsContinuousWorkThreshold
 }
