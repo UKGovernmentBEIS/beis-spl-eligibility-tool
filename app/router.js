@@ -6,7 +6,8 @@ const {
   getParent,
   registerRouteForEachParent,
   parentMeetsContinuousWorkThreshold,
-  parentMeetsPayThreshold
+  parentMeetsPayThreshold,
+  plannerQueryString
 } = require('./lib/routerUtils')
 const { isNo } = require('../common/lib/dataUtils')
 
@@ -53,7 +54,7 @@ router.route(paths.getPath('startDate'))
 
 router.route(paths.getPath('results'))
   .get(function (req, res) {
-    res.render('results')
+    res.render('results', { plannerQueryString: plannerQueryString(req.session.data) })
   })
 
 registerRouteForEachParent(router, 'checkEligibility', {

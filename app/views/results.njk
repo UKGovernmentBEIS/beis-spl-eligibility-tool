@@ -28,28 +28,29 @@
             {{ parentEligibilityResults({
               data: data,
               parent: parent
-
             }) }}
           {% endfor %}
         {% endcall %}
       </form>
-      <h2 class="govuk-heading-m">
-        Next steps
-      </h2>
-      {% if data | coupleHasAnyIneligibility %}
+      {% if data | hasCheckedAnyEligibility %}
+        <h2 class="govuk-heading-m">
+          Next steps
+        </h2>
+        {% if data | coupleHasAnyIneligibility %}
+          <p>
+            To understand why you or your partner are not eligible for shared parental leave or shared parental pay, you can check the guidelines on
+            {% if data | isBirth %}
+              <a href="{{ mainstream_guidance_root_path }}/eligibility-for-birth-parents">eligibility for birth parents</a>.
+            {% else %}
+              <a href="{{ mainstream_guidance_root_path }}/eligibility-for-adopters">eligibility for adopters</a>.
+            {% endif %}
+          </p>
+        {% endif %}
         <p>
-          To understand why you or your partner are not eligible for shared parental leave or shared parental pay, you can check the guidelines on
-          {% if data | isBirth %}
-            <a href="{{ mainstream_guidance_root_path }}/eligibility-for-birth-parents">eligibility for birth parents</a>.
-          {% else %}
-            <a href="{{ mainstream_guidance_root_path }}/eligibility-for-adopters">eligibility for adopters</a>.
-          {% endif %}
+          If you or your partner are eligible, you can
+          <a href="{{ planner_root_path + '?' + plannerQueryString }}">plan how to take shared parental leave and pay</a>.
         </p>
       {% endif %}
-      <p>
-        If you or your partner are eligible, you can
-        <a href="{{ planner_root_path }}">plan how to take shared parental leave and pay</a>.
-      </p>
     </div>
   </div>
 {% endblock %}
