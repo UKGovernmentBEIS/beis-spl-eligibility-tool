@@ -191,6 +191,7 @@ describe('POST workAndPay with a parent', () => {
   it('redirects to otherParentWorkAndPay with the same parent when employment-status is provided', done => {
     const payload = {
       primary: {
+        'employment-status': 'employee',
         'work-start': 'yes',
         'continuous-work': 'yes',
         'pay-threshold': 'yes'
