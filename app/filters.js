@@ -40,6 +40,10 @@ module.exports = function (env) {
     return getParentEligibility(data, parent, 'spl') !== ELIGIBILITY.UNKNOWN
   }
 
+  function hasCheckedAnyEligibility (data) {
+    return hasCheckedEligibility(data, 'primary') || hasCheckedEligibility(data, 'secondary')
+  }
+
   function coupleHasAnyIneligibility (data) {
     return (
       isParentIneligile(data, 'primary', 'spl') ||
@@ -57,6 +61,7 @@ module.exports = function (env) {
     relevantWeek,
     providedDateName,
     eligibility,
+    hasCheckedAnyEligibility,
     hasCheckedEligibility,
     coupleHasAnyIneligibility,
     hasStartDateError
