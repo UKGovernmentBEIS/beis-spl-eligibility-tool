@@ -7,7 +7,9 @@ const {
   getEligibility,
   ELIGIBILITY,
   currentParentMeetsPayThreshold,
-  currentParentMeetsContinuousWorkThreshold
+  currentParentMeetsContinuousWorkThreshold,
+  isWorker,
+  isEmployee
 } = require('./eligibility')
 
 function registerRouteForEachParent (router, path, handlers) {
@@ -62,10 +64,20 @@ function parentMeetsPayThreshold (data, parent) {
   return currentParentMeetsPayThreshold(data[parent])
 }
 
+function parentIsWorker (data, parent) {
+  return isWorker(data[parent])
+}
+
+function parentIsEmployee (data, parent) {
+  return isEmployee(data[parent])
+}
+
 module.exports = {
   registerRouteForEachParent,
   getParent,
   plannerQueryString,
   parentMeetsPayThreshold,
-  parentMeetsContinuousWorkThreshold
+  parentMeetsContinuousWorkThreshold,
+  parentIsWorker,
+  parentIsEmployee
 }

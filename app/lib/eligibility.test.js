@@ -60,7 +60,7 @@ describe('getEligibility', () => {
       expect(getEligibility(testData, 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
-    describe('when emploment status is "employee"', () => {
+    describe('when employment status is "employee"', () => {
       it('returns not eligible if work-start === "no"', () => {
         const testData = {
           'employment-status': 'employee',
