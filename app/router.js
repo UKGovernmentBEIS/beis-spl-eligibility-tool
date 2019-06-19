@@ -7,7 +7,9 @@ const {
   registerRouteForEachParent,
   parentMeetsContinuousWorkThreshold,
   parentMeetsPayThreshold,
-  plannerQueryString
+  plannerQueryString,
+  parentIsWorker,
+  parentIsEmployee
 } = require('./lib/routerUtils')
 const { isNo } = require('../common/lib/dataUtils')
 
@@ -92,9 +94,17 @@ registerRouteForEachParent(router, 'workAndPay', {
     if (!validate.workAndPay(req, currentParent)) {
       return res.redirect(req.url)
     }
+    const { data } = req.session
     if (
-      !parentMeetsContinuousWorkThreshold(req.session.data, currentParent) ||
-      !parentMeetsPayThreshold(req.session.data, currentParent)
+      parentIsWorker(data, currentParent) &&
+      (!parentMeetsContinuousWorkThreshold(data, currentParent) ||
+      !parentMeetsPayThreshold(data, currentParent))
+    ) {
+      res.redirect(paths.getPath('results'))
+    } else if (
+      parentIsEmployee(data, currentParent) &&
+      !parentMeetsContinuousWorkThreshold(data, currentParent) &&
+      !parentMeetsPayThreshold(data, currentParent)
     ) {
       res.redirect(paths.getPath('results'))
     } else {
