@@ -1,4 +1,5 @@
 const qs = require('qs')
+const { pick } = require('lodash')
 const paths = require('../paths')
 const { isBirth } = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
@@ -33,7 +34,7 @@ function plannerQueryString (data) {
     }
   }
 
-  const dataForPlanner = { 'birth-or-adoption': data['birth-or-adoption'] }
+  const dataForPlanner = pick(data, 'birth-or-adoption')
 
   if (isBirth(data)) {
     dataForPlanner['due-date'] = new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).format('YYYY-MM-DD')
