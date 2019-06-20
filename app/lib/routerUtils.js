@@ -60,8 +60,8 @@ function parentMeetsContinuousWorkThreshold (data, parent) {
   return currentParentMeetsContinuousWorkThreshold(data[parent])
 }
 
-function parentMeetsPayThreshold (data, parent) {
-  return currentParentMeetsPayThreshold(data[parent])
+function parentMeetsPayAndContinuousWorkThresholds (data, parent) {
+  return parentMeetsContinuousWorkThreshold(data, parent) && currentParentMeetsPayThreshold(data[parent])
 }
 
 function parentIsWorker (data, parent) {
@@ -76,8 +76,8 @@ module.exports = {
   registerRouteForEachParent,
   getParent,
   plannerQueryString,
-  parentMeetsPayThreshold,
   parentMeetsContinuousWorkThreshold,
+  parentMeetsPayAndContinuousWorkThresholds,
   parentIsWorker,
   parentIsEmployee
 }
