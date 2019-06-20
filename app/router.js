@@ -6,7 +6,7 @@ const {
   getParent,
   registerRouteForEachParent,
   parentMeetsContinuousWorkThreshold,
-  parentMeetsPayThreshold,
+  parentMeetsPayAndContinuousWorkThresholds,
   plannerQueryString,
   parentIsWorker,
   parentIsEmployee
@@ -97,14 +97,12 @@ registerRouteForEachParent(router, 'workAndPay', {
     const { data } = req.session
     if (
       parentIsWorker(data, currentParent) &&
-      (!parentMeetsContinuousWorkThreshold(data, currentParent) ||
-      !parentMeetsPayThreshold(data, currentParent))
+      !parentMeetsPayAndContinuousWorkThresholds(data, currentParent)
     ) {
       res.redirect(paths.getPath('results'))
     } else if (
       parentIsEmployee(data, currentParent) &&
-      !parentMeetsContinuousWorkThreshold(data, currentParent) &&
-      !parentMeetsPayThreshold(data, currentParent)
+      !parentMeetsContinuousWorkThreshold(data, currentParent)
     ) {
       res.redirect(paths.getPath('results'))
     } else {
