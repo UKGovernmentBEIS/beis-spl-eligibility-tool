@@ -1,6 +1,7 @@
 {% from "table/macro.njk" import govukTable %}
 {% from "./check-eligibility-button.njk" import checkEligibilityButton %}
 {% from "inset-text/macro.njk" import govukInsetText %}
+
 {% macro parentEligibilityResults(options) %}
   {% set parent = options.parent %}
   {% set data = options.data %}
@@ -20,10 +21,10 @@
     rows: [
       [
         {
-          text: data | eligibility(parent, "spl")
+          html: data | eligibilityLabel(parent, "spl") | safe
         },
         {
-          text: data | eligibility(parent, "shpp")
+          html: data | eligibilityLabel(parent, "shpp") | safe
         },
         {
           html: checkEligibilityButton({

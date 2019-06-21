@@ -25,12 +25,12 @@ module.exports = function (env) {
     }
   }
 
-  function eligibility (data, parent, policy) {
+  function eligibilityLabel (data, parent, policy) {
     switch (getParentEligibility(data, parent, policy)) {
       case ELIGIBILITY.ELIGIBLE:
-        return 'Eligible ✔'
+        return 'Eligible <span aria-hidden="true">✔</span>'
       case ELIGIBILITY.NOT_ELIGIBLE:
-        return 'Not eligible ✘'
+        return 'Not eligible <span aria-hidden="true">✘</span>'
       default:
         return 'Eligibility unknown'
     }
@@ -60,7 +60,7 @@ module.exports = function (env) {
   return {
     relevantWeek,
     providedDateName,
-    eligibility,
+    eligibilityLabel,
     hasCheckedAnyEligibility,
     hasCheckedEligibility,
     coupleHasAnyIneligibility,
