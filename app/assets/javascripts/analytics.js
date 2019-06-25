@@ -11,8 +11,8 @@ function birthOrAdoption () {
 
 function eligibility (eligibilities) {
   const gaFields = {
-    event_category: 'eligibility-questions',
-    event_action: 'eligibility-result',
+    event_category: 'eligibility_questions',
+    event_action: 'eligibility_result',
     birth_or_adoption: document.querySelector('[name=birth-or-adoption]').value
   }
   const parents = ['primary', 'secondary']
@@ -25,7 +25,7 @@ function eligibility (eligibilities) {
       }
     })
   })
-  gtag('event', 'parent-eligibility', gaFields)
+  gtag('event', 'parent_eligibility', gaFields)
 }
 
 window.analytics = {
