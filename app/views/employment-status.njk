@@ -29,6 +29,10 @@
       <span class="govuk-caption-xl">{{ currentParentName | capitalise }}’s eligibility</span>
       <form method="POST">
         {% call appendHiddenFields(data) %}
+          {% set hintHtml %}
+            <p class="govuk-hint">If you do freelance work, are on a zero hours contract or work through an agency, you’re likely to be a worker not an employee.</p>
+            <p class="govuk-hint">Read about <a href="https://www.gov.uk/employment-status">employment status</a> if you’re not sure which one applies.</p>
+          {% endset %}
           {{ govukRadios({
             classes: "govuk-radios",
             idPrefix: "employment-status",
@@ -41,7 +45,7 @@
               }
             },
             hint: {
-              html: 'Read about <a href="https://www.gov.uk/employment-status">employment statuses</a> if you’re not sure which one applies.'
+              html: hintHtml
             },
             errorMessage: errors["employment-status"],
             items: [
