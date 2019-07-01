@@ -1,21 +1,23 @@
 <link href="{{ css_path }}" media="screen" rel="stylesheet" type="text/css" />
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-142639139-3"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_ANALYTICS_ID }}"></script>
 <script>
-  window.dataLayer = window.dataLayer || []
-  function gtag () {
-    dataLayer.push(arguments)
-  }
-  gtag("js", new Date())
-
-  gtag('config', 'UA-142639139-3', {
-    custom_map: {
-      'dimension1': 'birth_or_adoption',
-      'dimension2': 'primary_eligibility_spl',
-      'dimension3': 'primary_eligibility_shpp',
-      'dimension4': 'secondary_eligibility_spl',
-      'dimension5': 'secondary_eligibility_shpp'
+  if ("{{ GOOGLE_ANALYTICS_ID}}") {
+    window.dataLayer = window.dataLayer || []
+    function gtag () {
+      dataLayer.push(arguments)
     }
-  })
+    gtag("js", new Date())
+
+    gtag("config", "{{ GOOGLE_ANALYTICS_ID }}", {
+      custom_map: {
+        "dimension1": "birth_or_adoption",
+        "dimension2": "primary_eligibility_spl",
+        "dimension3": "primary_eligibility_shpp",
+        "dimension4": "secondary_eligibility_spl",
+        "dimension5": "secondary_eligibility_shpp"
+      }
+    })
+  }
 </script>

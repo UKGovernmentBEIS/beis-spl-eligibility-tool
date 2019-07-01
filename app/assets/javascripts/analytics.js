@@ -1,4 +1,6 @@
-/* global gtag, getGaFields, getBirthOrAdoption */
+/* global gtag */
+
+const { getGaFields, getBirthOrAdoption } = require('../../../common/lib/analyticsUtils')
 
 function birthOrAdoption () {
   document.querySelector('[data-ga-hit-type=parent_type]').addEventListener('click', function (e) {
