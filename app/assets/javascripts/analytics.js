@@ -19,15 +19,20 @@ function eligibility (eligibilities) {
   }
   const parents = ['primary', 'secondary']
   const policies = ['spl', 'shpp']
+
+  let sendData = false
   parents.forEach(parent => {
     policies.forEach(policy => {
       if (eligibilities[parent][policy] !== 'unknown') {
+        sendData = true
         const isEligible = eligibilities[parent][policy] === 'eligible'
         gaFields[`${parent}_eligibility_${policy}`] = isEligible
       }
     })
   })
-  gtag('event', 'parent_eligibility', gaFields)
+  if (sendData) {
+    gtag('event', 'parent_eligibility', gaFields)
+  }
 }
 
 window.analytics = {
