@@ -1,3 +1,4 @@
+const dset = require('dset')
 const Day = require('../common/lib/day')
 const { ELIGIBILITY, getEligibility } = require('./lib/eligibility')
 
@@ -57,6 +58,18 @@ module.exports = function (env) {
     return errors && errors['start-date'] && errors['start-date'].dateParts.includes(partOfDate)
   }
 
+  function resultsAnalyticsData (data) {
+    const parents = ['primary', 'secondary']
+    const policies = ['spl', 'shpp']
+    const output = { birth_or_adoption: data['birth-or-adoption'] }
+    parents.forEach(parent => {
+      policies.forEach(policy => {
+        dset(output, `${parent}.${policy}`, getParentEligibility(data, parent, policy))
+      })
+    })
+    return output
+  }
+
   return {
     relevantWeek,
     providedDateName,
@@ -64,7 +77,8 @@ module.exports = function (env) {
     hasCheckedAnyEligibility,
     hasCheckedEligibility,
     coupleHasAnyIneligibility,
-    hasStartDateError
+    hasStartDateError,
+    resultsAnalyticsData
   }
 }
 
