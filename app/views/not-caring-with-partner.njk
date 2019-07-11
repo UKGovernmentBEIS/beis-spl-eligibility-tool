@@ -2,6 +2,8 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 
 {% block beforeContent %}
+  {{ super() }}
+
   {{ govukBackLink({
     text: "Back",
     href: backPath()

@@ -124,6 +124,9 @@ class Paths {
       notCaringWithPartner: {
         url: '/not-caring-with-partner',
         workflowParentPath: '/caring-with-partner'
+      },
+      feedback: {
+        url: '/feedback'
       }
     }
   }
