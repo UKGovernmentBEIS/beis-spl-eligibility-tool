@@ -21,7 +21,7 @@
 
   {% set workStartTitle %}
     Did the {{ currentParentName }} start their current or most recent job before
-    {{ relevantWeek | offsetWeeks(-26) | formatForDisplay }}?
+    {{ relevantWeek | offsetWeeks(-25) | endOfWeek | formatForDisplay }}?
   {% endset %}
 
   {% set continuousWorkTitle %}
@@ -40,9 +40,9 @@
       Will the {{ currentParentName }} have earned
     {% endif %}
     more than £118 per week in this job between
-    {{ relevantWeek | offsetWeeks(-8) | formatForDisplay }}
+    {{ relevantWeek | offsetWeeks(-8) | endOfWeek | formatForDisplay }}
     and
-    {{ relevantWeek | formatForDisplay }}?
+    {{ relevantWeek | endOfWeek | formatForDisplay }}?
   {% endset %}
 
   {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}
