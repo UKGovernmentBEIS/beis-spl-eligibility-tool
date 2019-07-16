@@ -1,6 +1,10 @@
 {% extends 'layout.njk' %}
 {% from "back-link/macro.njk" import govukBackLink %}
 
+{% block pageTitle -%}
+  {{ "Not eligible" | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 

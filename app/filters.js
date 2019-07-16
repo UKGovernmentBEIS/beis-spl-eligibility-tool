@@ -1,6 +1,7 @@
 const dset = require('dset')
 const Day = require('../common/lib/day')
 const { ELIGIBILITY, getEligibility } = require('./lib/eligibility')
+const { SERVICE_NAME } = require('./constants')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter

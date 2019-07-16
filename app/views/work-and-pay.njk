@@ -8,6 +8,12 @@
 
 {% extends "layout.njk" %}
 
+{% set currentParentName = data | currentParentName(currentParent) %}
+
+{% block pageTitle -%}
+  {{ (currentParentName | capitalise) + "’s eligibility" | pageTitle((currentParentName | capitalise) + "’s work and pay") }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
@@ -18,9 +24,7 @@
 {% endblock %}
 
 {% block content %}
-  {% set currentParentName = data | currentParentName(currentParent) %}
   {% set relevantWeek = data | relevantWeek %}
-
   {% set workStartTitle %}
     Did the {{ currentParentName }} start their current or most recent job before
     {{ relevantWeek | offsetWeeks(-25) | endOfWeek | formatForDisplay }}?
