@@ -135,5 +135,10 @@ router.route(paths.getPath('feedback'))
     const referrer = req.header('Referrer')
     res.render('feedback/feedback', { referrer })
   })
+router.route(paths.getPath('cookies'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('privacy/cookies', { referrer })
+  })
 
 module.exports = router

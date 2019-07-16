@@ -64,6 +64,7 @@ function initialiseGlobalMiddleware (app) {
   const maxAge = 86400000 // Prune expired entries every 24 hours.
   app.use(session({
     secret: 'beis-spl-planner',
+    name: 'application',
     cookie: { maxAge },
     store: new MemoryStore({
       checkPeriod: maxAge
@@ -119,7 +120,7 @@ function initialiseTemplateEngine (app) {
   nunjucksEnvironment.addGlobal('css_path', NODE_ENV === 'production' ? CSS_PATH : staticify.getVersionedPath('/stylesheets/application.min.css'))
   nunjucksEnvironment.addGlobal('js_path', NODE_ENV === 'production' ? JAVASCRIPT_PATH : staticify.getVersionedPath('/javascripts/application.js'))
   // TODO add value for service name
-  nunjucksEnvironment.addGlobal('service_name', 'Check if you can get shared parental leave and pay')
+  nunjucksEnvironment.addGlobal('service_name', 'check if you can get shared parental leave and pay')
 
   // Paths to external resources and tools.
   // TODO: Update fallback with final path of planner tool.

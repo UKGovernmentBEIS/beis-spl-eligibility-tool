@@ -127,6 +127,9 @@ class Paths {
       },
       feedback: {
         url: '/feedback'
+      },
+      cookies: {
+        url: '/cookies'
       }
     }
   }
