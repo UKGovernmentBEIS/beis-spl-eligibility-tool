@@ -125,6 +125,9 @@ class Paths {
         url: '/not-caring-with-partner',
         workflowParentPath: '/caring-with-partner'
       },
+      feedback: {
+        url: '/feedback'
+      },
       cookies: {
         url: '/cookies'
       }

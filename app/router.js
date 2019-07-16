@@ -130,6 +130,11 @@ router.route(paths.getPath('notCaringWithPartner'))
     res.render('not-caring-with-partner')
   })
 
+router.route(paths.getPath('feedback'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('feedback/feedback', { referrer })
+  })
 router.route(paths.getPath('cookies'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')
