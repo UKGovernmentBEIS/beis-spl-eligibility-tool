@@ -6,6 +6,12 @@
 
 {% extends "layout.njk" %}
 
+{% set currentParentName = data | currentParentName(currentParent) %}
+
+{% block pageTitle -%}
+  {{ (currentParentName | capitalise) + "’s employment status" | pageTitle }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
@@ -16,8 +22,6 @@
 {% endblock %}
 
 {% block content %}
-  {% set currentParentName = data | currentParentName(currentParent) %}
-
   {% if errors["employment-status"] %}
     {{ govukErrorSummary({
       titleText: "There is a problem",

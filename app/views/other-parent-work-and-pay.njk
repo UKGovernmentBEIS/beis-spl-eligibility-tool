@@ -8,6 +8,13 @@
 
 {% extends "layout.njk" %}
 
+{% set currentParentName = data | currentParentName(currentParent) %}
+{% set otherParentName = data | otherParentName(currentParent) %}
+
+{% block pageTitle -%}
+  {{ (currentParentName | capitalise) + "’s eligibility" | pageTitle((otherParentName | capitalise) + "’s work and pay") }}
+{%- endblock %}
+
 {% block beforeContent %}
   {{ super() }}
 
@@ -28,8 +35,6 @@
     }) }}
   {% endif %}
 
-  {% set currentParentName = data | currentParentName(currentParent) %}
-  {% set otherParentName = data | otherParentName(currentParent) %}
   {% set relevantWeek = data | relevantWeek %}
 
   {% set otherParentWorkTitle %}
