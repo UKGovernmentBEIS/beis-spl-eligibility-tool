@@ -66,6 +66,9 @@ class Paths {
         'primary-adopter': {
           url: '/primary-adopter/check-eligibility'
         },
+        'parental-order-parent': {
+          url: '/parental-order-parent/check-eligibility'
+        },
         partner: {
           url: '/partner/check-eligibility'
         }
@@ -78,6 +81,11 @@ class Paths {
         },
         'primary-adopter': {
           url: '/primary-adopter/employment-status',
+          workflowParentPath: '/results',
+          validator: req => validate.employmentStatus(req, 'primary')
+        },
+        'parental-order-parent': {
+          url: '/parental-order-parent/employment-status',
           workflowParentPath: '/results',
           validator: req => validate.employmentStatus(req, 'primary')
         },
@@ -98,6 +106,11 @@ class Paths {
           workflowParentPath: '/primary-adopter/employment-status',
           validator: req => validate.workAndPay(req, 'primary')
         },
+        'parental-order-parent': {
+          url: '/parental-order-parent/work-and-pay',
+          workflowParentPath: '/parental-order-parent/employment-status',
+          validator: req => validate.workAndPay(req, 'primary')
+        },
         partner: {
           url: '/partner/work-and-pay',
           workflowParentPath: '/partner/employment-status',
@@ -113,6 +126,11 @@ class Paths {
         'primary-adopter': {
           url: '/primary-adopter/other-parent-work-and-pay',
           workflowParentPath: '/primary-adopter/work-and-pay',
+          validator: req => validate.otherParentWorkAndPay(req, 'primary')
+        },
+        'parental-order-parent': {
+          url: '/parental-order-parent/other-parent-work-and-pay',
+          workflowParentPath: '/parental-order-parent/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'primary')
         },
         partner: {

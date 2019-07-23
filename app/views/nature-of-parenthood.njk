@@ -37,7 +37,7 @@
             name: "nature-of-parenthood",
             fieldset: {
               legend: {
-                text: "Are you having a child through birth or adoption?",
+                text: "Are you having a child through birth adoption or surrogacy?",
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }
@@ -56,6 +56,11 @@
                 value: "adoption",
                 text: "Adoption",
                 checked: data | isAdoption
+              },
+              {
+                value: "surrogacy",
+                text: "Surrogacy",
+                checked: data | isSurrogacy
               }
             ]
           }) }}

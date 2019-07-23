@@ -27,7 +27,8 @@
     </p>
     <ul class="govuk-list--bullet">
       <li>the {{ primaryName }}’s husband, wife or civil partner</li>
-      <li>the {{ "child’s other parent" if (data | isBirth) else "secondary adopter" }}</li>
+      {% set secondaryName = "child’s other parent" if (data | isBirth) else ("secondary adopter" if (data | isAdoption) else "parental order parent’s partner") %}
+      <li>the {{ secondaryName }}</li>
       <li>the {{ primaryName }}’s partner (if they live with the {{ primaryName }} and the child)</li>
     </ul>
   {% endset %}
