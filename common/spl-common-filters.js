@@ -21,6 +21,10 @@ module.exports = function (env) {
     return dataUtils.isAdoption(data)
   }
 
+  function isSurrogacy (data) {
+    return dataUtils.isSurrogacy(data)
+  }
+
   function primaryName (data) {
     return dataUtils.primaryName(data)
   }
@@ -90,6 +94,7 @@ module.exports = function (env) {
     isNo,
     isBirth,
     isAdoption,
+    isSurrogacy,
     primaryName,
     secondaryName,
     parentName,
