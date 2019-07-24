@@ -1,11 +1,9 @@
-/* global gtag */
-
-const { getGaFields, getBirthOrAdoption } = require('../../../common/lib/analyticsUtils')
+const { getGaFields, getNatureOfParenthood } = require('../../../common/lib/analyticsUtils')
 
 function birthOrAdoption () {
   document.querySelector('[data-ga-hit-type=parent_type]').addEventListener('click', function (e) {
     const gaFields = getGaFields(this)
-    gaFields['birth_or_adoption'] = getBirthOrAdoption()
+    gaFields['birth_or_adoption'] = getNatureOfParenthood()
     const gaHitType = this.getAttribute('data-ga-hit-type')
     gtag('event', gaHitType, gaFields)
   })
@@ -15,7 +13,7 @@ function eligibility (eligibilities) {
   const gaFields = {
     event_category: 'eligibility_questions',
     event_action: 'eligibility_result',
-    birth_or_adoption: getBirthOrAdoption()
+    birth_or_adoption: getNatureOfParenthood()
   }
   const parents = ['primary', 'secondary']
   const policies = ['spl', 'shpp']
