@@ -17,12 +17,12 @@ router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
 })
 
-router.route(paths.getPath('birthOrAdoption'))
+router.route(paths.getPath('natureOfParenthood'))
   .get(function (req, res) {
-    res.render('birth-or-adoption')
+    res.render('nature-of-parenthood')
   })
   .post(function (req, res) {
-    if (!validate.birthOrAdoption(req)) {
+    if (!validate.natureOfParenthood(req)) {
       return res.redirect(req.url)
     }
     res.redirect(paths.getPath('caringWithPartner'))

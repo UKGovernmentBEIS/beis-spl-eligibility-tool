@@ -7,10 +7,10 @@ const {
   validateParentYesNoFields
 } = require('./lib/validationUtils')
 
-function birthOrAdoption (req) {
+function natureOfParenthood (req) {
   const permittedValues = ['birth', 'adoption']
-  if (!permittedValues.includes(req.session.data['birth-or-adoption'])) {
-    addError(req, 'birth-or-adoption', 'Select either birth or adoption', '#birth-or-adoption-1')
+  if (!permittedValues.includes(req.session.data['nature-of-parenthood'])) {
+    addError(req, 'nature-of-parenthood', 'Select either birth or adoption', '#nature-of-parenthood-1')
     return false
   }
   return true
@@ -92,7 +92,7 @@ function otherParentWorkAndPay (req, parent) {
 }
 
 module.exports = {
-  birthOrAdoption,
+  natureOfParenthood,
   caringWithPartner,
   startDate,
   employmentStatus,
