@@ -1,7 +1,7 @@
 const qs = require('qs')
 const { pick } = require('lodash')
 const paths = require('../paths')
-const { isBirth } = require('../../common/lib/dataUtils')
+const { isBirth, isSurrogacy } = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
 const {
   getEligibility,
@@ -13,7 +13,7 @@ const {
 } = require('./eligibility')
 
 function registerRouteForEachParent (router, path, handlers) {
-  const parents = ['mother', 'primary-adopter', 'partner']
+  const parents = ['mother', 'primary-adopter', 'parental-order-parent', 'partner']
   for (const parent of parents) {
     const route = router.route(paths.getPath(`${path}.${parent}`))
     if (handlers.get) {
@@ -43,7 +43,7 @@ function plannerQueryString (data) {
 
   const dataForPlanner = pick(data, 'nature-of-parenthood')
 
-  if (isBirth(data)) {
+  if (isBirth(data) || isSurrogacy(data)) {
     dataForPlanner['due-date'] = new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).format('YYYY-MM-DD')
   }
 

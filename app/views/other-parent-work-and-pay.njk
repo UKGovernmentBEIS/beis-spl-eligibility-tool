@@ -85,7 +85,7 @@
         </span>
         {{ otherParentName | capitalise }}’s work and pay
       </h1>
-      {% if data | isBirth %}
+      {% if data | isBirth  or data | isSurrogacy %}
         {{ dateExplanationHint(data) }}
       {% endif %}
       <form method="POST">

@@ -6,12 +6,10 @@
 
 {% extends "layout.njk" %}
 
+{% set questionText = "What is, or what was your match date?" if data | isAdoption else "When is the baby due, or when was the baby born?" -%}
+
 {% block pageTitle -%}
-  {% if data | isBirth -%}
-    {{ "When is the baby due, or when was the baby born?" | pageTitle }}
-  {%- else -%}
-    {{ "What is, or what was your match date?" | pageTitle }}
-  {%- endif %}
+  {{ questionText | pageTitle }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -41,7 +39,7 @@
             namePrefix: "start-date",
             fieldset: {
               legend: {
-                text: "When is the baby due, or when was the baby born?" if (data | isBirth) else "What is, or what was your match date?",
+                text: questionText,
                 isPageHeading: true,
                 classes: "govuk-fieldset__legend--xl"
               }

@@ -1,13 +1,14 @@
 const dset = require('dset')
 const Day = require('../common/lib/day')
 const { ELIGIBILITY, getEligibility } = require('./lib/eligibility')
-const { SERVICE_NAME } = require('./constants')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
 
 module.exports = function (env) {
   const isBirth = env.getFilter('isBirth')
+  const isAdoption = env.getFilter('isAdoption')
+  const isSurrogacy = env.getFilter('isSurrogacy')
   const isInPast = env.getFilter('isInPast')
 
   // The week used as a baseline in eligibility calculations.
@@ -16,14 +17,22 @@ module.exports = function (env) {
   function relevantWeek (data) {
     const providedDate = getProvidedDate(data)
     const startOfWeek = providedDate.startOfWeek()
-    return isBirth(data) ? startOfWeek.subtract(15, 'weeks') : startOfWeek
+    return isAdoption(data) ? startOfWeek : startOfWeek.subtract(15, 'weeks')
   }
 
   function providedDateName (data) {
-    if (isBirth(data)) {
+    if (isBirth(data) || isSurrogacy(data)) {
       return isInPast(relevantWeek(data)) ? 'birth' : 'due'
     } else {
       return 'match'
+    }
+  }
+
+  function currentParentInitialLeaveName (data, currentParent) {
+    if (currentParent === 'primary') {
+      return isBirth(data) ? 'maternity' : 'adoption'
+    } else {
+      return 'paternity'
     }
   }
 
@@ -74,6 +83,7 @@ module.exports = function (env) {
   return {
     relevantWeek,
     providedDateName,
+    currentParentInitialLeaveName,
     eligibilityLabel,
     hasCheckedAnyEligibility,
     hasCheckedEligibility,

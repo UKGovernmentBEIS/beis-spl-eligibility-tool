@@ -40,15 +40,7 @@
   {% endset %}
 
   {% set payThresholdTitle %}
-    {% if data | relevantWeek | isInPast %}
-      Did the {{ currentParentName }} earn
-    {% else %}
-      Will the {{ currentParentName }} have earned
-    {% endif %}
-    more than £118 per week in this job between
-    {{ relevantWeek | offsetWeeks(-8) | endOfWeek | formatForDisplay }}
-    and
-    {{ relevantWeek | endOfWeek | formatForDisplay }}?
+    Is the {{ currentParentName }} eligible for {{ data | currentParentInitialLeaveName(currentParent) }} leave?
   {% endset %}
 
   {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}
