@@ -1,7 +1,7 @@
 const { getGaFields, getNatureOfParenthood } = require('../../../common/lib/analyticsUtils')
 
 function natureOfParenthood () {
-  document.querySelector('[data-ga-hit-type=parent_type]').addEventListener('click', function (e) {
+  document.querySelector('[data-ga-hit-type=nature_of_parenthood]').addEventListener('click', function (e) {
     const gaFields = getGaFields(this)
     gaFields['nature_of_parenthood'] = getNatureOfParenthood()
     const gaHitType = this.getAttribute('data-ga-hit-type')
