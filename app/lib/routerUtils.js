@@ -41,7 +41,7 @@ function plannerQueryString (data) {
     }
   }
 
-  const dataForPlanner = pick(data, 'birth-or-adoption')
+  const dataForPlanner = pick(data, 'nature-of-parenthood')
 
   if (isBirth(data)) {
     dataForPlanner['due-date'] = new Day(data['start-date-year'], data['start-date-month'], data['start-date-day']).format('YYYY-MM-DD')

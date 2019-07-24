@@ -22,17 +22,17 @@ describe('GET /', () => {
   })
 })
 
-describe('POST birthOrAdoption', () => {
-  it('redirects back to birth-or-adoption if birth-or-adoption not provided', done => {
-    app.post(paths.getPath('birthOrAdoption'))
+describe('POST natureOfParenthood', () => {
+  it('redirects back to nature-of-parenthood if nature-of-parenthood not provided', done => {
+    app.post(paths.getPath('natureOfParenthood'))
       .expect(302)
-      .expect('Location', paths.getPath('birthOrAdoption'))
+      .expect('Location', paths.getPath('natureOfParenthood'))
       .end(done)
   })
 
-  it('redirects to caringWithPartner if birth-or-adoption provided', done => {
-    app.post(paths.getPath('birthOrAdoption'))
-      .send({ 'birth-or-adoption': 'birth' })
+  it('redirects to caringWithPartner if nature-of-parenthood provided', done => {
+    app.post(paths.getPath('natureOfParenthood'))
+      .send({ 'nature-of-parenthood': 'birth' })
       .expect(302)
       .expect('Location', paths.getPath('caringWithPartner'))
       .end(done)

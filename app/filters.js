@@ -62,7 +62,7 @@ module.exports = function (env) {
   function resultsAnalyticsData (data) {
     const parents = ['primary', 'secondary']
     const policies = ['spl', 'shpp']
-    const output = { birth_or_adoption: data['birth-or-adoption'] }
+    const output = { nature_of_parenthood: data['nature-of-parenthood'] }
     parents.forEach(parent => {
       policies.forEach(policy => {
         dset(output, `${parent}.${policy}`, getParentEligibility(data, parent, policy))

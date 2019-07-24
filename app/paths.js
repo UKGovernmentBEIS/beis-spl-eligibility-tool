@@ -40,14 +40,14 @@ class Paths {
       root: {
         url: '/'
       },
-      birthOrAdoption: {
-        url: '/birth-or-adoption',
+      natureOfParenthood: {
+        url: '/nature-of-parenthood',
         workflowParentPath: '/',
-        validator: validate.birthOrAdoption
+        validator: validate.natureOfParenthood
       },
       caringWithPartner: {
         url: '/caring-with-partner',
-        workflowParentPath: '/birth-or-adoption',
+        workflowParentPath: '/nature-of-parenthood',
         validator: validate.caringWithPartner
       },
       startDate: {
