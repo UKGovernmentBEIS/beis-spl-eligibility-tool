@@ -21,6 +21,10 @@ module.exports = function (env) {
     return dataUtils.isAdoption(data)
   }
 
+  function earliestPrimaryLeaveWeek (data) {
+    return dataUtils.earliestPrimaryLeaveWeek(data)
+  }
+
   function isSurrogacy (data) {
     return dataUtils.isSurrogacy(data)
   }
@@ -47,6 +51,14 @@ module.exports = function (env) {
 
   function primaryLeaveType (data) {
     return isBirth(data) ? 'maternity' : 'adoption'
+  }
+
+  function parentInitialLeaveType (data, parent) {
+    if (parent === 'primary') {
+      return primaryLeaveType(data)
+    } else {
+      return 'paternity'
+    }
   }
 
   function capitalise (string) {
@@ -94,6 +106,7 @@ module.exports = function (env) {
     isNo,
     isBirth,
     isAdoption,
+    earliestPrimaryLeaveWeek,
     isSurrogacy,
     primaryName,
     secondaryName,
@@ -102,6 +115,7 @@ module.exports = function (env) {
     otherParentName,
     parentNameForUrl,
     primaryLeaveType,
+    parentInitialLeaveType,
     capitalise,
     startDateName,
     offsetWeeks,
