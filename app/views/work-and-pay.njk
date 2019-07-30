@@ -43,6 +43,11 @@
     Is the {{ currentParentName }} eligible for {{ data | currentParentInitialLeaveName(currentParent) }} leave?
   {% endset %}
 
+  {% set payThresholdHint %}
+    {% set hintLink = "https://www.gov.uk/maternity-pay-leave/eligibility" if data | isBirth else "https://www.gov.uk/adoption-pay-leave/eligibility" %}
+    If you are not sure, <a href="{{ hintLink }}">check if you are eligible for {{ data | currentParentInitialLeaveName(currentParent) }}</a> leave.
+  {% endset %}
+
   {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
@@ -121,6 +126,9 @@
                 text: payThresholdTitle,
                 classes: "govuk-fieldset__legend--m"
               }
+            },
+            hint: {
+              text: payThresholdHint | safe
             },
             errorMessage: errors["pay-threshold"],
             items: [
