@@ -63,24 +63,6 @@ class Paths {
         workflowParentPath: '/start-date',
         validate: validate.whichParent
       },
-      results: {
-        url: '/results',
-        workflowParentPath: '/start-date'
-      },
-      checkEligibility: {
-        mother: {
-          url: '/mother/check-eligibility'
-        },
-        'primary-adopter': {
-          url: '/primary-adopter/check-eligibility'
-        },
-        'parental-order-parent': {
-          url: '/parental-order-parent/check-eligibility'
-        },
-        partner: {
-          url: '/partner/check-eligibility'
-        }
-      },
       employmentStatus: {
         mother: {
           url: '/mother/employment-status',
@@ -149,6 +131,10 @@ class Paths {
           workflowParentPath: '/partner/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'secondary')
         }
+      },
+      results: {
+        url: '/results',
+        workflowParentPath: '/partner/other-parent-work-and-pay'
       },
       notCaringWithPartner: {
         url: '/not-caring-with-partner',

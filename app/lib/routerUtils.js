@@ -5,11 +5,7 @@ const { isBirth, isSurrogacy } = require('../../common/lib/dataUtils')
 const Day = require('../../common/lib/day')
 const {
   getEligibility,
-  ELIGIBILITY,
-  currentParentMeetsPayThreshold,
-  currentParentMeetsContinuousWorkThreshold,
-  isWorker,
-  isEmployee
+  ELIGIBILITY
 } = require('./eligibility')
 
 function registerRouteForEachParent (router, path, handlers) {
@@ -56,28 +52,8 @@ function plannerQueryString (data) {
   return qs.stringify(dataForPlanner)
 }
 
-function parentMeetsContinuousWorkThreshold (data, parent) {
-  return currentParentMeetsContinuousWorkThreshold(data[parent])
-}
-
-function parentMeetsPayAndContinuousWorkThresholds (data, parent) {
-  return parentMeetsContinuousWorkThreshold(data, parent) && currentParentMeetsPayThreshold(data[parent])
-}
-
-function parentIsWorker (data, parent) {
-  return isWorker(data[parent])
-}
-
-function parentIsEmployee (data, parent) {
-  return isEmployee(data[parent])
-}
-
 module.exports = {
   registerRouteForEachParent,
   getParent,
-  plannerQueryString,
-  parentMeetsContinuousWorkThreshold,
-  parentMeetsPayAndContinuousWorkThresholds,
-  parentIsWorker,
-  parentIsEmployee
+  plannerQueryString
 }

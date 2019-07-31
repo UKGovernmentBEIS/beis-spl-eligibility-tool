@@ -6,6 +6,7 @@ const {
   prettyList,
   validateParentYesNoFields
 } = require('./lib/validationUtils')
+const skip = require('./skip')
 
 function natureOfParenthood (req) {
   const permittedValues = ['birth', 'adoption', 'surrogacy']
@@ -76,6 +77,10 @@ function whichParent (req) {
 }
 
 function employmentStatus (req, parent) {
+  if (skip.employmentStatus(req, parent)) {
+    return true
+  }
+
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
   if (!permittedValues.includes(employmentStatus)) {
@@ -86,6 +91,10 @@ function employmentStatus (req, parent) {
 }
 
 function workAndPay (req, parent) {
+  if (skip.workAndPay(req, parent)) {
+    return true
+  }
+
   return validateParentYesNoFields(req, parent, {
     'work-start': 'Select whether or not you started your job before the date given',
     'continuous-work': 'Select whether or not your work has been continuous during the period given',
@@ -94,6 +103,10 @@ function workAndPay (req, parent) {
 }
 
 function otherParentWorkAndPay (req, parent) {
+  if (skip.otherParentWorkAndPay(req, parent)) {
+    return true
+  }
+
   return validateParentYesNoFields(req, parent, {
     'other-parent-work': 'Select whether or not your partner meets the work threshold',
     'other-parent-pay': 'Select whether or not your partner meets the pay threshold'
