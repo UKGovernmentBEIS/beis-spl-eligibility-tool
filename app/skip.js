@@ -5,40 +5,40 @@ const {
   isEmployee
 } = require('./lib/eligibility')
 
-function employmentStatus (req, parent) {
-  if (entireParent(req, parent)) {
+function employmentStatus (data, parent) {
+  if (entireParent(data, parent)) {
     return true
   }
   return false
 }
 
-function workAndPay (req, parent) {
-  if (entireParent(req, parent)) {
+function workAndPay (data, parent) {
+  if (entireParent(data, parent)) {
     return true
   }
-  if (parentIsSelfEmployedOrUnemployed(req, parent)) {
+  if (parentIsSelfEmployedOrUnemployed(data, parent)) {
     return true
   }
   return false
 }
 
-function otherParentWorkAndPay (req, parent) {
-  if (entireParent(req, parent)) {
+function otherParentWorkAndPay (data, parent) {
+  if (entireParent(data, parent)) {
     return true
   }
 
-  if (parentIsSelfEmployedOrUnemployed(req, parent)) {
+  if (parentIsSelfEmployedOrUnemployed(data, parent)) {
     return true
   }
 
-  if (parentIsWorker(req, parent) && !parentMeetsPayAndContinuousWorkThresholds(req, parent)) {
+  if (parentIsWorker(data, parent) && !parentMeetsPayAndContinuousWorkThresholds(data, parent)) {
     return true
   }
 
-  if (parentIsEmployee(req, parent) && !parentMeetsContinuousWorkThreshold(req, parent)) {
+  if (parentIsEmployee(data, parent) && !parentMeetsContinuousWorkThreshold(data, parent)) {
     return true
   }
-  if (req.session.data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(req.session.data['primary'])) {
+  if (data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(data['primary'])) {
     // skip step if secondary information implied by answers to primary questions
     return true
   }
@@ -46,37 +46,37 @@ function otherParentWorkAndPay (req, parent) {
   return false
 }
 
-function nextParent (req, parent) {
-  return parent === 'secondary' || req.session.data['which-parent'] !== 'both'
+function nextParent (data, parent) {
+  return parent === 'secondary' || data['which-parent'] !== 'both'
 }
 
-function entireParent (req, parent) {
+function entireParent (data, parent) {
   if (parent === 'primary') {
-    return req.session.data['which-parent'] === 'secondary'
+    return data['which-parent'] === 'secondary'
   } else {
-    return req.session.data['which-parent'] === 'primary'
+    return data['which-parent'] === 'primary'
   }
 }
 
-function parentIsSelfEmployedOrUnemployed (req, parent) {
-  return ['self-employed', 'unemployed'].includes(req.session.data[parent]['employment-status'])
+function parentIsSelfEmployedOrUnemployed (data, parent) {
+  return ['self-employed', 'unemployed'].includes(data[parent]['employment-status'])
 }
 
-function parentMeetsContinuousWorkThreshold (req, parent) {
-  return currentParentMeetsContinuousWorkThreshold(req.session.data[parent])
+function parentMeetsContinuousWorkThreshold (data, parent) {
+  return currentParentMeetsContinuousWorkThreshold(data[parent])
 }
 
-function parentMeetsPayAndContinuousWorkThresholds (req, parent) {
-  return parentMeetsContinuousWorkThreshold(req, parent) &&
-         currentParentMeetsPayThreshold(req.session.data[parent])
+function parentMeetsPayAndContinuousWorkThresholds (data, parent) {
+  return parentMeetsContinuousWorkThreshold(data, parent) &&
+         currentParentMeetsPayThreshold(data[parent])
 }
 
-function parentIsWorker (req, parent) {
-  return isWorker(req.session.data[parent])
+function parentIsWorker (data, parent) {
+  return isWorker(data[parent])
 }
 
-function parentIsEmployee (req, parent) {
-  return isEmployee(req.session.data[parent])
+function parentIsEmployee (data, parent) {
+  return isEmployee(data[parent])
 }
 
 module.exports = {

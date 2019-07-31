@@ -77,7 +77,7 @@ function whichParent (req) {
 }
 
 function employmentStatus (req, parent) {
-  if (skip.employmentStatus(req, parent)) {
+  if (skip.employmentStatus(req.session.data, parent)) {
     return true
   }
 
@@ -91,7 +91,7 @@ function employmentStatus (req, parent) {
 }
 
 function workAndPay (req, parent) {
-  if (skip.workAndPay(req, parent)) {
+  if (skip.workAndPay(req.session.data, parent)) {
     return true
   }
 
@@ -103,7 +103,7 @@ function workAndPay (req, parent) {
 }
 
 function otherParentWorkAndPay (req, parent) {
-  if (skip.otherParentWorkAndPay(req, parent)) {
+  if (skip.otherParentWorkAndPay(req.session.data, parent)) {
     return true
   }
 

@@ -67,21 +67,22 @@ router.route(paths.getPath('whichParent'))
 registerRouteForEachParent(router, 'employmentStatus', {
   get: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
-    if (skip.employmentStatus(req, currentParent)) {
+    if (skip.employmentStatus(req.session.data, currentParent)) {
       return res.redirect(paths.getPreviousWorkflowPath(req.url, req.session.data))
     }
     res.render('employment-status', { currentParent })
   },
   post: function (parentUrlPart, req, res) {
+    const { data } = req.session
     const currentParent = getParent(parentUrlPart)
     if (!validate.employmentStatus(req, currentParent)) {
       return res.redirect(req.url)
     }
-    if (skip.workAndPay(req, currentParent) && skip.otherParentWorkAndPay(req, currentParent) && skip.nextParent(req, currentParent)) {
+    if (skip.workAndPay(data, currentParent) && skip.otherParentWorkAndPay(data, currentParent) && skip.nextParent(data, currentParent)) {
       res.redirect(paths.getPath('results'))
-    } else if (skip.workAndPay(req, currentParent) && skip.otherParentWorkAndPay(req, currentParent)) {
+    } else if (skip.workAndPay(data, currentParent) && skip.otherParentWorkAndPay(data, currentParent)) {
       res.redirect(paths.getPath('employmentStatus.partner'))
-    } else if (skip.workAndPay(req, currentParent)) {
+    } else if (skip.workAndPay(data, currentParent)) {
       res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
     } else {
       res.redirect(paths.getPath(`workAndPay.${parentUrlPart}`))
@@ -92,19 +93,20 @@ registerRouteForEachParent(router, 'employmentStatus', {
 registerRouteForEachParent(router, 'workAndPay', {
   get: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
-    if (skip.workAndPay(req, currentParent)) {
+    if (skip.workAndPay(req.session.data, currentParent)) {
       return res.redirect(paths.getPreviousWorkflowPath(req.url, req.session.data))
     }
     res.render('work-and-pay', { currentParent })
   },
   post: function (parentUrlPart, req, res) {
+    const { data } = req.session
     const currentParent = getParent(parentUrlPart)
     if (!validate.workAndPay(req, currentParent)) {
       return res.redirect(req.url)
     }
-    if (skip.otherParentWorkAndPay(req, currentParent) && skip.nextParent(req, currentParent)) {
+    if (skip.otherParentWorkAndPay(data, currentParent) && skip.nextParent(data, currentParent)) {
       res.redirect(paths.getPath('results'))
-    } else if (skip.otherParentWorkAndPay(req, currentParent)) {
+    } else if (skip.otherParentWorkAndPay(data, currentParent)) {
       res.redirect(paths.getPath('employmentStatus.partner'))
     } else {
       res.redirect(paths.getPath(`otherParentWorkAndPay.${parentUrlPart}`))
@@ -115,17 +117,18 @@ registerRouteForEachParent(router, 'workAndPay', {
 registerRouteForEachParent(router, 'otherParentWorkAndPay', {
   get: function (parentUrlPart, req, res) {
     const currentParent = getParent(parentUrlPart)
-    if (skip.otherParentWorkAndPay(req, currentParent)) {
+    if (skip.otherParentWorkAndPay(req.session.data, currentParent)) {
       return res.redirect(paths.getPreviousWorkflowPath(req.url, req.session.data))
     }
     res.render('other-parent-work-and-pay', { currentParent })
   },
   post: function (parentUrlPart, req, res) {
+    const { data } = req.session
     const currentParent = getParent(parentUrlPart)
     if (!validate.otherParentWorkAndPay(req, currentParent)) {
       return res.redirect(req.url)
     }
-    if (skip.nextParent(req, currentParent)) {
+    if (skip.nextParent(data, currentParent)) {
       res.redirect(paths.getPath('results'))
     } else {
       res.redirect(paths.getPath('employmentStatus.partner'))
