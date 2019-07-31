@@ -1,0 +1,72 @@
+{% from "back-link/macro.njk" import govukBackLink %}
+{% from "button/macro.njk" import govukButton %}
+{% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "hidden-fields/macro.njk" import appendHiddenFields %}
+{% from "radios/macro.njk" import govukRadios %}
+
+{% extends "layout.njk" %}
+
+{% block pageTitle -%}
+  {{ "Whose eligibility would you like to check?" | pageTitle }}
+{%- endblock %}
+
+{% block beforeContent %}
+  {{ super() }}
+
+  {{ govukBackLink({
+    text: "Back",
+    href: backPath()
+  }) }}
+{% endblock %}
+
+{% block content %}
+  {% if errors["which-parent"] %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: [
+        errors["which-parent"]
+      ]
+    }) }}
+  {% endif %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <form method="POST">
+        {% call appendHiddenFields(data) %}
+          {{ govukRadios({
+            idPrefix: "which-parent",
+            name: "which-parent",
+            fieldset: {
+              legend: {
+                text: "Whose eligibility would you like to check?",
+                isPageHeading: true,
+                classes: "govuk-fieldset__legend--xl"
+              }
+            },
+            errorMessage: errors["which-parent"],
+            items: [
+              {
+                value: "primary",
+                text: data | primaryName | capitalise,
+                checked: data['which-parent'] === 'primary'
+              },
+              {
+                value: "secondary",
+                text: data | secondaryName | capitalise,
+                checked: data['which-parent'] === 'secondary'
+              },
+              {
+                value: "both",
+                text: "Both the " + data | primaryName + " and the " + data | secondaryName,
+                checked: data['which-parent'] === 'both'
+              }
+            ]
+          }) }}
+
+          {{ govukButton({
+            text: "Continue"
+          }) }}
+        {% endcall %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

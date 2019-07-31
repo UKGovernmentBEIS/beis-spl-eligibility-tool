@@ -66,6 +66,15 @@ function addStartDateError (req, message, dateParts) {
   addError(req, 'start-date', message, href, { dateParts })
 }
 
+function whichParent (req) {
+  const permittedValues = ['primary', 'secondary', 'both']
+  if (!permittedValues.includes(req.session.data['which-parent'])) {
+    addError(req, 'which-parent', 'Select whose eligibility you would like to check', '#which-parent-1')
+    return false
+  }
+  return true
+}
+
 function employmentStatus (req, parent) {
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
@@ -95,6 +104,7 @@ module.exports = {
   natureOfParenthood,
   caringWithPartner,
   startDate,
+  whichParent,
   employmentStatus,
   workAndPay,
   otherParentWorkAndPay

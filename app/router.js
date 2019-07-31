@@ -11,7 +11,7 @@ const {
   parentIsWorker,
   parentIsEmployee
 } = require('./lib/routerUtils')
-const { isNo } = require('../common/lib/dataUtils')
+const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
   res.render('index')
@@ -51,19 +51,21 @@ router.route(paths.getPath('startDate'))
     if (!validate.startDate(req)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.getPath('results'))
+    res.redirect(paths.getPath('whichParent'))
   })
 
-router.route(paths.getPath('results'))
+router.route(paths.getPath('whichParent'))
   .get(function (req, res) {
-    res.render('results', { plannerQueryString: plannerQueryString(req.session.data) })
+    res.render('which-parent')
   })
-
-registerRouteForEachParent(router, 'checkEligibility', {
-  post: function (parentUrlPart, req, res) {
-    res.redirect(paths.getPath(`employmentStatus.${parentUrlPart}`))
-  }
-})
+  .post(function (req, res) {
+    if (!validate.whichParent(req)) {
+      return res.redirect(req.url)
+    }
+    const data = req.session.data
+    const parent = data['which-parent'] === 'secondary' ? 'partner' : primaryUrlName(data)
+    res.redirect(paths.getPath(`employmentStatus.${parent}`))
+  })
 
 registerRouteForEachParent(router, 'employmentStatus', {
   get: function (parentUrlPart, req, res) {
@@ -121,9 +123,18 @@ registerRouteForEachParent(router, 'otherParentWorkAndPay', {
     if (!validate.otherParentWorkAndPay(req, currentParent)) {
       return res.redirect(req.url)
     }
-    res.redirect(paths.getPath('results'))
+    if (currentParent === 'primary') {
+      res.redirect(paths.getPath('employmentStatus.partner'))
+    } else {
+      res.redirect(paths.getPath('results'))
+    }
   }
 })
+
+router.route(paths.getPath('results'))
+  .get(function (req, res) {
+    res.render('results', { plannerQueryString: plannerQueryString(req.session.data) })
+  })
 
 router.route(paths.getPath('notCaringWithPartner'))
   .get(function (req, res) {
