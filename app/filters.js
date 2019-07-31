@@ -111,5 +111,5 @@ function isParentIneligile (data, parent, policy) {
 }
 
 function getParentEligibility (data, parent, policy) {
-  return getEligibility(data[parent], policy)
+  return getEligibility(data, parent, policy)
 }

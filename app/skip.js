@@ -1,5 +1,3 @@
-const dlv = require('dlv')
-
 const {
   currentParentMeetsPayThreshold,
   currentParentMeetsContinuousWorkThreshold,
@@ -28,6 +26,7 @@ function otherParentWorkAndPay (req, parent) {
   if (entireParent(req, parent)) {
     return true
   }
+
   if (parentIsSelfEmployedOrUnemployed(req, parent)) {
     return true
   }
@@ -39,8 +38,8 @@ function otherParentWorkAndPay (req, parent) {
   if (parentIsEmployee(req, parent) && !parentMeetsContinuousWorkThreshold(req, parent)) {
     return true
   }
-
-  if (parent === 'secondary' && currentParentMeetsPayThreshold(req.session.data['primary'])) {
+  if (req.session.data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(req.session.data['primary'])) {
+    // skip step if secondary information implied by answers to primary questions
     return true
   }
 

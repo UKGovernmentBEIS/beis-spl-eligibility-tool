@@ -45,7 +45,7 @@ function plannerQueryString (data) {
 
   ['primary', 'secondary'].forEach(parent => {
     ['spl', 'shpp'].forEach(policy => {
-      dataForPlanner[`${parent}-${policy}-eligible`] = convertEligibility(getEligibility(data[parent], policy))
+      dataForPlanner[`${parent}-${policy}-eligible`] = convertEligibility(getEligibility(data, parent, policy))
     })
   })
 
