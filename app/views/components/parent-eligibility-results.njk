@@ -17,7 +17,7 @@
   {% if data[parent] %}
     <p>{{ splIcon | safe }} The {{ parentName }} is <strong>{{ splEligiblity }} for shared parental leave</strong>.</p>
     {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
-      <p>{{ shppIcon | safe }} The {{ parentName }} <strong>may be eligible for shared parental pay</strong>. Check with their employer.</p>
+      <p>{{ shppIcon | safe }} The {{ parentName }} <strong>is eligible for shared parental pay</strong> subject to status, check with their employer.</p>
     {% else %}
       <p>{{ shppIcon | safe }} The {{ parentName }} is <strong>{{ shppEligiblity }} for shared parental pay</strong>.</p>
     {% endif %}
@@ -39,7 +39,7 @@
 
     {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
       {{ govukInsetText({
-        text: "A small number of workers qualify for statutory shared parental pay. Ask your employer if you are eligible for pay."
+        text: "Some workers qualify for statutory shared parental pay, confirm with your employer."
       }) }}
     {% endif %}
 
@@ -62,6 +62,7 @@
     {% endif %}
   {% else %}
     <p>The {{ parentName }}’s eligibility for shared parental pay and leave is unknown.<p>
-    <p><a href="{{ options.withData('/which-parent', {'which-parent': parent }) }}">Check the {{ parentName}}’s eligibility</a></p>
+
+    <p><a href="/">Start again to check the {{ parentName}}’s eligibility</a></p>
   {% endif %}
 {% endmacro %}
