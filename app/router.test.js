@@ -101,7 +101,7 @@ describe('POST startDate', () => {
     })
   })
 
-  it('redirects to results when date is valid', done => {
+  it('redirects to which-parent when date is valid', done => {
     const payload = {
       'start-date-day': '02',
       'start-date-month': '11',
@@ -111,16 +111,7 @@ describe('POST startDate', () => {
     app.post(paths.getPath('startDate'))
       .send(payload)
       .expect(302)
-      .expect('Location', paths.getPath('results'))
-      .end(done)
-  })
-})
-
-describe('POST checkEligiblity with a parent', () => {
-  it('redirects to employmentStatus with the same parent', done => {
-    app.post(paths.getPath('checkEligibility.mother'))
-      .expect(302)
-      .expect('Location', paths.getPath('employmentStatus.mother'))
+      .expect('Location', paths.getPath('whichParent'))
       .end(done)
   })
 })

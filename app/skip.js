@@ -38,6 +38,7 @@ function otherParentWorkAndPay (data, parent) {
   if (parentIsEmployee(data, parent) && !parentMeetsContinuousWorkThreshold(data, parent)) {
     return true
   }
+
   if (data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(data['primary'])) {
     // skip step if secondary information implied by answers to primary questions
     return true

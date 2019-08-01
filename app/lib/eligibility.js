@@ -25,7 +25,7 @@ function hasCompletedCurrentParentThresholds (eligibilityData) {
 
 function otherParentMeetsWorkAndPayThresholds (thisParentEligibility, otherParentEligibility) {
   return (isYes(thisParentEligibility['other-parent-work']) && isYes(thisParentEligibility['other-parent-pay'])) ||
-         isYes(dlv(otherParentEligibility, 'pay-threshold'))
+          isYes(dlv(otherParentEligibility, 'pay-threshold'))
 }
 
 function currentParentMeetsPayThreshold (eligibilityData) {
@@ -70,7 +70,7 @@ function getEligibility (data, parent, policy) {
   if (
     policy === 'shpp' &&
     (!currentParentMeetsContinuousWorkThreshold(thisParentEligibility) ||
-    !currentParentMeetsPayThreshold(thisParentEligibility)
+     !currentParentMeetsPayThreshold(thisParentEligibility)
     )
   ) {
     return ELIGIBILITY.NOT_ELIGIBLE
