@@ -1,40 +1,21 @@
 {% from "table/macro.njk" import govukTable %}
-{% from "./check-eligibility-button.njk" import checkEligibilityButton %}
 {% from "inset-text/macro.njk" import govukInsetText %}
 
 {% macro parentEligibilityResults(options) %}
   {% set parent = options.parent %}
   {% set data = options.data %}
-  {{ govukTable({
-    caption: data | parentName(parent) | capitalise,
-    head: [
-      {
-        text: "Shared parental leave"
-      },
-      {
-        text: "Statutory shared parental pay"
-      },
-      {
-        text: ""
-      }
-    ],
-    rows: [
-      [
-        {
-          html: data | eligibilityLabel(parent, "spl") | safe
-        },
-        {
-          html: data | eligibilityLabel(parent, "shpp") | safe
-        },
-        {
-          html: checkEligibilityButton({
-            data: data,
-            parent: parent
-          })
-        }
-      ]
-    ]
-  }) }}
+  {% set parentName = data | parentName(parent) %}
+  {% set splEligiblity = data | eligibilityLabel(parent, "spl") %}
+  {% set splIcon = data | eligibilityIcon(parent, "spl") %}
+  {% set shppEligiblity = data | eligibilityLabel(parent, "shpp") %}
+  {% set shppIcon = data | eligibilityIcon(parent, "shpp") %}
+
+  <h2 class="govuk-heading-m">
+    {{ parentName | capitalise }}
+  </h2>
+  <p>{{ splIcon | safe }} The {{ parentName }} is <strong>{{ splEligiblity }} for shared parental leave</strong>.</p>
+  <p>{{ shppIcon | safe }} The {{ parentName }} is <strong>{{ shppEligiblity }} for shared parental pay</strong>.</p>
+
   {% if
     data[parent]["employment-status"] === "self-employed" or
     data[parent]["employment-status"] === "unemployed"
@@ -58,7 +39,7 @@
 
   {% if data[parent]["pay-threshold"] | isNo %}
     {{ govukInsetText({
-      text: "To be eligible for shared parental pay the " + data | currentParentName(parent) + " must have earned on average at least £118 in that job in the 8 weeks prior to the 15th week before the " + data | startDateName + "."
+      text: "To be eligible for shared parental pay the " + data | currentParentName(parent) + " must have earned on average at least £118 in their job in the 8 weeks prior to the 15th week before the " + data | startDateName + "."
     }) }}
   {% endif %}
 

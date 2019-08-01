@@ -1,6 +1,0 @@
-{% macro checkEligibilityButton(options) %}
-  {% set formAction = '/' + (options.data | parentNameForUrl(options.parent)) + '/check-eligibility' %}
-  <button class="govuk-link--no-visited-state button-link" role="link" formaction="{{ formAction }}">
-    {{ "Re-check" if options.data | hasCheckedEligibility(options.parent) else "Check" }} eligibility
-  </button>
-{% endmacro %}

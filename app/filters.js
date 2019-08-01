@@ -39,11 +39,22 @@ module.exports = function (env) {
   function eligibilityLabel (data, parent, policy) {
     switch (getParentEligibility(data, parent, policy)) {
       case ELIGIBILITY.ELIGIBLE:
-        return 'Eligible <span aria-hidden="true">✔</span>'
+        return 'eligible'
       case ELIGIBILITY.NOT_ELIGIBLE:
-        return 'Not eligible <span aria-hidden="true">✘</span>'
+        return 'not eligible'
       default:
         return 'Eligibility unknown'
+    }
+  }
+
+  function eligibilityIcon (data, parent, policy) {
+    switch (getParentEligibility(data, parent, policy)) {
+      case ELIGIBILITY.ELIGIBLE:
+        return '<span aria-hidden="true">✔</span>'
+      case ELIGIBILITY.NOT_ELIGIBLE:
+        return '<span aria-hidden="true">✘</span>'
+      default:
+        return '<span aria-hidden="true"><strong>?</strong></span>'
     }
   }
 
@@ -85,6 +96,7 @@ module.exports = function (env) {
     providedDateName,
     currentParentInitialLeaveName,
     eligibilityLabel,
+    eligibilityIcon,
     hasCheckedAnyEligibility,
     hasCheckedEligibility,
     coupleHasAnyIneligibility,
