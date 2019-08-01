@@ -29,6 +29,9 @@ function otherParentMeetsWorkAndPayThresholds (thisParentEligibility, otherParen
 }
 
 function currentParentMeetsPayThreshold (eligibilityData) {
+  if (!eligibilityData) {
+    return false
+  }
   const meetsPayThreshold = isYes(eligibilityData['pay-threshold'])
   return isEmployeeOrWorker(eligibilityData) && meetsPayThreshold
 }

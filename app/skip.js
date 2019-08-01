@@ -14,12 +14,13 @@ function workAndPay (data, parent) {
 }
 
 function otherParentWorkAndPay (data, parent) {
+  const otherParent = parent === 'primary' ? 'secondary' : 'primary'
   return entireParent(data, parent) ||
          parentIsSelfEmployedOrUnemployed(data, parent) ||
          (parentIsWorker(data, parent) && !parentMeetsPayAndContinuousWorkThresholds(data, parent)) ||
          (parentIsEmployee(data, parent) && !parentMeetsContinuousWorkThreshold(data, parent)) ||
-         // skip step if secondary information implied by answers to primary questions
-         (data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(data['primary']))
+         // skip step if information implied by answers to other parent's questions
+         (currentParentMeetsPayThreshold(data[otherParent]))
 }
 
 function nextParent (data, parent) {

@@ -1,6 +1,6 @@
 const dset = require('dset')
 const Day = require('../common/lib/day')
-const { ELIGIBILITY, getEligibility } = require('./lib/eligibility')
+const eligibility = require('./lib/eligibility')
 
 // Existing filters can be imported from env using env.getFilter(name)
 // See https://mozilla.github.io/nunjucks/api.html#getfilter
@@ -36,11 +36,15 @@ module.exports = function (env) {
     }
   }
 
+  function isWorker (data, parent) {
+    return eligibility.isWorker(data[parent])
+  }
+
   function eligibilityLabel (data, parent, policy) {
     switch (getParentEligibility(data, parent, policy)) {
-      case ELIGIBILITY.ELIGIBLE:
+      case eligibility.ELIGIBILITY.ELIGIBLE:
         return 'eligible'
-      case ELIGIBILITY.NOT_ELIGIBLE:
+      case eligibility.ELIGIBILITY.NOT_ELIGIBLE:
         return 'not eligible'
       default:
         return 'Eligibility unknown'
@@ -48,18 +52,20 @@ module.exports = function (env) {
   }
 
   function eligibilityIcon (data, parent, policy) {
-    switch (getParentEligibility(data, parent, policy)) {
-      case ELIGIBILITY.ELIGIBLE:
-        return '<span aria-hidden="true">✔</span>'
-      case ELIGIBILITY.NOT_ELIGIBLE:
+    const parentEligibility = getParentEligibility(data, parent, policy)
+    const eligibilityUnknownIcon = '<span aria-hidden="true"><strong>?</strong></span>'
+    switch (parentEligibility) {
+      case eligibility.ELIGIBILITY.ELIGIBLE:
+        return isWorker(data, parent) ? eligibilityUnknownIcon : '<span aria-hidden="true">✔</span>'
+      case eligibility.ELIGIBILITY.NOT_ELIGIBLE:
         return '<span aria-hidden="true">✘</span>'
       default:
-        return '<span aria-hidden="true"><strong>?</strong></span>'
+        return eligibilityUnknownIcon
     }
   }
 
   function hasCheckedEligibility (data, parent) {
-    return getParentEligibility(data, parent, 'spl') !== ELIGIBILITY.UNKNOWN
+    return getParentEligibility(data, parent, 'spl') !== eligibility.ELIGIBILITY.UNKNOWN
   }
 
   function hasCheckedAnyEligibility (data) {
@@ -95,6 +101,7 @@ module.exports = function (env) {
     relevantWeek,
     providedDateName,
     currentParentInitialLeaveName,
+    isWorker,
     eligibilityLabel,
     eligibilityIcon,
     hasCheckedAnyEligibility,
@@ -119,9 +126,9 @@ function getProvidedDate (data) {
 }
 
 function isParentIneligile (data, parent, policy) {
-  return getParentEligibility(data, parent, policy) === ELIGIBILITY.NOT_ELIGIBLE
+  return getParentEligibility(data, parent, policy) === eligibility.ELIGIBILITY.NOT_ELIGIBLE
 }
 
 function getParentEligibility (data, parent, policy) {
-  return getEligibility(data, parent, policy)
+  return eligibility.getEligibility(data, parent, policy)
 }
