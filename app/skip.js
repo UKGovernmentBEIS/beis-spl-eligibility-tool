@@ -6,45 +6,20 @@ const {
 } = require('./lib/eligibility')
 
 function employmentStatus (data, parent) {
-  if (entireParent(data, parent)) {
-    return true
-  }
-  return false
+  return entireParent(data, parent)
 }
 
 function workAndPay (data, parent) {
-  if (entireParent(data, parent)) {
-    return true
-  }
-  if (parentIsSelfEmployedOrUnemployed(data, parent)) {
-    return true
-  }
-  return false
+  return entireParent(data, parent) || parentIsSelfEmployedOrUnemployed(data, parent)
 }
 
 function otherParentWorkAndPay (data, parent) {
-  if (entireParent(data, parent)) {
-    return true
-  }
-
-  if (parentIsSelfEmployedOrUnemployed(data, parent)) {
-    return true
-  }
-
-  if (parentIsWorker(data, parent) && !parentMeetsPayAndContinuousWorkThresholds(data, parent)) {
-    return true
-  }
-
-  if (parentIsEmployee(data, parent) && !parentMeetsContinuousWorkThreshold(data, parent)) {
-    return true
-  }
-
-  if (data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(data['primary'])) {
-    // skip step if secondary information implied by answers to primary questions
-    return true
-  }
-
-  return false
+  return entireParent(data, parent) ||
+         parentIsSelfEmployedOrUnemployed(data, parent) ||
+         (parentIsWorker(data, parent) && !parentMeetsPayAndContinuousWorkThresholds(data, parent)) ||
+         (parentIsEmployee(data, parent) && !parentMeetsContinuousWorkThreshold(data, parent)) ||
+         // skip step if secondary information implied by answers to primary questions
+         (data['which-parent'] === 'both' && parent === 'secondary' && currentParentMeetsPayThreshold(data['primary']))
 }
 
 function nextParent (data, parent) {
