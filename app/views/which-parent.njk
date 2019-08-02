@@ -47,17 +47,17 @@
               {
                 value: "primary",
                 text: data | primaryName | capitalise,
-                checked: data['which-parent'] === 'primary'
+                checked: data["which-parent"] === "primary"
               },
               {
                 value: "secondary",
                 text: data | secondaryName | capitalise,
-                checked: data['which-parent'] === 'secondary'
+                checked: data["which-parent"] === "secondary"
               },
               {
                 value: "both",
                 text: "Both the " + data | primaryName + " and the " + data | secondaryName,
-                checked: data['which-parent'] === 'both'
+                checked: data["which-parent"] === "both"
               }
             ]
           }) }}
