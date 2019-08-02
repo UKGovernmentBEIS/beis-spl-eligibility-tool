@@ -11,7 +11,7 @@
 {% set currentParentName = data | currentParentName(currentParent) %}
 
 {% block pageTitle -%}
-  {{ (currentParentName | capitalise) + "’s eligibility" | pageTitle((currentParentName | capitalise) + "’s work and pay") }}
+  {{ (currentParentName | capitalize) + "’s eligibility" | pageTitle((currentParentName | capitalize) + "’s work and pay") }}
 {%- endblock %}
 
 {% block beforeContent %}
@@ -62,9 +62,9 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
         <span class="govuk-caption-xl">
-          {{ currentParentName | capitalise }}’s eligibility
+          {{ currentParentName | capitalize }}’s eligibility
         </span>
-        {{ currentParentName | capitalise }}’s work and pay
+        {{ currentParentName | capitalize }}’s work and pay
       </h1>
       {{ dateExplanationHint(data) }}
       <form action="{{formaction}}" method="POST">
