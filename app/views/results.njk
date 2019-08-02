@@ -14,7 +14,7 @@
   {{ super() }}
 
   {{ govukBackLink({
-    text: "Back to " + data | startDateName,
+    text: "Back",
     href: backPath()
   }) }}
 {% endblock %}
@@ -33,7 +33,8 @@
           {% for parent in ["primary", "secondary"] %}
             {{ parentEligibilityResults({
               data: data,
-              parent: parent
+              parent: parent,
+              withData: withData
             }) }}
           {% endfor %}
         {% endcall %}

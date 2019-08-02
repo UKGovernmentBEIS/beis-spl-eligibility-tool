@@ -1,3 +1,4 @@
+const dlv = require('dlv')
 const { isYes } = require('../../common/lib/dataUtils')
 
 const ELIGIBILITY = Object.freeze({
@@ -22,15 +23,15 @@ function hasCompletedCurrentParentThresholds (eligibilityData) {
   return !!(eligibilityData['pay-threshold'] && eligibilityData['continuous-work'] && eligibilityData['work-start'])
 }
 
-function hasCompletedOtherParentThresholds (eligibilityData) {
-  return !!(eligibilityData['other-parent-work'] && eligibilityData['other-parent-pay'])
-}
-
-function otherParentMeetsWorkAndPayThresholds (eligibilityData) {
-  return isYes(eligibilityData['other-parent-work']) && isYes(eligibilityData['other-parent-pay'])
+function otherParentMeetsWorkAndPayThresholds (thisParentEligibility, otherParentEligibility) {
+  return (isYes(thisParentEligibility['other-parent-work']) && isYes(thisParentEligibility['other-parent-pay'])) ||
+          isYes(dlv(otherParentEligibility, 'pay-threshold'))
 }
 
 function currentParentMeetsPayThreshold (eligibilityData) {
+  if (!eligibilityData) {
+    return false
+  }
   const meetsPayThreshold = isYes(eligibilityData['pay-threshold'])
   return isEmployeeOrWorker(eligibilityData) && meetsPayThreshold
 }
@@ -40,45 +41,45 @@ function currentParentMeetsContinuousWorkThreshold (eligibilityData) {
   return isEmployeeOrWorker(eligibilityData) && meetsWorkThreshold
 }
 
-function getEligibility (eligibilityData, policy) {
-  if (eligibilityData === undefined) {
+function getEligibility (data, parent, policy) {
+  const thisParentEligibility = data[parent]
+  const otherParent = parent === 'primary' ? 'secondary' : 'primary'
+  const otherParentEligibility = data[otherParent]
+
+  if (thisParentEligibility === undefined) {
     return ELIGIBILITY.UNKNOWN
   }
 
-  if (!eligibilityData['employment-status']) {
+  if (!thisParentEligibility['employment-status']) {
     return ELIGIBILITY.UNKNOWN
   }
 
-  if (!isEmployeeOrWorker(eligibilityData)) {
+  if (!isEmployeeOrWorker(thisParentEligibility)) {
     return ELIGIBILITY.NOT_ELIGIBLE
   }
 
-  if (policy === 'spl' && isWorker(eligibilityData)) {
+  if (policy === 'spl' && isWorker(thisParentEligibility)) {
     return ELIGIBILITY.NOT_ELIGIBLE
   }
 
-  if (!hasCompletedCurrentParentThresholds(eligibilityData)) {
+  if (!hasCompletedCurrentParentThresholds(thisParentEligibility)) {
     return ELIGIBILITY.UNKNOWN
   }
 
-  if (policy === 'spl' && !currentParentMeetsContinuousWorkThreshold(eligibilityData)) {
+  if (policy === 'spl' && !currentParentMeetsContinuousWorkThreshold(thisParentEligibility)) {
     return ELIGIBILITY.NOT_ELIGIBLE
   }
 
   if (
     policy === 'shpp' &&
-    (!currentParentMeetsContinuousWorkThreshold(eligibilityData) ||
-      !currentParentMeetsPayThreshold(eligibilityData)
+    (!currentParentMeetsContinuousWorkThreshold(thisParentEligibility) ||
+     !currentParentMeetsPayThreshold(thisParentEligibility)
     )
   ) {
     return ELIGIBILITY.NOT_ELIGIBLE
   }
 
-  if (!hasCompletedOtherParentThresholds(eligibilityData)) {
-    return ELIGIBILITY.UNKNOWN
-  }
-
-  if (!otherParentMeetsWorkAndPayThresholds(eligibilityData)) {
+  if (!otherParentMeetsWorkAndPayThresholds(thisParentEligibility, otherParentEligibility)) {
     return ELIGIBILITY.NOT_ELIGIBLE
   }
 

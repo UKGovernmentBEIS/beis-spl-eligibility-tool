@@ -1,6 +1,7 @@
 const delve = require('dlv')
 const validate = require('./validate')
 const _ = require('lodash')
+const { primaryUrlName } = require('../common/lib/dataUtils')
 
 /*
  * This class is used to manage all paths in the app.
@@ -57,43 +58,33 @@ class Paths {
         workflowParentPath: '/caring-with-partner',
         validator: validate.startDate
       },
-      results: {
-        url: '/results',
-        workflowParentPath: '/start-date'
-      },
-      checkEligibility: {
-        mother: {
-          url: '/mother/check-eligibility'
-        },
-        'primary-adopter': {
-          url: '/primary-adopter/check-eligibility'
-        },
-        'parental-order-parent': {
-          url: '/parental-order-parent/check-eligibility'
-        },
-        partner: {
-          url: '/partner/check-eligibility'
-        }
+      whichParent: {
+        url: '/which-parent',
+        workflowParentPath: '/start-date',
+        validate: validate.whichParent
       },
       employmentStatus: {
         mother: {
           url: '/mother/employment-status',
-          workflowParentPath: '/results',
+          workflowParentPath: '/which-parent',
           validator: req => validate.employmentStatus(req, 'primary')
         },
         'primary-adopter': {
           url: '/primary-adopter/employment-status',
-          workflowParentPath: '/results',
+          workflowParentPath: '/which-parent',
           validator: req => validate.employmentStatus(req, 'primary')
         },
         'parental-order-parent': {
           url: '/parental-order-parent/employment-status',
-          workflowParentPath: '/results',
+          workflowParentPath: '/which-parent',
           validator: req => validate.employmentStatus(req, 'primary')
         },
         partner: {
           url: '/partner/employment-status',
-          workflowParentPath: '/results',
+          workflowParentPath: data => {
+            const parent = primaryUrlName(data)
+            return `/${parent}/other-parent-work-and-pay`
+          },
           validator: req => validate.employmentStatus(req, 'secondary')
         }
       },
@@ -140,6 +131,10 @@ class Paths {
           workflowParentPath: '/partner/work-and-pay',
           validator: req => validate.otherParentWorkAndPay(req, 'secondary')
         }
+      },
+      results: {
+        url: '/results',
+        workflowParentPath: '/partner/other-parent-work-and-pay'
       },
       notCaringWithPartner: {
         url: '/not-caring-with-partner',
