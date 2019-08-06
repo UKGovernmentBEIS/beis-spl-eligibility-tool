@@ -1,3 +1,5 @@
+/* global gtag */
+
 const { getGaFields, getNatureOfParenthood } = require('../../../common/lib/analyticsUtils')
 
 function natureOfParenthood () {
