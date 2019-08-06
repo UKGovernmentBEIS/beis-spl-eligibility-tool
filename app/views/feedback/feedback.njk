@@ -2,12 +2,12 @@
 
 {% extends "layout.njk" %}
 
-{% block beforeContent %}
-  {{ super() }}
+{% set backLink = withData(referrer or '/') %}
 
+{% block beforeContent %}
   {{ govukBackLink({
     text: "Back",
-    href: withData(referrer)
+    href: backLink
   }) }}
 {% endblock %}
 
@@ -17,21 +17,20 @@
       <h1 class="govuk-heading-xl">
         Provide feedback about this service
       </h1>
-
       <p>
         If you would like to report a problem, give feedback or suggest an improvement to this service, please contact:
-        <br/><br/>
+        <br/>
         {# TODO update this email address once the correct email address has been confirmed #}
         {% set feedbackEmailAddress = "feedback@example.com" %}
         <strong>
           <a href="mailto:{{ feedbackEmailAddress }}?subject=Feedback%20on%20Shared%20Parental%20Leave%20and%20Pay%20eligibility%20checker">
-            feedback@example.com
+            {{ feedbackEmailAddress }}
           </a>
         </strong>
       </p>
     </div>
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <a href="{{ withData(referrer) }}" class="govuk-button">
+      <a href="{{ backLink }}" class="govuk-button">
         Return to service
       </a>
     </div>
