@@ -10,12 +10,15 @@ const {
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
 
-// In production, the start page is hosted on GOV.UK.
-if (process.env.NODE_ENV !== 'production') {
-  router.get(paths.getPath('root'), function (req, res) {
+router.get(paths.getPath('root'), function (req, res) {
+  // In production, the start page is hosted separately on GOV.UK.
+  // In testing, we render our index view.
+  if (process.env.START_PAGE) {
+    res.redirect(process.env.START_PAGE)
+  } else {
     res.render('index')
-  })
-}
+  }
+})
 
 router.route(paths.getPath('natureOfParenthood'))
   .get(function (req, res) {
