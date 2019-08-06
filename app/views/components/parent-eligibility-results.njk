@@ -15,12 +15,26 @@
   </h2>
 
   {% if data[parent] %}
-    <p>{{ splIcon | safe }} The {{ parentName }} is <strong>{{ splEligiblity }} for Shared Parental Leave</strong>.</p>
-    {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
-      <p>{{ shppIcon | safe }} The {{ parentName }} <strong>may be eligible for Shared Parental Pay</strong>. Check with their employer.</p>
-    {% else %}
-      <p>{{ shppIcon | safe }} The {{ parentName }} is <strong>{{ shppEligiblity }} for Shared Parental Pay</strong>.</p>
-    {% endif %}
+    <div class="govuk-body eligibility-result">
+      <div class="eligibility-icon">
+        {{ splIcon | safe }}
+      </div>
+      <div>
+        The {{ parentName }} is <strong>{{ splEligiblity }} for Shared Parental Leave</strong>.
+      </div>
+    </div>
+    <div class="govuk-body eligibility-result">
+      <div class="eligibility-icon">
+        {{ shppIcon | safe }}
+      </div>
+      <div>
+        {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
+          The {{ parentName }} <strong>may be eligible for Shared Parental Pay</strong>. Check with their employer.
+        {% else %}
+          The {{ parentName }} is <strong>{{ shppEligiblity }} for Shared Parental Pay</strong>.
+        {% endif %}
+      </div>
+    </div>
 
     {% if
       data[parent]["employment-status"] === "self-employed" or
@@ -39,7 +53,7 @@
 
     {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
       {{ govukInsetText({
-        text: "A small number of workers qualify for Statutory Shared Parental Pay. Ask your employer if you are eligible for pay."
+        text: "A small number of workers qualify for Statutory Shared Parental Pay. Ask the " + parentName + "’s employer if they are eligible."
       }) }}
     {% endif %}
 
@@ -51,7 +65,7 @@
 
     {% if data[parent]["pay-threshold"] | isNo %}
       {{ govukInsetText({
-        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for " + data | currentParentInitialLeaveName(currentParent) + " pay."
+        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for " + data | currentParentInitialLeaveName(parent) + " pay."
       }) }}
     {% endif %}
 

@@ -23,11 +23,8 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-xl">
-        Check if you can get Shared Parental Leave and Pay
+        Your eligibility results
       </h1>
-      <p>
-        Choose which parent you want to check eligibility for below.
-      </p>
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {% for parent in ["primary", "secondary"] %}
@@ -48,10 +45,7 @@
             To understand why you or your partner are not eligible for Shared Parental Leave or Shared Parental Pay, you can check the guidelines on
             {% if data | isBirth %}
               <a href="{{ mainstream_guidance_root_path }}/eligibility-for-birth-parents">eligibility for birth parents</a>.
-            {% elif data | isAdoption %}
-              <a href="{{ mainstream_guidance_root_path }}/eligibility-for-adopters">eligibility for adopters</a>.
             {% else %}
-              {# TODO check that this link is appropriate for surrogate parents #}
               <a href="{{ mainstream_guidance_root_path }}/eligibility-for-adopters">eligibility for adopters</a>.
             {% endif %}
           </p>
