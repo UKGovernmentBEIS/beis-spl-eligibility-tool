@@ -51,7 +51,7 @@
 
     {% if data[parent]["pay-threshold"] | isNo %}
       {{ govukInsetText({
-        text: "To be eligible for shared parental pay the " + data | currentParentName(parent) + " must have earned on average at least £118 in their job in the 8 weeks prior to the 15th week before the " + data | startDateName + "."
+        text: "To be eligible for shared parental pay the " + data | currentParentName(parent) + " must be eligible for " + data | currentParentInitialLeaveName(currentParent) + " pay."
       }) }}
     {% endif %}
 
