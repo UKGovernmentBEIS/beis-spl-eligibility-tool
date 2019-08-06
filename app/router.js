@@ -10,9 +10,12 @@ const {
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
 
-router.get(paths.getPath('root'), function (req, res) {
-  res.render('index')
-})
+// In production, the start page is hosted on GOV.UK.
+if (process.env.NODE_ENV !== 'production') {
+  router.get(paths.getPath('root'), function (req, res) {
+    res.render('index')
+  })
+}
 
 router.route(paths.getPath('natureOfParenthood'))
   .get(function (req, res) {
@@ -151,6 +154,7 @@ router.route(paths.getPath('feedback'))
     const referrer = req.header('Referrer')
     res.render('feedback/feedback', { referrer })
   })
+
 router.route(paths.getPath('cookies'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')
