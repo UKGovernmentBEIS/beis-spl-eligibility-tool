@@ -15,11 +15,11 @@
   </h2>
 
   {% if data[parent] %}
-    <p>{{ splIcon | safe }} The {{ parentName }} is <strong>{{ splEligiblity }} for shared parental leave</strong>.</p>
+    <p>{{ splIcon | safe }} The {{ parentName }} is <strong>{{ splEligiblity }} for Shared Parental Leave</strong>.</p>
     {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
-      <p>{{ shppIcon | safe }} The {{ parentName }} <strong>may be eligible for shared parental pay</strong>. Check with their employer.</p>
+      <p>{{ shppIcon | safe }} The {{ parentName }} <strong>may be eligible for Shared Parental Pay</strong>. Check with their employer.</p>
     {% else %}
-      <p>{{ shppIcon | safe }} The {{ parentName }} is <strong>{{ shppEligiblity }} for shared parental pay</strong>.</p>
+      <p>{{ shppIcon | safe }} The {{ parentName }} is <strong>{{ shppEligiblity }} for Shared Parental Pay</strong>.</p>
     {% endif %}
 
     {% if
@@ -27,41 +27,41 @@
       data[parent]["employment-status"] === "unemployed"
     %}
       {{ govukInsetText({
-        text: "You cannot get shared parental leave or pay if you are self employed or unemployed."
+        text: "You cannot get Shared Parental Leave or Pay if you are self employed or unemployed."
       }) }}
     {% endif %}
 
     {% if data[parent]["employment-status"] === "worker" %}
       {{ govukInsetText({
-        text: "You must be an employee to get shared parental leave."
+        text: "You must be an employee to get Shared Parental Leave."
       }) }}
     {% endif %}
 
     {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
       {{ govukInsetText({
-        text: "A small number of workers qualify for statutory shared parental pay. Ask your employer if you are eligible for pay."
+        text: "A small number of workers qualify for statutory Shared Parental Pay. Ask your employer if you are eligible for pay."
       }) }}
     {% endif %}
 
     {% if data[parent]["work-start"] | isNo or data[parent]["continuous-work"] | isNo %}
       {{ govukInsetText({
-        text: "To get shared parental leave and pay the " + data | currentParentName(parent) + " must have been employed continuously by the same employer for at least 26 weeks by the end of the 15th week before the " + data | startDateName + "."
+        text: "To get Shared Parental Leave and Pay the " + data | currentParentName(parent) + " must have been employed continuously by the same employer for at least 26 weeks by the end of the 15th week before the " + data | startDateName + "."
       }) }}
     {% endif %}
 
     {% if data[parent]["pay-threshold"] | isNo %}
       {{ govukInsetText({
-        text: "To be eligible for shared parental pay the " + data | currentParentName(parent) + " must be eligible for " + data | currentParentInitialLeaveName(currentParent) + " pay."
+        text: "To be eligible for Shared Parental Pay the " + data | currentParentName(parent) + " must be eligible for " + data | currentParentInitialLeaveName(currentParent) + " pay."
       }) }}
     {% endif %}
 
     {% if data[parent]["other-parent-work"] | isNo or data[parent]["other-parent-pay"] | isNo %}
       {{ govukInsetText({
-        text: "The " + data | currentParentName(parent) + " is not eligible for shared parental leave or pay because the " + data | otherParentName(parent) + " has not met the work and pay criteria."
+        text: "The " + data | currentParentName(parent) + " is not eligible for Shared Parental Leave or Pay because the " + data | otherParentName(parent) + " has not met the work and pay criteria."
       }) }}
     {% endif %}
   {% else %}
-    <p>The {{ parentName }}’s eligibility for shared parental pay and leave is unknown.<p>
+    <p>The {{ parentName }}’s eligibility for Shared Parental Pay and leave is unknown.<p>
 
     <p><a href="/">Start again to check the {{ parentName}}’s eligibility</a></p>
   {% endif %}
