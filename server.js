@@ -64,7 +64,7 @@ function initialiseGlobalMiddleware (app) {
 
   const maxAge = 86400000 // Prune expired entries every 24 hours.
   app.use(session({
-    secret: 'beis-spl-planner',
+    secret: 'beis-spl-eligibility-tool',
     name: 'application',
     store: new MemoryStore({
       checkPeriod: maxAge
