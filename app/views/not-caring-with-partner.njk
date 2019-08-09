@@ -14,6 +14,8 @@
   }) }}
 {% endblock %}
 
+{% set primaryName = (data | primaryName) %}
+
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -21,7 +23,8 @@
         Not eligible for Shared Parental Leave and Pay
       </h1>
       <p>
-        To be eligible for Shared Parental Leave and Pay the {{ data | primaryName }} must share responsibility for the child from birth with a partner.
+        To be eligible for Shared Parental Leave and Pay the {{ primaryName }} must share responsibility
+        for the child from {{ "placement" if (data | isAdoption) else "birth" }} with a partner.
       </p>
 
       <p>The partner is one of the following:</p>
@@ -29,7 +32,7 @@
         <li>the {{ data | primaryName }}’s husband, wife or civil partner</li>
         {% set secondaryName = "child’s other parent" if (data | isBirth) else ("secondary adopter" if (data | isAdoption) else "parental order parent’s partner") %}
         <li>the {{ secondaryName }}</li>
-        <li>the {{ data | primaryName }}’s partner (if they live with the mother and the child)</li>
+        <li>the {{ data | primaryName }}’s partner (if they live with the {{ primaryName }} and the child)</li>
       </ul>
 
       {% if data | isBirth %}

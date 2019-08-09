@@ -28,7 +28,7 @@ module.exports = function (env) {
     }
   }
 
-  function currentParentInitialLeaveName (data, currentParent) {
+  function currentParentInitialPayName (data, currentParent) {
     if (currentParent === 'primary') {
       return isBirth(data) ? 'maternity' : 'adoption'
     } else {
@@ -100,7 +100,7 @@ module.exports = function (env) {
   return {
     relevantWeek,
     providedDateName,
-    currentParentInitialLeaveName,
+    currentParentInitialPayName,
     isWorker,
     eligibilityLabel,
     eligibilityIcon,

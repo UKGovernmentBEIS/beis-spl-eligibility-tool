@@ -41,7 +41,7 @@
       data[parent]["employment-status"] === "unemployed"
     %}
       {{ govukInsetText({
-        text: "You cannot get Shared Parental Leave or Pay if you are self employed or unemployed."
+        text: "You cannot get Shared Parental Leave or Pay if you are self-employed or unemployed."
       }) }}
     {% endif %}
 
@@ -65,7 +65,7 @@
 
     {% if data[parent]["pay-threshold"] | isNo %}
       {{ govukInsetText({
-        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for " + data | currentParentInitialLeaveName(parent) + " pay."
+        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for " + data | currentParentInitialPayName(parent) + " pay."
       }) }}
     {% endif %}
 
