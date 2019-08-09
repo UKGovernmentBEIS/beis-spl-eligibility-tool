@@ -1,4 +1,4 @@
-const dlv = require('dlv')
+const delve = require('dlv')
 const { isYes } = require('../../common/lib/dataUtils')
 
 const ELIGIBILITY = Object.freeze({
@@ -25,7 +25,7 @@ function hasCompletedCurrentParentThresholds (eligibilityData) {
 
 function otherParentMeetsWorkAndPayThresholds (thisParentEligibility, otherParentEligibility) {
   return (isYes(thisParentEligibility['other-parent-work']) && isYes(thisParentEligibility['other-parent-pay'])) ||
-          isYes(dlv(otherParentEligibility, 'pay-threshold'))
+          isYes(delve(otherParentEligibility, 'pay-threshold'))
 }
 
 function currentParentMeetsPayThreshold (eligibilityData) {
