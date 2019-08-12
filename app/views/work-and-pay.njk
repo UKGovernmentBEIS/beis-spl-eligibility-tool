@@ -8,8 +8,8 @@
 
 {% extends "layout.njk" %}
 
-{% set currentParentName = data | currentParentName(currentParent) %}
-{% set currentParentInitialPayName = data | currentParentInitialPayName(currentParent) %}
+{% set currentParentName = (data | currentParentName(currentParent)) %}
+{% set currentParentInitialPayName = (data | currentParentInitialPayName(currentParent)) %}
 
 {% block pageTitle -%}
   {{ (currentParentName | capitalize) + "’s eligibility" | pageTitle((currentParentName | capitalize) + "’s work and pay") }}
@@ -41,12 +41,12 @@
   {% endset %}
 
   {% set payThresholdTitle %}
-    Is the {{ currentParentName }} eligible for {{ currentParentInitialPayName }} pay?
+    Is the {{ currentParentName }} eligible for Statutory {{ currentParentInitialPayName | capitalize }} Pay?
   {% endset %}
 
   {% set payThresholdHint %}
     {% set hintLink = "https://www.gov.uk/maternity-pay-leave/eligibility" if data | isBirth else "https://www.gov.uk/adoption-pay-leave/eligibility" %}
-    If you are not sure, you can <a href="{{ hintLink }}">check if you are eligible for {{ currentParentInitialPayName }} pay</a>.
+    If you are not sure, you can <a href="{{ hintLink }}">check if you are eligible for Statutory {{ currentParentInitialPayName | capitalize }} Pay</a>.
   {% endset %}
 
   {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}

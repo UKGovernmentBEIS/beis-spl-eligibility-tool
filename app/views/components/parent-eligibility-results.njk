@@ -65,13 +65,13 @@
 
     {% if data[parent]["pay-threshold"] | isNo %}
       {{ govukInsetText({
-        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for " + data | currentParentInitialPayName(parent) + " pay."
+        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for Statutory" + (data | currentParentInitialPayName(parent) | capitalize) + " Pay."
       }) }}
     {% endif %}
 
     {% if data[parent]["other-parent-work"] | isNo or data[parent]["other-parent-pay"] | isNo %}
       {{ govukInsetText({
-        text: "The " + parentName + " is not eligible for Shared Parental Leave or Pay because the " + data | otherParentName(parent) + " has not met the work and pay criteria."
+        text: "The " + parentName + " is not eligible for Shared Parental Leave or Pay because the " + (data | otherParentName(parent)) + " has not met the work and pay criteria."
       }) }}
     {% endif %}
   {% else %}

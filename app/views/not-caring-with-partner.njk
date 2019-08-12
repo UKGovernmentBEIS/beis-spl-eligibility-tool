@@ -15,6 +15,8 @@
 {% endblock %}
 
 {% set primaryName = (data | primaryName) %}
+{% set isBirth = (data | isBirth) %}
+{% set isAdoption = (data | isAdoption) %}
 
 {% block content %}
   <div class="govuk-grid-row">
@@ -24,30 +26,28 @@
       </h1>
       <p>
         To be eligible for Shared Parental Leave and Pay the {{ primaryName }} must share responsibility
-        for the child from {{ "placement" if (data | isAdoption) else "birth" }} with a partner.
+        for the child from {{ "placement" if isAdoption else "birth" }} with a partner.
       </p>
 
       <p>The partner is one of the following:</p>
       <ul class="govuk-list govuk-list--bullet">
         <li>the {{ data | primaryName }}’s husband, wife or civil partner</li>
-        {% set secondaryName = "child’s other parent" if (data | isBirth) else ("secondary adopter" if (data | isAdoption) else "parental order parent’s partner") %}
+        {% set secondaryName = "child’s other parent" if isBirth else ("secondary adopter" if isAdoption else "parental order parent’s partner") %}
         <li>the {{ secondaryName }}</li>
-        <li>the {{ data | primaryName }}’s partner (if they live with the {{ primaryName }} and the child)</li>
+        <li>the {{ primaryName }}’s partner (if they live with the {{ primaryName }} and the child)</li>
       </ul>
 
-      {% if data | isBirth %}
+      {% if isBirth %}
         <p>
           You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligiblity rules</a>.
         </p>
-
         <p>
           You might still be eligibile for:
         </p>
         <ul class="govuk-list govuk-list--bullet">
-          <li>maternity leave and pay</li>
-          <li>maternity allowance</li>
+          <li>Maternity Leave and Pay</li>
+          <li>Maternity Allowance</li>
         </ul>
-
         <p>
           <a href="https://www.gov.uk/pay-leave-for-parents">Check if you can get these types of leave and pay</a>
         </p>
@@ -56,7 +56,7 @@
           You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters">eligiblity rules for adopters</a>.
         </p>
         <p>
-          You might still be eligible for <a href="https://www.gov.uk/adoption-pay-leave">adoption leave and pay</a>.
+          You might still be eligible for <a href="https://www.gov.uk/adoption-pay-leave">Adoption Leave and Pay</a>.
         </p>
       {% endif %}
     </div>
