@@ -64,14 +64,14 @@
       {% else %}
         Will the {{ otherParentName }} have earned
       {% endif %}
-      a total of £390 or more in any 13 weeks during the 66 weeks ending with your placement date?
+      a total of £{{ minimum_pay_threshold }} or more in any 13 weeks during the 66 weeks ending with your placement date?
     {% else %}
       {% if data | relevantWeek | isInPast %}
         Did the {{ otherParentName }} earn
       {% else %}
         Will the {{ otherParentName }} have earned
       {% endif %}
-      a total of £390 or more over 13 weeks between
+      a total of £{{ minimum_pay_threshold }} or more over 13 weeks between
       {{ relevantWeek | offsetWeeks(-51) | formatForDisplay }}
       and {{ relevantWeek | offsetWeeks(+14) | endOfWeek | formatForDisplay }}?
     {% endif %}
