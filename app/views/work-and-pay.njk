@@ -46,7 +46,10 @@
 
   {% set payThresholdHint %}
     {% set hintLink = "https://www.gov.uk/maternity-pay-leave/eligibility" if data | isBirth else "https://www.gov.uk/adoption-pay-leave/eligibility" %}
-    If you are not sure, you can <a href="{{ hintLink }}">check if you are eligible for Statutory {{ currentParentInitialPayName | capitalize }} Pay</a>.
+    If you are not sure, you can
+    <a href="https://www.gov.uk/{{ currentParentInitialPayName }}-pay-leave/eligibility">
+      check if you are eligible for Statutory {{ currentParentInitialPayName | capitalize }} Pay
+    </a>.
   {% endset %}
 
   {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}
