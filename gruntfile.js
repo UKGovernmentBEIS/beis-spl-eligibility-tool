@@ -4,7 +4,7 @@ const nodeSass = require('node-sass')
 module.exports = function (grunt) {
   const env = {
     dev: {
-      GOOGLE_ANALYTICS_ID: 'UA-142639139-3',
+      GOOGLE_ANALYTICS_ID: 'GTM-W9CKLBB',
       NODE_ENV: 'development'
     }
   }
