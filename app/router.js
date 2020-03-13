@@ -153,6 +153,12 @@ router.route(paths.getPath('notCaringWithPartner'))
     res.render('not-caring-with-partner')
   })
 
+router.route(paths.getPath('feedbackConfirmation'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('feedback/feedback-confirmation', { referrer })
+  })
+
 router.route(paths.getPath('feedback'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')
@@ -162,7 +168,7 @@ router.route(paths.getPath('feedback'))
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
     nodeEmail(experience, moreDetail)
-      .then(() => res.redirect('/'))
+      .then(() => res.redirect('feedback/feedback-confirmation'))
   })
 
 router.route(paths.getPath('cookies'))
