@@ -168,7 +168,7 @@ router.route(paths.getPath('feedback'))
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
     nodeEmail(experience, moreDetail)
-      .then(() => res.redirect('feedback/feedback-confirmation'))
+      .then(() => res.redirect('feedback/confirmation'))
   })
 
 router.route(paths.getPath('cookies'))
