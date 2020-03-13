@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const nodeEmail = require('./node-email')
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
@@ -152,10 +153,22 @@ router.route(paths.getPath('notCaringWithPartner'))
     res.render('not-caring-with-partner')
   })
 
+router.route(paths.getPath('feedbackConfirmation'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('feedback/feedback-confirmation', { referrer })
+  })
+
 router.route(paths.getPath('feedback'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')
     res.render('feedback/feedback', { referrer })
+  })
+  .post(function (req, res) {
+    const experience = req.body.feedback
+    const moreDetail = req.body['feedback-more-detail']
+    nodeEmail(experience, moreDetail)
+      .then(() => res.redirect('feedback/confirmation'))
   })
 
 router.route(paths.getPath('cookies'))
