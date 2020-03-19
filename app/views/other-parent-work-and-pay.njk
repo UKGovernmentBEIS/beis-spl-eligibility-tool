@@ -3,6 +3,7 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "button/macro.njk" import govukButton %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% from "components/date-explanation-hint.njk" import dateExplanationHint %}
 
@@ -33,6 +34,12 @@
         errors["other-parent-pay"]
       ] | removeEmpty
     }) }}
+    {% if (errors["other-parent-work"]) %}
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["other-parent-work"].text, "Errorshown") }}
+    {% endif %}
+    {% if (errors["other-parent-pay"]) %}
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["other-parent-pay"].text, "Errorshown") }} 
+    {% endif %}
   {% endif %}
 
   {% set relevantWeek = data | relevantWeek %}

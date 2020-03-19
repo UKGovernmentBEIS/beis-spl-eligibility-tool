@@ -3,6 +3,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -40,6 +41,7 @@
         errors["caring-with-partner"]
       ]
     }) }}
+    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["caring-with-partner"].text, "Errorshown") }}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
