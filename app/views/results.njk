@@ -3,6 +3,7 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "button/macro.njk" import govukButton %}
 {% from "./components/parent-eligibility-results.njk" import parentEligibilityResults %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -36,6 +37,7 @@
           {% endfor %}
         {% endcall %}
       </form>
+      {{ pushToGoogleAnalyticsDataLayer("parenthood_type", data["nature-of-parenthood"], "eligibilityresults") }}
       {% if data | hasCheckedAnyEligibility %}
         <h2 class="govuk-heading-m">
           Next steps
