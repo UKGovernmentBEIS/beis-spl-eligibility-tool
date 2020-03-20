@@ -3,6 +3,7 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% from "components/date-explanation-hint.njk" import dateExplanationHint %}
 
@@ -61,6 +62,15 @@
         errors["pay-threshold"]
       ] | removeEmpty
     }) }}
+    {% if (errors["work-start"]) %}
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["work-start"].text, "Errorshown") }} 
+    {% endif %}
+    {% if (errors["continuous-work"]) %}
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["continuous-work"].text, "Errorshown") }} 
+    {% endif %}
+    {% if (errors["pay-threshold"]) %}
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["pay-threshold"].text, "Errorshown") }} 
+    {% endif %}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">

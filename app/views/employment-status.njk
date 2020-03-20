@@ -3,6 +3,7 @@
 {% from "back-link/macro.njk" import govukBackLink %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "button/macro.njk" import govukButton %}
+{% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
 {% extends "layout.njk" %}
 
@@ -29,6 +30,7 @@
         errors["employment-status"]
       ]
     }) }}
+    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["employment-status"].text, "Errorshown") }} 
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
