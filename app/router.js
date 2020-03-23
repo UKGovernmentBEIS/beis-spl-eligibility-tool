@@ -7,13 +7,15 @@ const skip = require('./skip')
 const {
   getParent,
   registerRouteForEachParent,
-  plannerQueryString
+  plannerQueryString,
+  getJourneyTime
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
 
 router.get(paths.getPath('root'), function (req, res) {
   // In production, the start page is hosted separately on GOV.UK.
   // In testing, we render our index view.
+  req.session.timings = req.session.timings || { eligibilityStart: Date.now() }
   if (process.env.START_PAGE) {
     res.redirect(process.env.START_PAGE)
   } else {
@@ -23,6 +25,7 @@ router.get(paths.getPath('root'), function (req, res) {
 
 router.route(paths.getPath('natureOfParenthood'))
   .get(function (req, res) {
+    req.session.timings = req.session.timings || { eligibilityStart: Date.now() }
     res.render('nature-of-parenthood')
   })
   .post(function (req, res) {
@@ -145,7 +148,8 @@ registerRouteForEachParent(router, 'otherParentWorkAndPay', {
 
 router.route(paths.getPath('results'))
   .get(function (req, res) {
-    res.render('results', { plannerQueryString: plannerQueryString(req.session.data) })
+    req.session.timings.eligibilityEnd = Date.now()
+    res.render('results', { plannerQueryString: plannerQueryString(req.session.data, req.session.timings), journeyTime: getJourneyTime(req.session.timings) })
   })
 
 router.route(paths.getPath('notCaringWithPartner'))
