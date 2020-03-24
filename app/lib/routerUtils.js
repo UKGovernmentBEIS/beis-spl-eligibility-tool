@@ -25,7 +25,7 @@ function getParent (parentUrlPart) {
   return parentUrlPart === 'partner' ? 'secondary' : 'primary'
 }
 
-function plannerQueryString (data) {
+function plannerQueryString (data, timings) {
   function convertEligibility (eligibility) {
     switch (eligibility) {
       case ELIGIBILITY.ELIGIBLE:
@@ -49,11 +49,19 @@ function plannerQueryString (data) {
     })
   })
 
+  dataForPlanner['eligibilityStart'] = timings.eligibilityStart
+
   return qs.stringify(dataForPlanner)
+}
+
+function getJourneyTime (timings) {
+  const time = timings.eligibilityEnd - timings.eligibilityStart
+  return Math.round(time / 1000)
 }
 
 module.exports = {
   registerRouteForEachParent,
   getParent,
-  plannerQueryString
+  plannerQueryString,
+  getJourneyTime
 }
