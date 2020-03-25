@@ -71,5 +71,5 @@
     {% set eligibilities = data | resultsAnalyticsData | dump | safe %}
     window.analytics.eligibility({{ eligibilities }})
   </script>
-  {{ pushToGoogleAnalyticsDataLayer("eligibilityChecker_timestamp", journeyTime, "timestamp") }}
+  {{ pushToGoogleAnalyticsDataLayer("eligibilityChecker_timestamp", journeyTime, "eligibility_timestamp") }}
 {% endblock %}
