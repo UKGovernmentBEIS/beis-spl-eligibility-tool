@@ -65,7 +65,7 @@
 
     {% if data[parent]["pay-threshold"] | isNo %}
       {{ govukInsetText({
-        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for Statutory" + (data | currentParentInitialPayName(parent) | capitalize) + " Pay."
+        text: "To be eligible for Shared Parental Pay the " + parentName + " must be eligible for Statutory " + (data | currentParentInitialPayName(parent) | capitalize) + " Pay."
       }) }}
     {% endif %}
 
