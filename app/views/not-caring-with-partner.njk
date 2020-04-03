@@ -22,21 +22,13 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
       <h1 class="govuk-heading-xl">
-        Not eligible for Shared Parental Leave and Pay
+        You’re not eligible for Shared Parental Leave and Pay
       </h1>
       <p>
         To be eligible for Shared Parental Leave and Pay the {{ primaryName }} must share responsibility
         for the child from {{ "placement" if isAdoption else "birth" }} with a partner.
       </p>
-
-      <p>The partner is one of the following:</p>
-      <ul class="govuk-list govuk-list--bullet">
-        <li>the {{ data | primaryName }}’s husband, wife or civil partner</li>
-        {% set secondaryName = "child’s other parent" if isBirth else ("secondary adopter" if isAdoption else "parental order parent’s partner") %}
-        <li>the {{ secondaryName }}</li>
-        <li>the {{ primaryName }}’s partner (if they live with the {{ primaryName }} and the child)</li>
-      </ul>
-
+      
       {% if isBirth %}
         <p>
           You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligiblity rules</a>.
@@ -56,7 +48,7 @@
           You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters">eligiblity rules for adopters</a>.
         </p>
         <p>
-          You might still be eligible for <a href="https://www.gov.uk/adoption-pay-leave">Adoption Leave and Pay</a>.
+          You might still be eligible for <a href="https://www.gov.uk/adoption-pay-leave">Adoption Pay and Leave</a>.
         </p>
       {% endif %}
     </div>
