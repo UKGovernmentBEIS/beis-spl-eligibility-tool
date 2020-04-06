@@ -125,6 +125,7 @@ function initialiseTemplateEngine (app) {
   // Paths to external resources and tools.
   nunjucksEnvironment.addGlobal('mainstream_guidance_root_path', process.env.MAINSTREAM_GUIDANCE_ROOT_PATH || 'https://www.gov.uk/shared-parental-leave-and-pay')
   nunjucksEnvironment.addGlobal('planner_root_path', process.env.PLANNER_ROOT_PATH || 'https://plan-shared-parental-leave.service.gov.uk')
+  nunjucksEnvironment.addGlobal('employment_status_root_path', process.env.EMPLOYMENT_STATUS_ROOT_PATH || 'https://www.gov.uk/employment-status')
 
   nunjucksEnvironment.addGlobal('GOOGLE_ANALYTICS_ID', process.env.GOOGLE_ANALYTICS_ID)
 
