@@ -53,7 +53,7 @@
 
     {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
       {{ govukInsetText({
-        text: "A small number of workers qualify for Statutory Shared Parental Pay. Ask the " + parentName + "’s employer if they are eligible."
+        text: "A small number of workers qualify for Shared Parental Pay. Ask the workplace which will be paying your statutory " + (data | currentParentInitialPayName(parent)) + " pay."
       }) }}
     {% endif %}
 
