@@ -41,7 +41,7 @@
     "nodemailer": "^6.4.5",
     "nunjucks": "^3.2.1",
     "pino": "^5.13.2",
-    "qs": "^6.7.0",
+    "qs": "6.9.2",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.3",
     "throng": "4.0.x"
