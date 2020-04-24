@@ -17,7 +17,8 @@
     "lint": "standard && sass-lint -v",
     "lint-sass": "./node_modules/.bin/sass-lint -v",
     "test": "standard && node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
-    "test:watch": "chokidar app common test *.js --initial -c \"npm run test\""
+    "test:watch": "chokidar app common test *.js --initial -c \"npm run test\"",
+    "test:start:a11y": "PA11Y_TEST=true NODE_ENV=test npm run server"
   },
   "browserslist": [
     "defaults or IE 11"
@@ -39,7 +40,7 @@
     "nodemailer": "^6.4.5",
     "nunjucks": "^3.2.1",
     "pino": "^5.13.2",
-    "qs": "^6.7.0",
+    "qs": "6.9.2",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.3",
     "throng": "4.0.x"
