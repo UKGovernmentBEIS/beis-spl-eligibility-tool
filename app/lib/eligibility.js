@@ -8,11 +8,13 @@ const ELIGIBILITY = Object.freeze({
 })
 
 function isEmployee (eligibilityData) {
-  return eligibilityData['employment-status'] === 'employee'
+  const employmentStatus = delve(eligibilityData, 'employment-status')
+  return employmentStatus === 'employee'
 }
 
 function isWorker (eligibilityData) {
-  return eligibilityData['employment-status'] === 'worker'
+  const employmentStatus = delve(eligibilityData, 'employment-status')
+  return employmentStatus === 'worker'
 }
 
 function isEmployeeOrWorker (eligibilityData) {
