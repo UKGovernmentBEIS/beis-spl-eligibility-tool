@@ -1,3 +1,5 @@
+const delve = require('dlv')
+
 const {
   currentParentMeetsPayThreshold,
   currentParentMeetsContinuousWorkThreshold,
@@ -36,7 +38,8 @@ function entireParent (data, parent) {
 }
 
 function parentIsSelfEmployedOrUnemployed (data, parent) {
-  return ['self-employed', 'unemployed'].includes(data[parent]['employment-status'])
+  const employmentStatus = delve(data, [parent, 'employment-status'])
+  return ['self-employed', 'unemployed'].includes(employmentStatus)
 }
 
 function parentMeetsContinuousWorkThreshold (data, parent) {
