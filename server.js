@@ -35,15 +35,15 @@ const { SERVICE_NAME, MINIMUM_PAY_THRESHOLD } = require('./app/constants')
 
 // Define app views
 const APP_VIEWS = [
-  path.join(__dirname, 'node_modules/govuk-frontend/'),
-  path.join(__dirname, 'node_modules/govuk-frontend/components/'),
+  path.join(__dirname, 'node_modules/govuk-frontend/govuk/'),
+  path.join(__dirname, 'node_modules/govuk-frontend/govuk/components/'),
   path.join(__dirname, 'app/views/'),
   path.join(__dirname, 'common/macros/')
 ]
 
 function initialiseGlobalMiddleware (app) {
   app.set('settings', { getVersionedPath: staticify.getVersionedPath })
-  app.use(favicon(path.join(__dirname, 'node_modules/govuk-frontend/assets/', 'images', 'favicon.ico')))
+  app.use(favicon(path.join(__dirname, 'node_modules/govuk-frontend/govuk/assets/', 'images', 'favicon.ico')))
   app.use(compression())
   app.use(staticify.middleware)
 
@@ -142,7 +142,7 @@ function initialisePublic (app) {
   app.use('/images', express.static(path.join(__dirname, '/public/images'), publicCaching))
   app.use('/stylesheets', express.static(path.join(__dirname, '/public/assets/stylesheets'), publicCaching))
   app.use('/public', express.static(path.join(__dirname, '/public')))
-  app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/')))
+  app.use('/', express.static(path.join(__dirname, '/node_modules/govuk-frontend/govuk/')))
 }
 
 function initialiseRoutes (app) {
