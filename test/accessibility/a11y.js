@@ -38,23 +38,19 @@ describe('Accessibility checking eligibility tool', function () {
 
   it('checking pages for accessiblity issues', async function () {
     this.timeout(50000)
-    const errors = await checkPath(paths, [])
+    const errors = await checkPath(paths.getAllPaths(), [])
     expect(errors).to.eql([])
   })
 
   async function checkPath (pathsToCheck, errors) {
-    for (const path of Object.values(pathsToCheck)) {
-      if (typeof path === 'string') {
-        if (pathsToIgnore.indexOf(path) === -1) {
-          console.log(`Checking accessibility for [${path}]`)
-          const result = await pa11y(`http://localhost:3000${path}`, pa11yConfig)
-          console.log('error results are....', result)
-          if (result.issues.length > 0 || errorTitles.some(title => result.documentTitle.includes(title))) {
-            errors.push(result)
-          }
+    for (const path of pathsToCheck) {
+      if (pathsToIgnore.indexOf(path) === -1) {
+        console.log(`Checking accessibility for [${path}]`)
+        const result = await pa11y(`http://localhost:3000${path}`, pa11yConfig)
+        console.log('error results are....', result)
+        if (result.issues.length > 0 || errorTitles.some(title => result.documentTitle.includes(title))) {
+          errors.push(result)
         }
-      } else {
-        errors = await checkPath(path, errors)
       }
     }
     return errors
