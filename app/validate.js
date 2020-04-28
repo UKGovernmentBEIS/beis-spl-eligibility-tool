@@ -11,7 +11,7 @@ const skip = require('./skip')
 function natureOfParenthood (req) {
   const permittedValues = ['birth', 'adoption', 'surrogacy']
   if (!permittedValues.includes(req.session.data['nature-of-parenthood'])) {
-    addError(req, 'nature-of-parenthood', 'Select either birth, adoption or surrogacy', '#nature-of-parenthood-1')
+    addError(req, 'nature-of-parenthood', 'Select either birth, adoption or surrogacy', '#nature-of-parenthood')
     return false
   }
   return true
@@ -19,7 +19,7 @@ function natureOfParenthood (req) {
 
 function caringWithPartner (req) {
   if (!isYesOrNo(req.session.data['caring-with-partner'])) {
-    addError(req, 'caring-with-partner', 'Select whether or not you are caring for the child with a partner', '#caring-with-partner-1')
+    addError(req, 'caring-with-partner', 'Select whether or not you are caring for the child with a partner', '#caring-with-partner')
     return false
   }
   return true
@@ -70,7 +70,7 @@ function addStartDateError (req, message, dateParts) {
 function whichParent (req) {
   const permittedValues = ['primary', 'secondary', 'both']
   if (!permittedValues.includes(req.session.data['which-parent'])) {
-    addError(req, 'which-parent', 'Select whose eligibility you would like to check', '#which-parent-1')
+    addError(req, 'which-parent', 'Select whose eligibility you would like to check', '#which-parent')
     return false
   }
   return true
@@ -84,7 +84,7 @@ function employmentStatus (req, parent) {
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
   if (!permittedValues.includes(employmentStatus)) {
-    addError(req, 'employment-status', 'Select your employment status', '#employment-status-1')
+    addError(req, 'employment-status', 'Select your employment status', '#employment-status')
     return false
   }
   return true
