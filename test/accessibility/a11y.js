@@ -4,9 +4,13 @@ const { expect } = require('chai')
 const paths = require('app/paths.js')
 const pa11yConfig = {
   includeWarnings: true,
-  ignore: ['notice', 'WCAG2AA.Principle1.Guideline1_3.1_3_1.F92,ARIA4'],
+  ignore: ['notice'],
   chromeLaunchConfig: { ignoreHTTPSErrors: true },
-  hideElements: '',
+  hideElements: 'html > head > link:nth-child(7),' +
+                'html > body > a,' +
+                'html > body > header > div > div:nth-child(2) > a,' +
+                'html > body > footer > div > div > div:nth-child(1) > h2,' +
+                'html > body > footer > div > div > div:nth-child(2) > a',
   page: undefined,
   browser: undefined
 }
