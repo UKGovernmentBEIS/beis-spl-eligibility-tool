@@ -26,17 +26,15 @@
       <h1 class="govuk-heading-xl">
         Your eligibility results
       </h1>
-      <form method="POST">
-        {% call appendHiddenFields(data) %}
-          {% for parent in ["primary", "secondary"] %}
-            {{ parentEligibilityResults({
-              data: data,
-              parent: parent,
-              withData: withData
-            }) }}
-          {% endfor %}
-        {% endcall %}
-      </form>
+      {% call appendHiddenFields(data) %}
+        {% for parent in ["primary", "secondary"] %}
+          {{ parentEligibilityResults({
+            data: data,
+            parent: parent,
+            withData: withData
+          }) }}
+        {% endfor %}
+      {% endcall %}
       {{ pushToGoogleAnalyticsDataLayer("parenthood_type", data["nature-of-parenthood"], "eligibilityresults") }}
       {% if data | hasCheckedAnyEligibility %}
         <h2 class="govuk-heading-m">
