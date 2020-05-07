@@ -25,6 +25,6 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: 'Reports'
-        path: '~/coverage/**/*'
+        path: '${{ github.workspace }}/coverage/'
       env:
         CI: true
