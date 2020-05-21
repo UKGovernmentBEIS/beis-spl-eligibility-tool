@@ -29,7 +29,7 @@
       </div>
       <div>
         {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
-          The {{ parentName }} <strong>may be eligible for Shared Parental Pay</strong>. Check with their employer.
+          The {{ parentName }} <strong>may be eligible for Shared Parental Pay</strong>.
         {% else %}
           The {{ parentName }} is <strong>{{ shppEligiblity }} for Shared Parental Pay</strong>.
         {% endif %}
