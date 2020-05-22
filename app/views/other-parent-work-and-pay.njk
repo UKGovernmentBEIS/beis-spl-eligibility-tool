@@ -71,14 +71,14 @@
       {% else %}
         Will the {{ otherParentName }} have earned
       {% endif %}
-      a total of £{{ minimum_pay_threshold }} or more in any 13 weeks during the 66 weeks ending with your placement date?
+        £{{ minimum_pay_threshold }} or more in any 13 weeks during the 66 weeks ending with your placement date?
     {% else %}
       {% if data | relevantWeek | isInPast %}
         Did the {{ otherParentName }} earn
       {% else %}
         Will the {{ otherParentName }} have earned
       {% endif %}
-      a total of £{{ minimum_pay_threshold }} or more over 13 weeks between
+       £{{ minimum_pay_threshold }} or more over 13 weeks between
       {{ relevantWeek | offsetWeeks(-51) | formatForDisplay }}
       and {{ relevantWeek | offsetWeeks(+14) | endOfWeek | formatForDisplay }}?
     {% endif %}
@@ -87,7 +87,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">
-        <span class="govuk-caption-xl">
+        <span class="govuk-caption-l">
           {{ currentParentName | capitalize }}’s eligibility
         </span>
         {{ otherParentName | capitalize }}’s work and pay
