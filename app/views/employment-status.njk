@@ -30,7 +30,7 @@
         errors["employment-status"]
       ]
     }) }}
-    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["employment-status"].text, "Errorshown") }} 
+    {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["employment-status"].text, "Errorshown") }}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
@@ -48,7 +48,7 @@
               legend: {
                 text: "What is the " + currentParentName + "’s employment status?",
                 isPageHeading: true,
-                classes: "govuk-fieldset__legend--xl"
+                classes: "govuk-fieldset__legend--l"
               }
             },
             hint: {
