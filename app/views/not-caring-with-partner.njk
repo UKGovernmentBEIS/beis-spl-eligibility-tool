@@ -21,14 +21,14 @@
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds-from-desktop">
-      <h1 class="govuk-heading-xl">
+      <h1 class="govuk-heading-l">
         You’re not eligible for Shared Parental Leave and Pay
       </h1>
       <p>
         To be eligible for Shared Parental Leave and Pay the {{ primaryName }} must share responsibility
         for the child from {{ "placement" if isAdoption else "birth" }} with a partner.
       </p>
-      
+
       {% if isBirth %}
         <p>
           You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligiblity rules</a>.

@@ -63,18 +63,18 @@
       ] | removeEmpty
     }) }}
     {% if (errors["work-start"]) %}
-        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["work-start"].text, "Errorshown") }} 
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["work-start"].text, "Errorshown") }}
     {% endif %}
     {% if (errors["continuous-work"]) %}
-        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["continuous-work"].text, "Errorshown") }} 
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["continuous-work"].text, "Errorshown") }}
     {% endif %}
     {% if (errors["pay-threshold"]) %}
-        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["pay-threshold"].text, "Errorshown") }} 
+        {{ pushToGoogleAnalyticsDataLayer("error_msg", errors["pay-threshold"].text, "Errorshown") }}
     {% endif %}
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-xl">
+      <h1 class="govuk-heading-l">
         <span class="govuk-caption-xl">
           {{ currentParentName | capitalize }}’s eligibility
         </span>
