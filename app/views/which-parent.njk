@@ -58,7 +58,7 @@
               },
               {
                 value: "both",
-                text: "Both the " + data | primaryName + " and the " + data | secondaryName,
+                text: data | primaryName | capitalize + " and " + data | secondaryName,
                 checked: data["which-parent"] === "both"
               }
             ]
