@@ -20,7 +20,7 @@
         {{ splIcon | safe }}
       </div>
       <div>
-        The {{ parentName }} is <strong>{{ splEligiblity }} for Shared Parental Leave</strong>.
+        {{ splEligiblity | capitalize }} for Shared Parental Leave
       </div>
     </div>
     <div class="govuk-body eligibility-result">
@@ -29,9 +29,9 @@
       </div>
       <div>
         {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
-          The {{ parentName }} <strong>may be eligible for Shared Parental Pay</strong>.
+          May be eligible for Shared Parental Pay
         {% else %}
-          The {{ parentName }} is <strong>{{ shppEligiblity }} for Shared Parental Pay</strong>.
+          {{ shppEligiblity | capitalize }} for Shared Parental Pay
         {% endif %}
       </div>
     </div>
@@ -41,7 +41,7 @@
       data[parent]["employment-status"] === "unemployed"
     %}
       {{ govukInsetText({
-        text: "You cannot get Shared Parental Leave or Pay if you are self-employed or unemployed."
+        text: "You cannot get Shared Parental Leave or Pay if you're self-employed or unemployed."
       }) }}
     {% endif %}
 
