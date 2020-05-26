@@ -25,16 +25,16 @@
         You’re not eligible for Shared Parental Leave and Pay
       </h1>
       <p>
-        To be eligible for Shared Parental Leave and Pay the {{ primaryName }} must share responsibility
+        To be eligible the {{ primaryName }} must share responsibility
         for the child from {{ "placement" if isAdoption else "birth" }} with a partner.
       </p>
 
       {% if isBirth %}
         <p>
-          You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligiblity rules</a>.
+          For more information, check the guidelines for <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-birth-parents">eligiblity</a>.
         </p>
         <p>
-          You might still be eligibile for:
+          You may able to get:
         </p>
         <ul class="govuk-list govuk-list--bullet">
           <li>Maternity Leave and Pay</li>
@@ -45,10 +45,10 @@
         </p>
       {% else %}
         <p>
-          You can read more about the Shared Parental Leave and Pay <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters">eligiblity rules for adopters</a>.
+          For more information, check the guidelines for <a href="https://www.gov.uk/shared-parental-leave-and-pay/eligibility-for-adopters">eligiblity</a>.
         </p>
         <p>
-          You might still be eligible for <a href="https://www.gov.uk/adoption-pay-leave">Adoption Pay and Leave</a>.
+          You may able to get <a href="https://www.gov.uk/adoption-pay-leave">adoption pay and leave</a>.
         </p>
       {% endif %}
     </div>
