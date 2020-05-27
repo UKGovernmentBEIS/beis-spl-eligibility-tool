@@ -5,8 +5,6 @@
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
 
-{% from "components/date-explanation-hint.njk" import dateExplanationHint %}
-
 {% extends "layout.njk" %}
 
 {% set currentParentName = data | currentParentName(currentParent) %}
@@ -92,9 +90,6 @@
         </span>
         {{ otherParentName | capitalize }}’s work and pay
       </h1>
-      {% if data | isBirth  or data | isSurrogacy %}
-        {{ dateExplanationHint(data) }}
-      {% endif %}
       <form method="POST">
         {% call appendHiddenFields(data) %}
           {{ govukRadios({
