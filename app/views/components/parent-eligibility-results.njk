@@ -59,7 +59,7 @@
 
     {% if data[parent]["work-start"] | isNo or data[parent]["continuous-work"] | isNo %}
       {{ govukInsetText({
-        text: "To get Shared Parental Leave and Pay the " + parentName + " must have been employed continuously by the same employer for at least 26 weeks by the end of the 15th week before the " + data | startDateName + "."
+        text: "To get shared parental leave and pay the " + parentName + " must have been employed continuously by the same employer for at least 26 weeks by the end of the 15th week before the " + data | startDateName + "."
       }) }}
     {% endif %}
 
@@ -75,7 +75,7 @@
       }) }}
     {% endif %}
   {% else %}
-    <p>The {{ parentName }}’s eligibility for Shared Parental Leave and Pay was not checked.<p>
+    <p>The {{ parentName }}’s eligibility for shared parental leave and pay was not checked.<p>
     <p><a href="/">Start again to check the {{ parentName }}’s eligibility</a></p>
   {% endif %}
 {% endmacro %}
