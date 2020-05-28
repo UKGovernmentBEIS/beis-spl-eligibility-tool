@@ -32,9 +32,9 @@
 
   {% set continuousWorkTitle %}
     {% if (relevantWeek | isInPast) %}
-      Was the {{ currentParentName }} still working
+      Was the {{ currentParentName }} working
     {% else %}
-      Will the {{ currentParentName }} still be working
+      Will the {{ currentParentName }} be working
     {% endif %}
     in this job on {{ relevantWeek | formatForDisplay }}?
   {% endset %}
@@ -45,10 +45,10 @@
 
   {% set payThresholdHint %}
     {% set hintLink = "https://www.gov.uk/maternity-pay-leave/eligibility" if data | isBirth else "https://www.gov.uk/adoption-pay-leave/eligibility" %}
-    If you are not sure, you can
+      If you’re not sure,
     <a href="https://www.gov.uk/{{ currentParentInitialPayName }}-pay-leave/eligibility">
-      check if you are eligible for Statutory {{ currentParentInitialPayName | capitalize }} Pay
-    </a>.
+      check if you can get Statutory {{ currentParentInitialPayName | capitalize }} Pay.
+    </a>
   {% endset %}
 
   {% if (errors["work-start"] or errors["continuous-work"] or errors["pay-threshold"]) %}
@@ -73,7 +73,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">
-        <span class="govuk-caption-xl">
+        <span class="govuk-caption-l">
           {{ currentParentName | capitalize }}’s eligibility
         </span>
         {{ currentParentName | capitalize }}’s work and pay
