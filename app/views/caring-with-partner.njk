@@ -24,13 +24,13 @@
   {% set primaryName = data | primaryName %}
   {% set hintText %}
     <p class="govuk-hint">
-      A partner is the:
+      A partner can be the:
     </p>
     <ul class="govuk-list--bullet">
-      <li>the {{ primaryName }}’s husband, wife or civil partner</li>
+      <li>{{ primaryName }}’s husband, wife or civil partner</li>
       {% set secondaryName = "child’s other parent" if (data | isBirth) else ("secondary adopter" if (data | isAdoption) else "parental order parent’s partner") %}
-      <li>the {{ secondaryName }}</li>
-      <li>the {{ primaryName }}’s partner - if they live with the {{ primaryName }} and the child</li>
+      <li>{{ secondaryName }}</li>
+      <li>{{ primaryName }}’s partner - if they live with the {{ primaryName }} and the child</li>
     </ul>
   {% endset %}
 
