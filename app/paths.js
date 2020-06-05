@@ -148,6 +148,9 @@ class Paths {
       },
       cookies: {
         url: '/cookies'
+      },
+      accessibilityStatement: {
+        url: '/accessibility-statement'
       }
     }
   }
