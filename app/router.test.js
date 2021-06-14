@@ -14,10 +14,11 @@ beforeEach(() => {
 })
 
 describe('GET /', () => {
-  it('returns 200 status', done => {
+  it('returns 302 status and redirects to the first question page', done => {
     supertest(getApp())
       .get(paths.getPath('root'))
-      .expect(200)
+      .expect(302)
+      .expect('Location', paths.getPath('natureOfParenthood'))
       .end(done)
   })
 })
