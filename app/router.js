@@ -19,7 +19,7 @@ router.get(paths.getPath('root'), function (req, res) {
   if (process.env.START_PAGE) {
     res.redirect(process.env.START_PAGE)
   } else {
-    res.render('index')
+    res.redirect(paths.getPath('natureOfParenthood'))
   }
 })
 
