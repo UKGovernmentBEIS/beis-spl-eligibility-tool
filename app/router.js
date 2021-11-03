@@ -181,6 +181,12 @@ router.route(paths.getPath('cookies'))
     res.render('privacy/cookies', { referrer })
   })
 
+router.route(paths.getPath('contact-us'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('feedback/contact-us', { referrer })
+  })
+
 router.route(paths.getPath('accessibilityStatement'))
   .get(function (req, res) {
     const referrer = req.header('Referrer')

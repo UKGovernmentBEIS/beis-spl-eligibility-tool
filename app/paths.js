@@ -149,6 +149,9 @@ class Paths {
       cookies: {
         url: '/cookies'
       },
+      'contact-us': {
+        url: '/contact-us'
+      },
       accessibilityStatement: {
         url: '/accessibility-statement'
       }
