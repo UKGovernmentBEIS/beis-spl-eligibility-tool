@@ -4,6 +4,7 @@
 {% from "button/macro.njk" import govukButton %}
 {% from "error-summary/macro.njk" import govukErrorSummary %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
+{% from "./components/get-help.njk" import getHelp %}
 
 {% extends "layout.njk" %}
 
@@ -151,6 +152,8 @@
           }) }}
         {% endcall %}
       </form>
+
+      {{ getHelp() }}
     </div>
   </div>
 
