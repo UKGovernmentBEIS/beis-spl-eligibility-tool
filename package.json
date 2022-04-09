@@ -38,7 +38,7 @@
     "lodash": "^4.17.19",
     "memorystore": "^1.6.1",
     "minimist": "^1.2.5",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "morgan": "1.9.x",
     "nodemailer": "^6.4.5",
     "nunjucks": "^3.2.1",
