@@ -1,5 +1,13 @@
 const { isString } = require('lodash')
 
+function feedbackExperience (data, optionName) {
+  if (isString(data)) {
+    return data === optionName
+  } else {
+    return data.feedback === optionName
+  }
+}
+
 function natureOfParenthood (data) {
   return data['nature-of-parenthood']
 }
@@ -95,6 +103,7 @@ function isNo (dataField) {
 }
 
 module.exports = {
+  feedbackExperience,
   natureOfParenthood,
   typeOfAdoption,
   birthOrPlacement,

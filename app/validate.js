@@ -113,6 +113,25 @@ function otherParentWorkAndPay (req, parent) {
   })
 }
 
+function feedback (req) {
+  let valid = true
+  if (!req.session.data.feedback) {
+    addError(req, 'feedback', 'Provide your experience with the service.', '#feedback')
+    valid = false
+  }
+
+  const value = req.session.data['spam-filter'].toLowerCase()
+  if (!value.length) {
+    addError(req, 'spam-filter', 'Prove you are not a robot.', '#spam-filter')
+    valid = false
+  } else if (value !== 'yes' && value !== 'yes.') {
+    addError(req, 'spam-filter', 'The value you entered was incorrect. Please try again.', '#spam-filter')
+    valid = false
+  }
+
+  return valid
+}
+
 module.exports = {
   natureOfParenthood,
   caringWithPartner,
@@ -120,5 +139,6 @@ module.exports = {
   whichParent,
   employmentStatus,
   workAndPay,
-  otherParentWorkAndPay
+  otherParentWorkAndPay,
+  feedback
 }

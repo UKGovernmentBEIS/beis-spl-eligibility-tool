@@ -49,7 +49,7 @@ function plannerQueryString (data, timings) {
     })
   })
 
-  dataForPlanner['eligibilityStart'] = timings.eligibilityStart
+  dataForPlanner.eligibilityStart = timings.eligibilityStart
 
   return qs.stringify(dataForPlanner)
 }

@@ -6,13 +6,16 @@ function isYesOrNo (value) {
 
 function prettyList (array) {
   switch (array.length) {
-    case 0:
+    case 0: {
       return ''
-    case 1:
+    }
+    case 1: {
       return array[0]
-    default:
+    }
+    default: {
       const finalElement = array[array.length - 1]
       return array.slice(0, -1).join(', ') + ` and ${finalElement}`
+    }
   }
 }
 
@@ -32,7 +35,7 @@ function addError (req, field, message, href, errorProps) {
   if (!req.session.errors) {
     req.session.errors = {}
   }
-  req.session.errors[field] = { text: message, href: href, ...errorProps }
+  req.session.errors[field] = { text: message, href, ...errorProps }
 }
 
 module.exports = {

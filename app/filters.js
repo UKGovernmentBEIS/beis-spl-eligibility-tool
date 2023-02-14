@@ -1,4 +1,3 @@
-const dset = require('dset')
 const Day = require('../common/lib/day')
 const eligibility = require('./lib/eligibility')
 
@@ -90,8 +89,9 @@ module.exports = function (env) {
     const policies = ['spl', 'shpp']
     const output = { nature_of_parenthood: data['nature-of-parenthood'] }
     parents.forEach(parent => {
+      output[parent] = {};
       policies.forEach(policy => {
-        dset(output, `${parent}.${policy}`, getParentEligibility(data, parent, policy))
+        output[parent][policy] = getParentEligibility(data, parent, policy);
       })
     })
     return output
