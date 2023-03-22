@@ -4,7 +4,6 @@
 {% from "hidden-fields/macro.njk" import appendHiddenFields %}
 {% from "radios/macro.njk" import govukRadios %}
 {% from "macro.njk" import pushToGoogleAnalyticsDataLayer %}
-{% from "./components/get-help.njk" import getHelp %}
 
 {% extends "layout.njk" %}
 
@@ -75,8 +74,6 @@
           }) }}
         {% endcall %}
       </form>
-
-      {{ getHelp() }}
     </div>
   </div>
 {% endblock %}
