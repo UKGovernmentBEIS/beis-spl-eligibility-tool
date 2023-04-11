@@ -1,5 +1,5 @@
 applications:
-- name: beis-spl-eligibility-tool-sandbox
+- name: beis-spl-eligibility-tool
   memory: 1G
   buildpacks:
     - nodejs_buildpack
