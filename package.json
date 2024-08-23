@@ -4,8 +4,8 @@
   "private": true,
   "license": "MIT",
   "engines": {
-    "node": "12.22.6",
-    "npm": "6.14.x"
+    "node": ">18.0.0",
+    "npm": ">8.5"
   },
   "scripts": {
     "compile": "grunt generate-assets",
@@ -75,7 +75,7 @@
     "grunt-sass": "^3.0.2",
     "mocha": "^6.2.0",
     "nock": "^10.0.6",
-    "node-sass": "^4.13.1",
+    "node-sass": "npm:sass@^1.74.1",
     "sass-lint": "^1.13.1",
     "sinon": "^7.4.1",
     "standard": "^13.0.2",
@@ -83,5 +83,8 @@
     "pa11y": "5.3.0",
     "puppeteer": "2.1.1",
     "nyc": "^15.0.0"
+  },
+  "overrides": {
+    "grunt": "^1.0.4"
   }
 }
