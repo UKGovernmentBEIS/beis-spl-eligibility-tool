@@ -2,4 +2,4 @@ applications:
 - name: beis-spl-eligibility-tool
   memory: 1G
   buildpacks:
-    - https://github.com/cloudfoundry/nodejs-buildpack#v1.7.65
+    - https://github.com/cloudfoundry/nodejs-buildpack#v1.8.15

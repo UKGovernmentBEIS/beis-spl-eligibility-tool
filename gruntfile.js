@@ -15,18 +15,18 @@ module.exports = function (grunt) {
         implementation: nodeSass,
         style: 'expanded',
         sourcemap: true,
-        includePaths: [
-          'node_modules'
-        ],
+        includePaths: ['node_modules'],
         outputStyle: 'expanded'
       },
-      files: [{
-        expand: true,
-        cwd: 'common/assets/sass',
-        src: ['*.scss', 'custom/*.scss'],
-        dest: 'public/stylesheets/',
-        ext: '.css'
-      }]
+      files: [
+        {
+          expand: true,
+          cwd: 'common/assets/sass',
+          src: ['*.scss', 'custom/*.scss'],
+          dest: 'public/stylesheets/',
+          ext: '.css'
+        }
+      ]
     }
   }
 
@@ -47,9 +47,7 @@ module.exports = function (grunt) {
     prefix: {
       options: {
         map: true,
-        processors: [
-          require('autoprefixer')()
-        ]
+        processors: [require('autoprefixer')()]
       },
       src: 'public/stylesheets/application.css'
     }
@@ -67,59 +65,43 @@ module.exports = function (grunt) {
 
   const watch = {
     css: {
-      files: [
-        'app/assets/sass/**/*.scss',
-        'common/assets/sass/**/*.scss'
-      ],
+      files: ['app/assets/sass/**/*.scss', 'common/assets/sass/**/*.scss'],
       tasks: ['sass', 'postcss:prefix', 'cssmin'],
-      options: {
-        spawn: false,
-        livereload: true
-      }
+      options: { spawn: false, livereload: true }
     },
     js: {
       files: [
-        'app/assets/javascrips/**/*.js',
+        'app/assets/javascripts/**/*.js',
         'common/browsered/index.js',
         'common/assets/javascripts/**/*.js'
       ],
       tasks: ['browserify', 'babel', 'concat', 'compress'],
-      options: {
-        spawn: false,
-        livereload: true
-      }
+      options: { spawn: false, livereload: true }
     },
     njk: {
-      files: [
-        'app/views/**/*.njk'
-      ],
-      options: {
-        spawn: false,
-        livereload: true
-      }
+      files: ['app/views/**/*.njk'],
+      options: { spawn: false, livereload: true }
     },
     assets: {
-      files: ['common/assets/**/*', '!common/assets/sass/**', '!common/assets/javascripts/**'],
+      files: [
+        'common/assets/**/*',
+        '!common/assets/sass/**',
+        '!common/assets/javascripts/**'
+      ],
       tasks: ['copy:assets', 'compress'],
-      options: {
-        spawn: false
-      }
+      options: { spawn: false }
     }
   }
 
   const browserify = {
     'public/javascripts/browsered.js': ['common/browsered/index.js'],
     options: {
-      browserifyOptions: {
-        standalone: 'module'
-      }
+      browserifyOptions: { standalone: 'module' }
     }
   }
 
   const babel = {
-    options: {
-      presets: ['@babel/preset-env']
-    },
+    options: { presets: ['@babel/preset-env'] },
     dist: {
       files: {
         'public/javascripts/browsered.js': 'public/javascripts/browsered.js'
@@ -141,16 +123,12 @@ module.exports = function (grunt) {
   const concurrent = {
     target: {
       tasks: ['watch', 'nodemon'],
-      options: {
-        logConcurrentOutput: true
-      }
+      options: { logConcurrentOutput: true }
     }
   }
 
   const concat = {
-    options: {
-      separator: ';'
-    },
+    options: { separator: ';' },
     dist: {
       src: [
         'public/javascripts/browsered.js',
@@ -160,21 +138,9 @@ module.exports = function (grunt) {
     }
   }
 
-  const rewrite = {
-    'application.min.css': {
-      src: 'public/stylesheets/application.min.css',
-      editor (contents) {
-        const staticify = require('staticify')(path.join(__dirname, 'public'))
-        return staticify.replacePaths(contents)
-      }
-    }
-  }
-
   const compress = {
     main: {
-      options: {
-        mode: 'gzip'
-      },
+      options: { mode: 'gzip' },
       files: [
         { expand: true, src: ['public/images/*.jpg'], ext: '.jpg.gz' },
         { expand: true, src: ['public/images/*.gif'], ext: '.gif.gz' },
@@ -198,9 +164,38 @@ module.exports = function (grunt) {
     postcss,
     cssmin,
     concat,
-    rewrite,
     compress
-  });
+  })
+
+  grunt.registerTask(
+    'customRewrite',
+    'Custom rewrite task to replace grunt-rewrite',
+    function () {
+      const done = this.async()
+      const fs = require('fs')
+      const staticify = require('staticify')(path.join(__dirname, 'public'))
+      const filePath = path.join('public/stylesheets/application.min.css')
+
+      fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+          grunt.log.error(err)
+          return done(false)
+        }
+
+        const newContents = staticify.replacePaths(data)
+
+        fs.writeFile(filePath, newContents, 'utf8', (err) => {
+          if (err) {
+            grunt.log.error(err)
+            return done(false)
+          }
+
+          grunt.log.writeln('File "' + filePath + '" updated successfully.')
+          done()
+        })
+      })
+    }
+  );
 
   [
     'grunt-env',
@@ -214,10 +209,9 @@ module.exports = function (grunt) {
     'grunt-concurrent',
     'grunt-browserify',
     'grunt-contrib-concat',
-    'grunt-rewrite',
     'grunt-babel',
     'grunt-postcss'
-  ].forEach(task => {
+  ].forEach((task) => {
     grunt.loadNpmTasks(task)
   })
 
@@ -226,13 +220,13 @@ module.exports = function (grunt) {
     'clean',
     'copy',
     'sass',
+    'postcss',
+    'cssmin',
+    'customRewrite',
+    'compress',
     'browserify',
     'babel',
-    'concat',
-    'rewrite',
-    'compress',
-    'postcss',
-    'cssmin'
+    'concat'
   ])
 
   grunt.registerTask('default', ['generate-assets', 'concurrent:target'])
