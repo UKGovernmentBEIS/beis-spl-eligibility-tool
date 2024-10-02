@@ -75,7 +75,7 @@
     "grunt-sass": "^3.0.2",
     "mocha": "^6.2.0",
     "nock": "^10.0.6",
-    "node-sass": "^4.13.1",
+    "node-sass": "npm:sass@^1.74.1",
     "sass-lint": "^1.13.1",
     "sinon": "^7.4.1",
     "standard": "^13.0.2",
