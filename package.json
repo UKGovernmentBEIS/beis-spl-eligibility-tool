@@ -46,7 +46,8 @@
     "qs": "6.9.2",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.3",
-    "throng": "4.0.x"
+    "throng": "4.0.x",
+    "xml": "^1.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -75,12 +76,12 @@
     "mocha": "^6.2.0",
     "nock": "^10.0.6",
     "node-sass": "npm:sass@^1.74.1",
+    "nyc": "^15.0.0",
+    "pa11y": "5.3.0",
+    "puppeteer": "2.1.1",
     "sass-lint": "^1.13.1",
     "sinon": "^7.4.1",
     "standard": "^13.0.2",
-    "supertest": "^4.0.2",
-    "pa11y": "5.3.0",
-    "puppeteer": "2.1.1",
-    "nyc": "^15.0.0"
+    "supertest": "^4.0.2"
   }
 }

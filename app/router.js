@@ -12,6 +12,9 @@ const {
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
 
+const healthcheck = require('./lib/healthcheck')
+router.use(healthcheck)
+
 router.get(paths.getPath('root'), function (req, res) {
   // In production, the start page is hosted separately on GOV.UK.
   // In testing, we render our index view.
