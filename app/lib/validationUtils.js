@@ -10,9 +10,10 @@ function prettyList (array) {
       return ''
     case 1:
       return array[0]
-    default:
+    default: {
       const finalElement = array[array.length - 1]
       return array.slice(0, -1).join(', ') + ` and ${finalElement}`
+    }
   }
 }
 
