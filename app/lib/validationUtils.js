@@ -32,7 +32,7 @@ function addError (req, field, message, href, errorProps) {
   if (!req.session.errors) {
     req.session.errors = {}
   }
-  req.session.errors[field] = { text: message, href: href, ...errorProps }
+  req.session.errors[field] = { text: message, href, ...errorProps }
 }
 
 module.exports = {
