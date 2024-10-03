@@ -3,6 +3,7 @@ const stdMocks = require('std-mocks')
 const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
+
 const expectedInfo = {
   EventMessage: 'Message for info',
   EventCount: 1,
@@ -15,6 +16,7 @@ const expectedInfo = {
   ActingAppType: 'Express',
   AdditionalFields: { CustomASIMFormatter: true, TraceHeaders: {} }
 }
+
 const expectedError = {
   EventMessage: 'Message for error',
   EventCount: 1,
@@ -27,27 +29,34 @@ const expectedError = {
   ActingAppType: 'Express',
   AdditionalFields: { CustomASIMFormatter: true, TraceHeaders: {} }
 }
+
 describe('Logger transport check', () => {
   let logger
+
   afterEach(() => {
     sinon.restore()
     stdMocks.restore()
   })
+
   describe('In production environment', () => {
     beforeEach(() => {
       stdMocks.use()
       process.env.NODE_ENV = 'production'
       logger = require('../test-app')
     })
+
     it('should log info in JSON format', function () {
       if (process.env.CI) {
         stdMocks.restore()
         this.skip()
       }
       logger.info('Message for info', { eventType: 'ApplicationEvent' })
-      stdMocks.restore()
+
       const output = stdMocks.flush()
+      stdMocks.restore()
+
       const logEntry = JSON.parse(output.stdout[0])
+
       expect(logEntry).to.deep.include(expectedInfo)
     })
     it('should log error in JSON format', function () {
@@ -56,28 +65,38 @@ describe('Logger transport check', () => {
         this.skip()
       }
       logger.error('Message for error', { eventType: 'ApplicationEvent' })
-      stdMocks.restore()
+
       const output = stdMocks.flush()
+      stdMocks.restore()
+
       const logEntry = JSON.parse(output.stdout[0])
+
       expect(logEntry).to.deep.include(expectedError)
     })
   })
+
   describe('In non-production environment', () => {
     beforeEach(() => {
       process.env.NODE_ENV = 'development'
       logger = require('../test-app')
       stdMocks.use()
     })
+
     it('should log info in plain text format', () => {
       logger.info('Plain log info')
+
       stdMocks.restore()
       const output = stdMocks.flush()
+
       expect(output.stdout[0]).to.contain('Plain log info')
     })
+
     it('should log error in plain text format', () => {
       logger.error('Plain log error')
+
       stdMocks.restore()
       const output = stdMocks.flush()
+
       expect(output.stdout[0]).to.contain('Plain log error')
     })
   })

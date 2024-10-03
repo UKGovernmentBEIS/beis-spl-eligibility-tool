@@ -1,6 +1,7 @@
 const winston = require('winston')
 const { NODE_ENV, LOG_LEVEL } = process.env
 const { createLogger, transports, format } = winston
+
 const asimFormat = format.printf(({ level, message, timestamp, eventType }) => {
   return JSON.stringify({
     EventMessage: message,
@@ -20,6 +21,7 @@ const asimFormat = format.printf(({ level, message, timestamp, eventType }) => {
     }
   })
 })
+
 const getEventSeverity = (level) => {
   return {
     debug: 'Informational',
@@ -29,19 +31,15 @@ const getEventSeverity = (level) => {
     critical: 'High'
   }[level]
 }
+
 const formatOptions = () => {
   if (NODE_ENV === 'production') {
-    return format.combine(
-      format.timestamp(),
-      asimFormat
-    )
+    return format.combine(format.timestamp(), asimFormat)
   } else {
-    return format.combine(
-      format.colorize({ all: true }),
-      format.simple()
-    )
+    return format.combine(format.colorize({ all: true }), format.simple())
   }
 }
+
 const loggerConfiguration = {
   level: LOG_LEVEL || 'info',
   exitOnError: true,
@@ -53,9 +51,11 @@ const loggerConfiguration = {
     })
   ]
 }
+
 if (NODE_ENV === 'production') {
   loggerConfiguration.transports[0].json = true
 }
+
 const logger = createLogger(loggerConfiguration)
 if (NODE_ENV === 'production') {
   logger.exceptions.handle(
@@ -64,4 +64,5 @@ if (NODE_ENV === 'production') {
     })
   )
 }
+
 module.exports = logger
