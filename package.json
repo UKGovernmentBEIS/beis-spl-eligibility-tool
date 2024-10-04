@@ -34,7 +34,7 @@
     "express": "^4.20.0",
     "express-session": "^1.16.2",
     "govuk-frontend": "^3.14.0",
-    "jsdom": "^15.1.1",
+    "jsdom": "^25.0.1",
     "lodash": "^4.17.19",
     "memorystore": "^1.6.1",
     "minimist": "^1.2.8",
