@@ -1,4 +1,4 @@
-const dset = require('dset')
+const { dset } = require('dset')
 const Day = require('../common/lib/day')
 const eligibility = require('./lib/eligibility')
 
