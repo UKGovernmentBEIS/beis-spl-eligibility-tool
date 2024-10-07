@@ -54,7 +54,7 @@
     "@babel/preset-env": "^7.17.10",
     "autoprefixer": "^9.8.8",
     "chai": "^4.5.0",
-    "chokidar-cli": "^2.0.0",
+    "chokidar-cli": "^3.0.0",
     "envfile": "^3.0.0",
     "eslint": "^6.0.1",
     "grunt": "^1.5.2",
