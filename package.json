@@ -16,7 +16,7 @@
     "watch": "./node_modules/.bin/grunt watch",
     "lint": "standard && stylelint '**/*.{scss,css}'",
     "lint-sass": "stylelint '**/*.{scss,css}'",
-    "test": "standard && nyc node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js",
+    "test": "standard && nyc node ./node_modules/mocha/bin/mocha \"!(node_modules)/**/*+(.test|.tests)\".js  -r jsdom-global/register",
     "test:watch": "chokidar app common test *.js --initial -c \"npm run test\"",
     "test:start:a11y": "PA11Y_TEST=true NODE_ENV=test npm start &",
     "test:a11y": "NODE_PATH=. mocha test/accessibility/a11y --timeout 15000"
@@ -35,6 +35,7 @@
     "express-session": "^1.16.2",
     "govuk-frontend": "^3.14.0",
     "jsdom": "^25.0.1",
+    "jsdom-global": "^3.0.2",
     "lodash": "^4.17.19",
     "memorystore": "^1.6.1",
     "minimist": "^1.2.8",
