@@ -21,7 +21,7 @@ module.exports = function (env) {
   }
 
   function matchesAnyField (name, fieldsToMatch) {
-    const normalisedName = normalisedFieldName(name)
+    const normalisedName = normalisedFieldName(name).toLowerCase()
     return fieldsToMatch.find(field => normalisedFieldName(field) === normalisedName)
   }
 
