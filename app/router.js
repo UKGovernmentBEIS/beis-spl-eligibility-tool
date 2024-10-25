@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const nodeEmail = require('./emailJS-mailer')
+const emailJS = require('./emailJS-mailer')
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
@@ -182,7 +182,7 @@ router.route(paths.getPath('feedback'))
   .post(function (req, res) {
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    nodeEmail(experience, moreDetail)
+    emailJS(experience, moreDetail, emailjsIds, options)
       .then(() => res.redirect('feedback/confirmation'))
   })
 
