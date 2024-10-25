@@ -2,10 +2,23 @@ const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
 
 const sendMail = async (experience, moreDetails, emailjsIds, options) => {
+  const currentDateTime = new Date().toLocaleString('en-GB', {
+    timeZone: 'Europe/London',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
+
   const templateParams = {
     experience: experience,
     moreDetails: moreDetails,
+    dateTime: currentDateTime,
+    plannerOrEligibility: 'Eligibility Tool'
   }
+
   try {
     await emailjs.send(
       emailjsIds.serviceID,

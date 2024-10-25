@@ -1,4 +1,4 @@
-require('dotenv').config()
+const config = require('./config')
 const express = require('express')
 const router = express.Router()
 const emailJSEmail = require('./emailJS-mailer')
@@ -13,12 +13,12 @@ const {
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
 const options = {
-  publicKey: process.env.EMAILJS_PUBLIC_KEY,
-  privateKey: process.env.EMAILJS_PRIVATE_KEY
+  publicKey: config.publicKey,
+  privateKey: config.privateKey
 }
 const emailjsIds = {
-  serviceID: process.env.EMAILJS_SERVICE_ID,
-  templateID: process.env.EMAILJS_TEMPLATE_ID,
+  serviceID: config.serviceID,
+  templateID: config.templateID,
 }
 
 const healthcheck = require('./lib/healthcheck')
