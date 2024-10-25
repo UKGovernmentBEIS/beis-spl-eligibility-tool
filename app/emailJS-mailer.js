@@ -22,7 +22,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
       })
       .catch((err) => {
         logger.error({
-          message: `Failed to send email. Error: ${err.text}`,
+          message: `Failed to send email. Error: ${err}`,
           eventType: 'MailEvent',
           eventResult: 'Failure',
           errorDetails: err.text
@@ -30,7 +30,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
       })
   } catch(err){
     logger.error({
-      message: `Error sending feedback email: ${err.text}`,
+      message: `Error sending feedback email: ${err}`,
       eventType: 'MailEvent',
       eventResult: 'Failure',
       errorDetails: err.text

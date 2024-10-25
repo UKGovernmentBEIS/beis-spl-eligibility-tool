@@ -1,6 +1,7 @@
+require('dotenv').config()
 const express = require('express')
 const router = express.Router()
-const emailJS = require('./emailJS-mailer')
+const emailJSEmail = require('./emailJS-mailer')
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
@@ -182,7 +183,7 @@ router.route(paths.getPath('feedback'))
   .post(function (req, res) {
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    emailJS(experience, moreDetail, emailjsIds, options)
+    emailJSEmail(experience, moreDetail, emailjsIds, options)
       .then(() => res.redirect('feedback/confirmation'))
   })
 
