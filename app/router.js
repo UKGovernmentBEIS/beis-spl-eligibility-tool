@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const nodeEmail = require('./node-email')
+const nodeEmail = require('./emailJS-mailer')
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
@@ -11,6 +11,14 @@ const {
   getJourneyTime
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
+const options = {
+  publicKey: process.env.EMAILJS_PUBLIC_KEY,
+  privateKey: process.env.EMAILJS_PRIVATE_KEY
+}
+const emailjsIds = {
+  serviceID: process.env.EMAILJS_SERVICE_ID,
+  templateID: process.env.EMAILJS_TEMPLATE_ID,
+}
 
 const healthcheck = require('./lib/healthcheck')
 router.use(healthcheck)
