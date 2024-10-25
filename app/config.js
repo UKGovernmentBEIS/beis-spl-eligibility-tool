@@ -1,5 +1,4 @@
 const { NODE_ENV, LOG_LEVEL } = process.env
-require('dotenv').config()
 const config = {
   isProd: NODE_ENV === 'production',
   isDev: NODE_ENV === 'development',
