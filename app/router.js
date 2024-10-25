@@ -1,6 +1,7 @@
+const config = require('./config')
 const express = require('express')
 const router = express.Router()
-const nodeEmail = require('./node-email')
+const emailjsemail = require('./emailjs-mailer')
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
@@ -11,6 +12,14 @@ const {
   getJourneyTime
 } = require('./lib/routerUtils')
 const { isNo, primaryUrlName } = require('../common/lib/dataUtils')
+const options = {
+  publicKey: config.publicKey,
+  privateKey: config.privateKey
+}
+const emailjsIds = {
+  serviceID: config.serviceID,
+  templateID: config.templateID
+}
 
 const healthcheck = require('./lib/healthcheck')
 router.use(healthcheck)
@@ -174,7 +183,7 @@ router.route(paths.getPath('feedback'))
   .post(function (req, res) {
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    nodeEmail(experience, moreDetail)
+    emailjsemail(experience, moreDetail, emailjsIds, options)
       .then(() => res.redirect('feedback/confirmation'))
   })
 
