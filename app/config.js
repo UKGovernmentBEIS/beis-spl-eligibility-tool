@@ -8,6 +8,6 @@ const config = {
   publicKey: process.env.EMAILJS_PUBLIC_KEY,
   privateKey: process.env.EMAILJS_PRIVATE_KEY,
   serviceID: process.env.EMAILJS_SERVICE_ID,
-  templateID: process.env.EMAILJS_TEMPLATE_ID,
+  templateID: process.env.EMAILJS_TEMPLATE_ID
 }
 module.exports = config

@@ -13,8 +13,8 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
   })
 
   const templateParams = {
-    experience: experience,
-    moreDetails: moreDetails,
+    experience,
+    moreDetails,
     dateTime: currentDateTime,
     plannerOrEligibility: 'Eligibility Tool'
   }
@@ -35,15 +35,15 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
       })
       .catch((err) => {
         logger.error({
-          message: `Failed to send email. Error: ${err}`,
+          message: `Failed to send email. Error: ${err.text}`,
           eventType: 'MailEvent',
           eventResult: 'Failure',
           errorDetails: err.text
         })
       })
-  } catch(err){
+  } catch (err) {
     logger.error({
-      message: `Error sending feedback email: ${err}`,
+      message: `Error sending feedback email: ${err.text}`,
       eventType: 'MailEvent',
       eventResult: 'Failure',
       errorDetails: err.text

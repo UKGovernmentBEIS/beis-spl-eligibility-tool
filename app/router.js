@@ -1,7 +1,7 @@
 const config = require('./config')
 const express = require('express')
 const router = express.Router()
-const emailJSEmail = require('./emailJS-mailer')
+const emailjsemail = require('./emailjs-mailer')
 const paths = require('./paths')
 const validate = require('./validate')
 const skip = require('./skip')
@@ -18,7 +18,7 @@ const options = {
 }
 const emailjsIds = {
   serviceID: config.serviceID,
-  templateID: config.templateID,
+  templateID: config.templateID
 }
 
 const healthcheck = require('./lib/healthcheck')
@@ -183,7 +183,7 @@ router.route(paths.getPath('feedback'))
   .post(function (req, res) {
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    emailJSEmail(experience, moreDetail, emailjsIds, options)
+    emailjsemail(experience, moreDetail, emailjsIds, options)
       .then(() => res.redirect('feedback/confirmation'))
   })
 
