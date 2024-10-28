@@ -44,6 +44,7 @@ describe('sendMail', function () {
       expect(templateParams.experience).to.equal(experience)
       expect(templateParams.moreDetails).to.equal(moreDetails)
       expect(templateParams).to.have.property('dateTime')
+      expect(templateParams.plannerOrEligibility).to.equal('Eligibility Tool')
       expect(args[3]).to.equal(options)
     })
 
