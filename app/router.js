@@ -205,4 +205,10 @@ router.route(paths.getPath('accessibilityStatement'))
     res.render('accessibility-statement', { referrer })
   })
 
+router.route(paths.getPath('privacyPolicy'))
+  .get(function (req, res) {
+    const referrer = req.header('Referrer')
+    res.render('privacy-policy', { referrer })
+  })
+
 module.exports = router
