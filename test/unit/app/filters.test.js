@@ -18,7 +18,7 @@ describe('filters', () => {
       sinon.stub(environment, 'getFilter')
         .withArgs('isBirth').returns(() => false)
         .withArgs('isAdoption').returns(() => true)
-      filters = require('./filters')(environment)
+      filters = require('../../../app/filters')(environment)
 
       const data = {
         'start-date-day': '01',
@@ -34,7 +34,7 @@ describe('filters', () => {
       sinon.stub(environment, 'getFilter')
         .withArgs('isBirth').returns(() => true)
         .withArgs('isAdoption').returns(() => false)
-      filters = require('./filters')(environment)
+      filters = require('../../../app/filters')(environment)
 
       const data = {
         'start-date-day': '01',
@@ -50,7 +50,7 @@ describe('filters', () => {
       sinon.stub(environment, 'getFilter')
         .withArgs('isBirth').returns(() => false)
         .withArgs('isAdoption').returns(() => true)
-      filters = require('./filters')(environment)
+      filters = require('../../../app/filters')(environment)
 
       const dataWithSunday = {
         'start-date-day': '29',

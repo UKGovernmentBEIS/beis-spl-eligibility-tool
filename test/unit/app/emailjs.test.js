@@ -3,7 +3,7 @@ const sinon = require('sinon')
 const chai = require('chai')
 const expect = chai.expect
 const proxyquire = require('proxyquire')
-const logger = require('../../app/logger')
+const logger = require('../../../app/logger')
 
 describe('sendMail', function () {
   let emailjsSendStub
@@ -16,7 +16,7 @@ describe('sendMail', function () {
     loggerInfoStub = sinon.stub(logger, 'info')
     loggerErrorStub = sinon.stub(logger, 'error')
 
-    sendMail = proxyquire('../../app/emailjs-mailer', {
+    sendMail = proxyquire('../../../app/emailjs-mailer', {
       '@emailjs/nodejs': {
         send: emailjsSendStub
       }

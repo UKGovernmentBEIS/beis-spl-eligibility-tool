@@ -5,8 +5,8 @@ describe('config.js', () => {
   let config
 
   const loadConfig = () => {
-    delete require.cache[require.resolve('./config')]
-    return require('./config')
+    delete require.cache[require.resolve('../../../app/config')]
+    return require('../../../app/config')
   }
 
   const expectEnvConfig = (env, isProd, isDev, isTest) => {
