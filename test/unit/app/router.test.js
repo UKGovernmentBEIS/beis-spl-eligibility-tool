@@ -4,8 +4,8 @@ const supertest = require('supertest')
 
 const { describe, it, beforeEach } = require('mocha')
 
-const paths = require('./paths')
-const getApp = require('../server').getApp
+const paths = require('../../../app/paths')
+const getApp = require('../../../server').getApp
 
 let app
 
