@@ -1,7 +1,7 @@
 const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
 
-const sendMail = async (experience, moreDetails, emailjsIds, options) => {
+const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders) => {
   const currentDateTime = new Date().toLocaleString('en-GB', {
     timeZone: 'Europe/London',
     year: 'numeric',
@@ -12,11 +12,14 @@ const sendMail = async (experience, moreDetails, emailjsIds, options) => {
     second: '2-digit'
   })
 
+  const userAgent = `${reqHeaders?.['user-agent'] || ''}`
+
   const templateParams = {
     experience,
     moreDetails,
     dateTime: currentDateTime,
-    plannerOrEligibility: 'Eligibility Tool'
+    plannerOrEligibility: 'Eligibility Tool',
+    userAgent
   }
 
   try {

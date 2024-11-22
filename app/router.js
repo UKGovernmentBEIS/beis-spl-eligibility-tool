@@ -183,7 +183,7 @@ router.route(paths.getPath('feedback'))
   .post(function (req, res) {
     const experience = req.body.feedback
     const moreDetail = req.body['feedback-more-detail']
-    emailjsemail(experience, moreDetail, emailjsIds, options)
+    emailjsemail(experience, moreDetail, emailjsIds, options, req.headers)
       .then(() => res.redirect('feedback/confirmation'))
   })
 
