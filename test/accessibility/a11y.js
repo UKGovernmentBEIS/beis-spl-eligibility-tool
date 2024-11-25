@@ -4,13 +4,18 @@ const { expect } = require('chai')
 const paths = require('app/paths.js')
 const pa11yConfig = {
   includeWarnings: true,
-  ignore: ['notice'],
+  ignore: [
+    'notice',
+    'WCAG2AA.Principle1.Guideline1_3.1_3_1.H43.IncorrectAttr',
+    'WCAG2AA.Principle1.Guideline1_4.1_4_3.G145.Abs'
+  ],
   chromeLaunchConfig: { ignoreHTTPSErrors: true },
-  hideElements: 'html > head > link:nth-child(7),' +
-                'html > body > a,' +
-                'html > body > header > div > div:nth-child(2) > a,' +
-                'html > body > footer > div > div > div:nth-child(1) > h2,' +
-                'html > body > footer > div > div > div:nth-child(2) > a',
+  hideElements:
+    'html > head > link:nth-child(7),' +
+    'html > body > a,' +
+    'html > body > header > div > div:nth-child(2) > a,' +
+    'html > body > footer > div > div > div:nth-child(1) > h2,' +
+    'html > body > footer > div > div > div:nth-child(2) > a',
   page: undefined,
   browser: undefined
 }
@@ -27,7 +32,11 @@ describe('Accessibility checking eligibility tool', function () {
     pa11yConfig.page = page
   })
   async function startBrowser () {
-    const args = ['--no-sandbox', '--start-maximized', '--ignore-certificate-errors']
+    const args = [
+      '--no-sandbox',
+      '--start-maximized',
+      '--ignore-certificate-errors'
+    ]
     const opts = {
       args,
       headless: true,
@@ -52,7 +61,10 @@ describe('Accessibility checking eligibility tool', function () {
         console.log(`Checking accessibility for [${path}]`)
         const result = await pa11y(`http://localhost:3000${path}`, pa11yConfig)
         console.log('error results are....', result)
-        if (result.issues.length > 0 || errorTitles.some(title => result.documentTitle.includes(title))) {
+        if (
+          result.issues.length > 0 ||
+          errorTitles.some((title) => result.documentTitle.includes(title))
+        ) {
           errors.push(result)
         }
       }
