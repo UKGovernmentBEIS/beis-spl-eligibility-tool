@@ -31,13 +31,33 @@ module.exports = function (grunt) {
   }
 
   const copy = {
-    assets: {
+    commonAssets: {
       files: [
         {
           expand: true,
           cwd: 'common/assets/',
           src: ['**/*', '!sass/**', '!javascripts/**'],
-          dest: 'public/'
+          dest: 'public/assets/'
+        }
+      ]
+    },
+    appAssets: {
+      files: [
+        {
+          expand: true,
+          cwd: 'app/assets/',
+          src: ['**/*', '!sass/**', '!javascripts/**'],
+          dest: 'public/assets/'
+        }
+      ]
+    },
+    govukFrontendAssets: {
+      files: [
+        {
+          expand: true,
+          cwd: 'node_modules/govuk-frontend/dist/govuk/assets/',
+          src: ['**/*'],
+          dest: 'public/assets/'
         }
       ]
     }
