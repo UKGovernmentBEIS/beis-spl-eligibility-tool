@@ -120,5 +120,6 @@ module.exports = {
   whichParent,
   employmentStatus,
   workAndPay,
-  otherParentWorkAndPay
+  otherParentWorkAndPay,
+  addStartDateError
 }
