@@ -1,6 +1,5 @@
 const { expect } = require('chai')
 const { describe, it, beforeEach, afterEach } = require('mocha')
-const { whichParent, employmentStatus, workAndPay, otherParentWorkAndPay } = require('../../../app/validate')
 const validate = require('../../../app/validate')
 const sinon = require('sinon')
 const skip = require('../../../app/skip')
@@ -64,6 +63,27 @@ describe('validate.js', () => {
 
       expect(error.text).to.equal('Select either birth, adoption or surrogacy')
       expect(error.href).to.equal('#nature-of-parenthood')
+    })
+  })
+
+  describe('caringWithPartner', () => {
+    it("returns true if request session data 'caring-with-partner' contains accepted values", () => {
+      const acceptedValues = ['yes', 'no']
+
+      acceptedValues.forEach((value) => {
+        req.session.data['caring-with-partner'] = value
+        expect(validate.caringWithPartner(req)).to.equal(true)
+      })
+    })
+
+    it("returns an error message and false if request session data 'caring-with-partner' does not contain accepted values", () => {
+      req.session.data['caring-with-partner'] = 'test'
+      expect(validate.caringWithPartner(req)).to.equal(false)
+
+      const error = req.session.errors['caring-with-partner']
+
+      expect(error.text).to.equal('Select whether or not you are caring for the child with a partner')
+      expect(error.href).to.equal('#caring-with-partner')
     })
   })
 
@@ -163,7 +183,7 @@ describe('validate.js', () => {
         expectedHref: '#start-date-month'
       },
       {
-        message: 'Day error',
+        message: 'Day Error',
         dateParts: ['day'],
         expectedHref: '#start-date-day'
       },
@@ -185,77 +205,121 @@ describe('validate.js', () => {
         expect(error).to.have.property('dateParts').that.deep.equals(dateParts)
       })
     })
+
+    it('should add an error if there is an invalid day inputted', () => {
+      req.session.data['start-date-year'] = startDate.getFullYear().toString()
+      req.session.data['start-date-month'] = (startDate.getMonth() + 1).toString().padStart(2, '0')
+      req.session.data['start-date-day'] = '43'
+      expect(validate.startDate(req)).to.equal(false)
+      const error = req.session.errors['start-date']
+      expect(error).to.have.property('text', 'Enter a valid day')
+      expect(error).to.have.property('href', '#start-date-day')
+      expect(error).to.have.property('dateParts').that.deep.equals(['day'])
+    })
+
+    it('should add an error if there is invalid month inputted', () => {
+      req.session.data['start-date-year'] = startDate.getFullYear().toString()
+      req.session.data['start-date-month'] = '20'
+      req.session.data['start-date-day'] = startDate.getDate().toString().padStart(2, '0')
+      expect(validate.startDate(req)).to.equal(false)
+      const error = req.session.errors['start-date']
+      expect(error).to.have.property('text', 'Enter a valid month')
+      expect(error).to.have.property('href', '#start-date-month')
+      expect(error).to.have.property('dateParts').that.deep.equals(['month'])
+    })
+
+    it('should add an error if there is invalid year inputted', () => {
+      req.session.data['start-date-year'] = '2000'
+      req.session.data['start-date-month'] = (startDate.getMonth() + 1).toString().padStart(2, '0')
+      req.session.data['start-date-day'] = startDate.getDate().toString().padStart(2, '0')
+      expect(validate.startDate(req)).to.equal(false)
+      const error = req.session.errors['start-date']
+      expect(error).to.have.property('text', 'Enter a date within one year of today')
+      expect(error).to.have.property('href', '#start-date-day')
+      expect(error).to.have.property('dateParts').that.deep.equals(['day', 'month', 'year'])
+    })
+
+    it('should add an error if there are non-integers in the input date fields', () => {
+      req.session.data['start-date-day'] = 'A'
+      req.session.data['start-date-month'] = 'B'
+      req.session.data['start-date-year'] = 'C'
+      expect(validate.startDate(req)).to.equal(false)
+      const error = req.session.errors['start-date']
+      expect(error).to.have.property('text', 'Enter a valid date')
+      expect(error).to.have.property('href', '#start-date-day')
+      expect(error).to.have.property('dateParts').that.deep.equals(['day', 'month', 'year'])
+    })
   })
 
   describe('whichParent', () => {
     it('should return true when whichParent has a valid value', () => {
       req.session.data['which-parent'] = 'primary'
-      expect(whichParent(req)).to.equal(true)
+      expect(validate.whichParent(req)).to.equal(true)
     })
 
     it('should return false when whichParent has an invalid value', () => {
       req.session.data['which-parent'] = 'invalid'
-      expect(whichParent(req)).to.equal(false)
+      expect(validate.whichParent(req)).to.equal(false)
     })
 
     it('should return false when whichParent is an empty string', () => {
       req.session.data['which-parent'] = ''
-      expect(whichParent(req)).to.equal(false)
+      expect(validate.whichParent(req)).to.equal(false)
     })
 
     it('should return false when whichParent is null', () => {
       req.session.data['which-parent'] = null
-      expect(whichParent(req)).to.equal(false)
+      expect(validate.whichParent(req)).to.equal(false)
     })
   })
 
   describe('employmentStatus', () => {
     it('should return true when employmentStatus returns true', () => {
       sinon.stub(skip, 'employmentStatus').returns(true)
-      const result = employmentStatus(req, 'primary')
+      const result = validate.employmentStatus(req, 'primary')
       expect(result).to.equal(true)
       skip.employmentStatus.restore()
     })
 
     it('should return true when primary employmentStatus is "employee"', () => {
       req.session.data.primary['employment-status'] = 'employee'
-      const result = employmentStatus(req, 'primary')
+      const result = validate.employmentStatus(req, 'primary')
       expect(result).to.equal(true)
     })
 
     it('should return true when secondary employmentStatus is "worker"', () => {
       req.session.data.secondary['employment-status'] = 'worker'
-      const result = employmentStatus(req, 'secondary')
+      const result = validate.employmentStatus(req, 'secondary')
       expect(result).to.equal(true)
     })
 
     it('should return true when primary employmentStatus is "self-employed"', () => {
       req.session.data.primary['employment-status'] = 'self-employed'
-      const result = employmentStatus(req, 'primary')
+      const result = validate.employmentStatus(req, 'primary')
       expect(result).to.equal(true)
     })
 
     it('should return true when secondary employmentStatus is "unemployed"', () => {
       req.session.data.secondary['employment-status'] = 'unemployed'
-      const result = employmentStatus(req, 'secondary')
+      const result = validate.employmentStatus(req, 'secondary')
       expect(result).to.equal(true)
     })
 
     it('should return false when employmentStatus is invalid', () => {
       req.session.data.primary['employment-status'] = 'invalid'
-      const result = employmentStatus(req, 'primary')
+      const result = validate.employmentStatus(req, 'primary')
       expect(result).to.equal(false)
     })
 
     it('should return false when employmentStatus is empty', () => {
       req.session.data.primary['employment-status'] = ''
-      const result = employmentStatus(req, 'primary')
+      const result = validate.employmentStatus(req, 'primary')
       expect(result).to.equal(false)
     })
 
     it('should return false when employmentStatus is null', () => {
       req.session.data.primary['employment-status'] = null
-      const result = employmentStatus(req, 'primary')
+      const result = validate.employmentStatus(req, 'primary')
       expect(result).to.equal(false)
     })
   })
@@ -263,52 +327,52 @@ describe('validate.js', () => {
   describe('workAndPay', () => {
     it('should return true when workAndPay returns true', () => {
       sinon.stub(skip, 'workAndPay').returns(true)
-      expect(workAndPay(req, 'primary')).to.equal(true)
+      expect(validate.workAndPay(req, 'primary')).to.equal(true)
       skip.workAndPay.restore()
     })
 
     it('should return "secondary" for which-parent when parent is primary', () => {
       req.session.data.whichParent = 'secondary'
-      expect(workAndPay(req, 'primary')).to.equal(true)
+      expect(validate.workAndPay(req, 'primary')).to.equal(true)
     })
 
     it('should return "primary" for which-parent when parent is secondary', () => {
       req.session.data.whichParent = 'primary'
-      expect(workAndPay(req, 'secondary')).to.equal(true)
+      expect(validate.workAndPay(req, 'secondary')).to.equal(true)
     })
 
     it('should return true when employmentStatus is "self-employed" for primary', () => {
       req.session.data.primary['employment-status'] = 'self-employed'
-      expect(workAndPay(req, 'primary')).to.equal(true)
+      expect(validate.workAndPay(req, 'primary')).to.equal(true)
     })
 
     it('should return true when employmentStatus is "self-employed" for primary', () => {
       req.session.data.primary['employment-status'] = 'unemployed'
-      expect(workAndPay(req, 'primary')).to.equal(true)
+      expect(validate.workAndPay(req, 'primary')).to.equal(true)
     })
 
     it('should return true when employmentStatus is "self-employed" for secondary', () => {
       req.session.data.secondary['employment-status'] = 'self-employed'
-      expect(workAndPay(req, 'secondary')).to.equal(true)
+      expect(validate.workAndPay(req, 'secondary')).to.equal(true)
     })
 
     it('should return true when employmentStatus is "self-employed" for secondary', () => {
       req.session.data.secondary['employment-status'] = 'unemployed'
-      expect(workAndPay(req, 'secondary')).to.equal(true)
+      expect(validate.workAndPay(req, 'secondary')).to.equal(true)
     })
   })
 
   describe('otherParentWorkAndPay', () => {
     it('should return true if otherParentWorkAndPay returns true', () => {
       sinon.stub(skip, 'otherParentWorkAndPay').returns(true)
-      expect(otherParentWorkAndPay(req, 'primary')).to.equal(true)
+      expect(validate.otherParentWorkAndPay(req, 'primary')).to.equal(true)
       skip.otherParentWorkAndPay.restore()
     })
 
     it('should return false if otherParentWorkAndPay returns false', () => {
       req.session.data.primary = {}
       req.session.data.secondary = {}
-      expect(otherParentWorkAndPay(req, 'primary')).to.equal(false)
+      expect(validate.otherParentWorkAndPay(req, 'primary')).to.equal(false)
     })
   })
 })
