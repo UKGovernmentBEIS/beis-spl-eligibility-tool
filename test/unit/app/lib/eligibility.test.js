@@ -91,7 +91,24 @@ describe('getEligibility', () => {
       }
     }
 
-    expect(getEligibility(testData, 'primary', ' ')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'primary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+  })
+
+  it('returns unknown if secondary parent eligibility is undefined', () => {
+    const testData = {
+      primary: {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'continuous-work': 'yes',
+        'pay-threshold': 'yes',
+        'other-parent-work': 'yes',
+        'other-parent-pay': 'yes'
+      }
+    }
+
+    expect(getEligibility(testData, 'secondary', 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'secondary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   describe('for spl', () => {
@@ -112,9 +129,7 @@ describe('getEligibility', () => {
 
     it('returns not eligible if employment status is "self-employed" not "worker"', () => {
       const testData = {
-        primary: {
-          'employment-status': 'self-employed'
-        }
+        primary: { 'employment-status': 'self-employed' }
       }
 
       expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
@@ -123,9 +138,7 @@ describe('getEligibility', () => {
     describe('when employment status is "employee"', () => {
       it('returns not eligible if employment status is "unemployed" not "employee"', () => {
         const testData = {
-          primary: {
-            'employment-status': 'unemployed'
-          }
+          primary: { 'employment-status': 'unemployed' }
         }
 
         expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)

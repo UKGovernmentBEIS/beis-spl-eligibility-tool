@@ -18,18 +18,18 @@ describe('validate.js', () => {
           'start-date-month': '',
           'start-date-day': '',
           primary: {
-            'pay-threshold': 'yes',
-            'continuous-work': 'yes',
-            'employment-status': 'employee',
-            'work-start': 'yes'
+            'pay-threshold': '',
+            'continuous-work': '',
+            'employment-status': '',
+            'work-start': ''
           },
           secondary: {
-            'pay-threshold': 'yes',
-            'continuous-work': 'yes',
-            'employment-status': 'employee',
-            'work-start': 'yes'
+            'pay-threshold': '',
+            'continuous-work': '',
+            'employment-status': '',
+            'work-start': ''
           },
-          whichParent: 'both'
+          whichParent: ''
         },
         errors: []
       }
@@ -138,6 +138,7 @@ describe('validate.js', () => {
 
       expect(validate.startDate(req)).to.equal(false)
       const error = req.session.errors['start-date']
+
       expect(error.text).to.equal('Enter a valid day')
     })
 
@@ -171,83 +172,66 @@ describe('validate.js', () => {
   })
 
   describe('addStartDateError', () => {
-    const testCases = [
-      {
-        message: 'Test error message',
-        dateParts: ['year', 'month', 'day'],
-        expectedHref: '#start-date-year'
-      },
-      {
-        message: 'Month error',
-        dateParts: ['month'],
-        expectedHref: '#start-date-month'
-      },
-      {
-        message: 'Day Error',
-        dateParts: ['day'],
-        expectedHref: '#start-date-day'
-      },
-      {
-        message: 'No date parts error',
-        dateParts: [],
-        expectedHref: '#start-date-undefined'
-      }
-    ]
+    it('should add errors based on the issue in date fields', () => {
+      const testCases = [
+        {
+          year: startDate.getFullYear().toString(),
+          month: (startDate.getMonth() + 1).toString().padStart(2, '0'),
+          day: '43',
+          expectedText: 'Enter a valid day',
+          expectedHref: '#start-date-day',
+          expectedDateParts: ['day']
+        },
+        {
+          year: startDate.getFullYear().toString(),
+          month: '20',
+          day: startDate.getDate().toString().padStart(2, '0'),
+          expectedText: 'Enter a valid month',
+          expectedHref: '#start-date-month',
+          expectedDateParts: ['month']
+        },
+        {
+          year: '2000',
+          month: (startDate.getMonth() + 1).toString().padStart(2, '0'),
+          day: startDate.getDate().toString().padStart(2, '0'),
+          expectedText: 'Enter a date within one year of today',
+          expectedHref: '#start-date-day',
+          expectedDateParts: ['day', 'month', 'year']
+        },
+        {
+          year: 'C',
+          month: 'B',
+          day: 'A',
+          expectedText: 'Enter a valid date',
+          expectedHref: '#start-date-day',
+          expectedDateParts: ['day', 'month', 'year']
+        }
+      ]
 
-    testCases.forEach(({ message, dateParts, expectedHref }) => {
-      it(`adds an error with message: "${message}"`, () => {
-        validate.addStartDateError(req, message, dateParts)
+      testCases.forEach(({ year, month, day, expectedText, expectedHref, expectedDateParts }) => {
+        beforeEach(() => {
+          req = {
+            session: {
+              data: {
+                'start-date-year': year,
+                'start-date-month': month,
+                'start-date-day': day
+              },
+              errors: []
+            }
+          }
+        })
+        req.session.data['start-date-year'] = year
+        req.session.data['start-date-month'] = month
+        req.session.data['start-date-day'] = day
+
+        expect(validate.startDate(req)).to.equal(false)
 
         const error = req.session.errors['start-date']
-
-        expect(error).to.have.property('text', message)
+        expect(error).to.have.property('text', expectedText)
         expect(error).to.have.property('href', expectedHref)
-        expect(error).to.have.property('dateParts').that.deep.equals(dateParts)
+        expect(error).to.have.property('dateParts').that.deep.equals(expectedDateParts)
       })
-    })
-
-    it('should add an error if there is an invalid day inputted', () => {
-      req.session.data['start-date-year'] = startDate.getFullYear().toString()
-      req.session.data['start-date-month'] = (startDate.getMonth() + 1).toString().padStart(2, '0')
-      req.session.data['start-date-day'] = '43'
-      expect(validate.startDate(req)).to.equal(false)
-      const error = req.session.errors['start-date']
-      expect(error).to.have.property('text', 'Enter a valid day')
-      expect(error).to.have.property('href', '#start-date-day')
-      expect(error).to.have.property('dateParts').that.deep.equals(['day'])
-    })
-
-    it('should add an error if there is invalid month inputted', () => {
-      req.session.data['start-date-year'] = startDate.getFullYear().toString()
-      req.session.data['start-date-month'] = '20'
-      req.session.data['start-date-day'] = startDate.getDate().toString().padStart(2, '0')
-      expect(validate.startDate(req)).to.equal(false)
-      const error = req.session.errors['start-date']
-      expect(error).to.have.property('text', 'Enter a valid month')
-      expect(error).to.have.property('href', '#start-date-month')
-      expect(error).to.have.property('dateParts').that.deep.equals(['month'])
-    })
-
-    it('should add an error if there is invalid year inputted', () => {
-      req.session.data['start-date-year'] = '2000'
-      req.session.data['start-date-month'] = (startDate.getMonth() + 1).toString().padStart(2, '0')
-      req.session.data['start-date-day'] = startDate.getDate().toString().padStart(2, '0')
-      expect(validate.startDate(req)).to.equal(false)
-      const error = req.session.errors['start-date']
-      expect(error).to.have.property('text', 'Enter a date within one year of today')
-      expect(error).to.have.property('href', '#start-date-day')
-      expect(error).to.have.property('dateParts').that.deep.equals(['day', 'month', 'year'])
-    })
-
-    it('should add an error if there are non-integers in the input date fields', () => {
-      req.session.data['start-date-day'] = 'A'
-      req.session.data['start-date-month'] = 'B'
-      req.session.data['start-date-year'] = 'C'
-      expect(validate.startDate(req)).to.equal(false)
-      const error = req.session.errors['start-date']
-      expect(error).to.have.property('text', 'Enter a valid date')
-      expect(error).to.have.property('href', '#start-date-day')
-      expect(error).to.have.property('dateParts').that.deep.equals(['day', 'month', 'year'])
     })
   })
 
@@ -275,95 +259,102 @@ describe('validate.js', () => {
 
   describe('employmentStatus', () => {
     it('should return true when employmentStatus returns true', () => {
+      req.session.data.primary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
       sinon.stub(skip, 'employmentStatus').returns(true)
-      const result = validate.employmentStatus(req, 'primary')
-      expect(result).to.equal(true)
+      expect(validate.employmentStatus(req, 'primary')).to.equal(true)
       skip.employmentStatus.restore()
     })
 
-    it('should return true when primary employmentStatus is "employee"', () => {
-      req.session.data.primary['employment-status'] = 'employee'
-      const result = validate.employmentStatus(req, 'primary')
-      expect(result).to.equal(true)
+    it('should return true for valid employmentStatus', () => {
+      const validEmploymentStatus = ['employee', 'worker', 'self-employed', 'unemployed']
+
+      validEmploymentStatus.forEach((status) => {
+        req.session.data.primary['employment-status'] = status
+        expect(validate.employmentStatus(req, 'primary')).to.equal(true)
+      })
     })
 
-    it('should return true when secondary employmentStatus is "worker"', () => {
-      req.session.data.secondary['employment-status'] = 'worker'
-      const result = validate.employmentStatus(req, 'secondary')
-      expect(result).to.equal(true)
-    })
+    it('should return false for invalid employmentStatus', () => {
+      const invalidEmploymentStatus = ['invalid', '', null]
 
-    it('should return true when primary employmentStatus is "self-employed"', () => {
-      req.session.data.primary['employment-status'] = 'self-employed'
-      const result = validate.employmentStatus(req, 'primary')
-      expect(result).to.equal(true)
-    })
-
-    it('should return true when secondary employmentStatus is "unemployed"', () => {
-      req.session.data.secondary['employment-status'] = 'unemployed'
-      const result = validate.employmentStatus(req, 'secondary')
-      expect(result).to.equal(true)
-    })
-
-    it('should return false when employmentStatus is invalid', () => {
-      req.session.data.primary['employment-status'] = 'invalid'
-      const result = validate.employmentStatus(req, 'primary')
-      expect(result).to.equal(false)
-    })
-
-    it('should return false when employmentStatus is empty', () => {
-      req.session.data.primary['employment-status'] = ''
-      const result = validate.employmentStatus(req, 'primary')
-      expect(result).to.equal(false)
-    })
-
-    it('should return false when employmentStatus is null', () => {
-      req.session.data.primary['employment-status'] = null
-      const result = validate.employmentStatus(req, 'primary')
-      expect(result).to.equal(false)
+      invalidEmploymentStatus.forEach((status) => {
+        req.session.data.primary['employment-status'] = status
+        expect(validate.employmentStatus(req, 'primary')).to.equal(false)
+      })
     })
   })
 
   describe('workAndPay', () => {
     it('should return true when workAndPay returns true', () => {
+      req.session.data.primary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
       sinon.stub(skip, 'workAndPay').returns(true)
       expect(validate.workAndPay(req, 'primary')).to.equal(true)
       skip.workAndPay.restore()
     })
 
-    it('should return "secondary" for which-parent when parent is primary', () => {
+    it('should return true when which-parent is "secondary" and parent is "primary"', () => {
+      req.session.data.primary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
+      req.session.data.secondary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
       req.session.data.whichParent = 'secondary'
       expect(validate.workAndPay(req, 'primary')).to.equal(true)
     })
 
-    it('should return "primary" for which-parent when parent is secondary', () => {
+    it('should return true when which-parent is "primary" and parent is "secondary"', () => {
+      req.session.data.primary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
+      req.session.data.secondary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
       req.session.data.whichParent = 'primary'
       expect(validate.workAndPay(req, 'secondary')).to.equal(true)
     })
 
-    it('should return true when employmentStatus is "self-employed" for primary', () => {
+    it('should return true when employmentStatus is "self-employed" and parent is "primary"', () => {
       req.session.data.primary['employment-status'] = 'self-employed'
       expect(validate.workAndPay(req, 'primary')).to.equal(true)
     })
 
-    it('should return true when employmentStatus is "self-employed" for primary', () => {
-      req.session.data.primary['employment-status'] = 'unemployed'
-      expect(validate.workAndPay(req, 'primary')).to.equal(true)
-    })
-
-    it('should return true when employmentStatus is "self-employed" for secondary', () => {
+    it('should return true when employmentStatus is "self-employed" and parent is "secondary"', () => {
       req.session.data.secondary['employment-status'] = 'self-employed'
-      expect(validate.workAndPay(req, 'secondary')).to.equal(true)
-    })
-
-    it('should return true when employmentStatus is "self-employed" for secondary', () => {
-      req.session.data.secondary['employment-status'] = 'unemployed'
       expect(validate.workAndPay(req, 'secondary')).to.equal(true)
     })
   })
 
   describe('otherParentWorkAndPay', () => {
     it('should return true if otherParentWorkAndPay returns true', () => {
+      req.session.data.primary = {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'pay-threshold': 'yes',
+        'continuous-work': 'yes'
+      }
       sinon.stub(skip, 'otherParentWorkAndPay').returns(true)
       expect(validate.otherParentWorkAndPay(req, 'primary')).to.equal(true)
       skip.otherParentWorkAndPay.restore()
