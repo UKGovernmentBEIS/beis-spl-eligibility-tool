@@ -64,6 +64,5 @@ module.exports = {
   workAndPay,
   otherParentWorkAndPay,
   nextParent,
-  parentMeetsPayAndContinuousWorkThresholds,
-  parentMeetsContinuousWorkThreshold
+  parentMeetsPayAndContinuousWorkThresholds
 }

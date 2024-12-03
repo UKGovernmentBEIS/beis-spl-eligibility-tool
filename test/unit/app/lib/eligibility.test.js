@@ -81,6 +81,19 @@ describe('getEligibility', () => {
     expect(getEligibility(testData, 'primary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
+  it('returns unknown if current parent has not completed thresholds', () => {
+    const testData = {
+      primary: {
+        'employment-status': 'employee',
+        'work-start': undefined,
+        'continuous-work': 'yes',
+        'pay-threshold': 'yes'
+      }
+    }
+
+    expect(getEligibility(testData, 'primary', ' ')).to.equal(ELIGIBILITY.UNKNOWN)
+  })
+
   describe('for spl', () => {
     it('returns not eligible if employment status is "worker"', () => {
       const testData = {
