@@ -2,6 +2,7 @@
 {% from "radios/macro.njk" import govukRadios %}
 {% from "character-count/macro.njk" import govukCharacterCount %}
 {% from "button/macro.njk" import govukButton %}
+{% from "input/macro.njk" import govukInput %}
 
 {% extends "layout.njk" %}
 
@@ -66,6 +67,34 @@
             classes: "govuk-label--m"
           }
         }) }}
+
+        {{ govukInput({
+          id: "spam-filter",
+          name: "spam-filter",
+          value: data["spam-filter"],
+          label: {
+            text: "To prove you are not a robot, please type YES.",
+            classes: "govuk-label--m",
+            isPageHeading: true
+          },
+          errorMessage: {
+              text: errors["spam-filter"].text
+          } if errors["spam-filter"]
+        }) }}
+
+        <!-- Honeypot Field -->
+        <div style="display: none;">
+          {{ govukInput({
+            id: "url",
+            name: "url",
+            value: "",
+            label: {
+              text: "url",
+              classes: "govuk-label--s"
+            }
+          }) }}
+        </div>
+
         {{ govukButton({
           text: "Send Feedback",
           preventDoubleClick: true
