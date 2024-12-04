@@ -1,13 +1,7 @@
 const { expect } = require('chai')
 const { describe, it, beforeEach } = require('mocha')
 const skip = require('../../../app/skip')
-
-const createParentData = (employmentStatus, payThreshold, continuousWork, workStart) => ({
-  'employment-status': employmentStatus,
-  'pay-threshold': payThreshold,
-  'continuous-work': continuousWork,
-  'work-start': workStart
-})
+const createParentData = require('../../test_helpers/createParentData')
 
 describe('skip.js', () => {
   let data
@@ -21,34 +15,19 @@ describe('skip.js', () => {
   })
 
   describe('nextParent', () => {
-    it('should return true if which-parent is "both" and parent is "secondary"', () => {
-      data['which-parent'] = 'both'
+    const testCases = [
+      { whichParent: 'both', parent: 'secondary', expected: true },
+      { whichParent: 'primary', parent: 'primary', expected: true },
+      { whichParent: 'both', parent: 'primary', expected: false },
+      { whichParent: 'primary', parent: 'secondary', expected: true },
+      { whichParent: 'secondary', parent: 'secondary', expected: true }
+    ]
 
-      expect(skip.nextParent(data, 'secondary')).to.equal(true)
-    })
-
-    it('should return true if which-parent and parent are both "primary"', () => {
-      data['which-parent'] = 'primary'
-
-      expect(skip.nextParent(data, 'primary')).to.equal(true)
-    })
-
-    it('should return false if which-parent is "both" and parent is "primary"', () => {
-      data['which-parent'] = 'both'
-
-      expect(skip.nextParent(data, 'primary')).to.equal(false)
-    })
-
-    it('should return true if which-parent is "primary" and parent is "secondary"', () => {
-      data['which-parent'] = 'primary'
-
-      expect(skip.nextParent(data, 'secondary')).to.equal(true)
-    })
-
-    it('should return true if which-parent is "secondary" and parent is "secondary"', () => {
-      data['which-parent'] = 'secondary'
-
-      expect(skip.nextParent(data, 'secondary')).to.equal(true)
+    testCases.forEach(({ whichParent, parent, expected }) => {
+      it(`should return ${expected} if which-parent is "${whichParent}" and parent is "${parent}"`, () => {
+        data['which-parent'] = whichParent
+        expect(skip.nextParent(data, parent)).to.equal(expected)
+      })
     })
   })
 
@@ -68,188 +47,225 @@ describe('skip.js', () => {
   })
 
   describe('parentMeetsPayAndContinuousWorkThresholds', () => {
-    it('should return true when parent meets pay and continuous work thresholds', () => {
-      data.primary = createParentData('employee', 'yes', 'yes', 'yes')
+    const testCases = [
+      {
+        primary: createParentData('employee', 'yes', 'yes', 'yes'),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when parent meets pay and continuous work thresholds'
+      },
+      {
+        primary: createParentData('', 'yes', 'no', 'no'),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when only pay threshold is met'
+      },
+      {
+        primary: createParentData('', 'no', 'yes', 'yes'),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when only continuous work threshold is met'
+      },
+      {
+        primary: createParentData('', 'no', 'no', 'no'),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when parent does not meet both pay and continuous work thresholds'
+      },
+      {
+        secondary: createParentData('employee', 'yes', 'yes', 'yes'),
+        parent: 'secondary',
+        expected: true,
+        message: 'should return true when parent meets pay and continuous work thresholds for secondary parent'
+      },
+      {
+        secondary: createParentData('', 'no', 'yes', 'yes'),
+        parent: 'secondary',
+        expected: false,
+        message: 'should return false when only pay threshold is met for secondary parent'
+      },
+      {
+        secondary: createParentData('', 'yes', 'no', 'no'),
+        parent: 'secondary',
+        expected: false,
+        message: 'should return false when only continuous work threshold is met for secondary parent'
+      }
+    ]
 
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'primary')).to.equal(true)
-    })
-
-    it('should return false when only pay threshold is met', () => {
-      data.primary = createParentData('', 'yes', 'no', 'no')
-
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when only continuous work threshold is met', () => {
-      data.primary = createParentData('', 'no', 'yes', 'yes')
-
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when parent does not meet both pay and continuous work thresholds', () => {
-      data.primary = createParentData('', 'no', 'no', 'no')
-
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'primary')).to.equal(false)
-    })
-
-    it('should return true when parent meets pay and continuous work thresholds for secondary parent', () => {
-      data.secondary = createParentData('employee', 'yes', 'yes', 'yes')
-
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'secondary')).to.equal(true)
-    })
-
-    it('should return false when parent does not meet pay threshold for secondary parent', () => {
-      data.secondary = createParentData('', 'no', 'yes', 'yes')
-
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'secondary')).to.equal(false)
-    })
-
-    it('should return false when parent does not meet continuous work threshold for secondary parent', () => {
-      data.secondary = createParentData('', 'yes', 'no', 'no')
-
-      expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, 'secondary')).to.equal(false)
+    testCases.forEach(({ primary, secondary, parent, expected, message }) => {
+      it(`${message}`, () => {
+        if (primary) data.primary = primary
+        if (secondary) data.secondary = secondary
+        expect(skip.parentMeetsPayAndContinuousWorkThresholds(data, parent)).to.equal(expected)
+      })
     })
   })
 
   describe('otherParentWorkAndPay', () => {
-    it('should return true when which-parent is "secondary" and parent is "primary"', () => {
-      data['which-parent'] = 'secondary'
+    const testCases = [
+      {
+        whichParent: 'secondary',
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when which-parent is "secondary" and parent is "primary"'
+      },
+      {
+        whichParent: 'primary',
+        parent: 'secondary',
+        expected: true,
+        message: 'should return true when which-parent is "primary" and parent is "secondary"'
+      },
+      {
+        whichParent: 'primary',
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when which-parent is "primary" and parent is "primary"'
+      },
+      {
+        whichParent: 'secondary',
+        parent: 'secondary',
+        expected: false,
+        message: 'should return false when which-parent is "secondary" and parent is "secondary"'
+      },
+      {
+        secondary: createParentData('employee', 'yes', 'yes', 'yes'),
+        whichParent: 'both',
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when which-parent is "both" and parent is "primary"'
+      },
+      {
+        primary: createParentData('self-employed', '', '', ''),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when parent is self-employed'
+      },
+      {
+        primary: createParentData('unemployed', '', '', ''),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when parent is unemployed'
+      },
+      {
+        secondary: createParentData('worker', 'no', 'no', 'no'),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when parent is a worker and does not meet pay and work thresholds'
+      },
+      {
+        secondary: createParentData('worker', 'yes', 'yes', 'yes'),
+        primary: createParentData('worker', 'yes', 'yes', 'yes'),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when parent is a worker and does meet pay and work thresholds'
+      },
+      {
+        primary: createParentData('employee', '', 'no', 'no'),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when parent is an employee and does not meet continuous work thresholds'
+      },
+      {
+        secondary: createParentData('employee', '', 'yes', 'yes'),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when parent is an employee and does meet continuous work thresholds'
+      },
+      {
+        data: {},
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when parent does not have data'
+      },
+      {
+        data: { primary: {} },
+        parent: 'secondary',
+        expected: false,
+        message: 'should return false when data for the other parent is missing'
+      },
+      {
+        data: { secondary: {} },
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when data for the other parent is missing'
+      },
+      {
+        secondary: createParentData('employee', 'no', '', ''),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when other parent is an employee but does not meet pay thresholds'
+      },
+      {
+        secondary: createParentData('employee', 'yes', '', ''),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when other parent is an employee and does meet pay thresholds'
+      },
+      {
+        primary: createParentData('employee', 'yes', 'yes', 'yes'),
+        secondary: createParentData('employee', 'yes', 'yes', 'yes'),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when both parents meet pay thresholds'
+      },
+      {
+        primary: createParentData('employee', 'yes', '', ''),
+        parent: 'secondary',
+        expected: true,
+        message: 'should return true when other parent is an employee and does meet pay thresholds'
+      },
+      {
+        primary: createParentData('worker', 'no', '', ''),
+        parent: 'secondary',
+        expected: false,
+        message: 'should return false when other parent is a worker but does not meet pay thresholds'
+      },
+      {
+        secondary: createParentData('employee', 'no', '', ''),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when other parent is an employee but does not meet pay thresholds'
+      },
+      {
+        secondary: createParentData('worker', 'yes', '', ''),
+        parent: 'primary',
+        expected: true,
+        message: 'should return true when other parent is a worker and does meet pay thresholds'
+      }
+    ]
 
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return true when which-parent is "primary" and parent is "secondary"', () => {
-      data['which-parent'] = 'primary'
-
-      expect(skip.otherParentWorkAndPay(data, 'secondary')).to.equal(true)
-    })
-
-    it('should return false when which-parent is "primary" and parent is "primary"', () => {
-      data['which-parent'] = 'primary'
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when which-parent is "secondary" and parent is "secondary"', () => {
-      data['which-parent'] = 'secondary'
-
-      expect(skip.otherParentWorkAndPay(data, 'secondary')).to.equal(false)
-    })
-
-    it('should return true when which-parent is "primary" and parent is "primary"', () => {
-      data.secondary = createParentData('employee', 'yes', 'yes', 'yes')
-      data['which-parent'] = 'both'
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return true when parent is self-employed', () => {
-      data.primary = createParentData('self-employed', '', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return true when parent is unemployed', () => {
-      data.primary = createParentData('unemployed', '', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return false when parent is a worker and does not meet pay and work thresholds', () => {
-      data.secondary = createParentData('worker', 'no', 'no', 'no')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return true when parent is a worker and does meet pay and work thresholds', () => {
-      data.primary = createParentData('worker', 'yes', 'yes', 'yes')
-      data.secondary = createParentData('worker', 'yes', 'yes', 'yes')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return true when parent is an employee and does not meet continuous work thresholds', () => {
-      data.primary = createParentData('employee', '', 'no', 'no')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return false when parent is an employee and does meet continuous work thresholds', () => {
-      data.secondary = createParentData('employee', '', 'yes', 'yes')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when parent does not have data', () => {
-      data = {}
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when data for the other parent is missing', () => {
-      data = { primary: {} }
-      expect(skip.otherParentWorkAndPay(data, 'secondary')).to.equal(false)
-    })
-
-    it('should return false when data for the other parent is missing', () => {
-      data = { secondary: {} }
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when parent is an employee but does not meet pay thresholds', () => {
-      data.secondary = createParentData('employee', 'no', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return true when parent is an employee and does meet pay threshold', () => {
-      data.secondary = createParentData('employee', 'yes', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return true when both parents meet pay thresholds', () => {
-      data.primary = createParentData('employee', 'yes', 'yes', 'yes')
-      data.secondary = createParentData('worker', 'yes', 'yes', 'yes')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
-    })
-
-    it('should return true when other parent does meet pay threshold', () => {
-      data.primary = createParentData('employee', 'yes', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'secondary')).to.equal(true)
-    })
-
-    it('should return false when other parent does not meet pay threshold', () => {
-      data.primary = createParentData('worker', 'no', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'secondary')).to.equal(false)
-    })
-
-    it('should return false when other parent does not meet pay threshold', () => {
-      data.secondary = createParentData('employee', 'no', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return true when other parent does meet pay threshold', () => {
-      data.secondary = createParentData('worker', 'yes', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
+    testCases.forEach(({ primary, secondary, whichParent, parent, expected, message }) => {
+      it(`${message}`, () => {
+        if (primary) data.primary = primary
+        if (secondary) data.secondary = secondary
+        if (whichParent) data['which-parent'] = whichParent
+        expect(skip.otherParentWorkAndPay(data, parent)).to.equal(expected)
+      })
     })
   })
 
   describe('otherParent', () => {
-    it('should return false when otherParent is "secondary, "self-employed" and does not meet pay threshold', () => {
-      data.secondary = createParentData('self-employed', 'no', '', '')
+    const testCases = [
+      {
+        secondary: createParentData('self-employed', 'no', '', ''),
+        parent: 'primary',
+        expected: false,
+        message: 'should return false when otherParent is "secondary, "self-employed" and does not meet pay threshold'
+      },
+      {
+        primary: createParentData('unemployed', 'no', '', ''),
+        parent: 'secondary',
+        expected: false,
+        message: 'should return false when otherParent is "primary", "unemployed" and does not meet pay threshold'
+      }
+    ]
 
-      expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(false)
-    })
-
-    it('should return false when otherParent is "primary", "unemployed" and does not meet pay threshold', () => {
-      data.primary = createParentData('unemployed', 'no', '', '')
-
-      expect(skip.otherParentWorkAndPay(data, 'secondary')).to.equal(false)
+    testCases.forEach(({ primary, secondary, parent, expected, message }) => {
+      it(`${message}`, () => {
+        if (primary) data.primary = primary
+        if (secondary) data.secondary = secondary
+        expect(skip.otherParentWorkAndPay(data, parent)).to.equal(expected)
+      })
     })
   })
 })
