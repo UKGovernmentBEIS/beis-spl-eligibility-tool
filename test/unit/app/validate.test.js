@@ -336,8 +336,7 @@ describe('validate.js', () => {
         'pay-threshold': 'yes',
         'continuous-work': 'yes'
       }
-
-      req.session.data.whichParent = 'primary'
+      req.session.data['which-parent'] = 'primary'
 
       expect(validate.workAndPay(req, 'secondary')).to.equal(true)
     })

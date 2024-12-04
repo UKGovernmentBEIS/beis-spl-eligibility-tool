@@ -24,44 +24,44 @@ describe('skip.js', () => {
   })
 
   describe('nextParent', () => {
-    it('should return true if which-parent is "secondary"', () => {
-      const data = { 'which-parent': 'both' }
+    it('should return true if which-parent is "both" and parent is "secondary"', () => {
+      data['which-parent'] = 'both'
 
       expect(skip.nextParent(data, 'secondary')).to.equal(true)
     })
 
-    it('should return true if which-parent is not "both"', () => {
-      const data = { 'which-parent': 'primary' }
+    it('should return true if which-parent and parent are both "primary"', () => {
+      data['which-parent'] = 'primary'
 
       expect(skip.nextParent(data, 'primary')).to.equal(true)
     })
 
     it('should return false if which-parent is "both" and parent is "primary"', () => {
-      const data = { 'which-parent': 'both' }
+      data['which-parent'] = 'both'
 
       expect(skip.nextParent(data, 'primary')).to.equal(false)
     })
 
     it('should return true if which-parent is "primary" and parent is "secondary', () => {
-      const data = { 'which-parent': 'primary' }
+      data['which-parent'] = 'primary'
 
       expect(skip.nextParent(data, 'secondary')).to.equal(true)
     })
 
     it('should return false if which-parent is "both" and parent is "primary"', () => {
-      const data = { 'which-parent': 'both' }
+      data['which-parent'] = 'both'
 
       expect(skip.nextParent(data, 'primary')).to.equal(false)
     })
 
     it('should return true if which-parent is "secondary" and parent is "secondary"', () => {
-      const data = { 'which-parent': 'secondary' }
+      data['which-parent'] = 'secondary'
 
       expect(skip.nextParent(data, 'secondary')).to.equal(true)
     })
 
     it('should return false if which-parent is "both" and parent is "secondary"', () => {
-      const data = { 'which-parent': 'both' }
+      data['which-parent'] = 'both'
 
       expect(skip.nextParent(data, 'secondary')).to.equal(true)
     })
@@ -188,19 +188,19 @@ describe('skip.js', () => {
         'pay-threshold': 'yes',
         'work-start': 'yes'
       }
-      data['which-parent'] = 'primary'
+      data['which-parent'] = 'both'
 
       expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
     })
 
     it('should return true when parent is self-employed', () => {
-      data.primary['employment-status'] = 'self-employed'
+      data.primary = { 'employment-status': 'self-employed' }
 
       expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
     })
 
     it('should return true when parent is unemployed', () => {
-      data.primary['employment-status'] = 'unemployed'
+      data.primary = { 'employment-status': 'unemployed' }
 
       expect(skip.otherParentWorkAndPay(data, 'primary')).to.equal(true)
     })
