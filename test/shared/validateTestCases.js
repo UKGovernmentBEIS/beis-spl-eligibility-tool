@@ -1,6 +1,6 @@
 const startDate = new Date()
 startDate.setMonth(startDate.getMonth() - 9)
-const createParentData = require('../test_helpers/createParentData')
+const sharedHelperFunctions = require('../test_helpers/sharedHelperFunctions')
 
 const startDateCases = [
   {
@@ -134,29 +134,29 @@ const employmentStatus = [
 
 const workAndPay = [
   {
-    primary: createParentData('employee', 'yes', 'yes', 'yes'),
-    secondary: createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    secondary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     whichParent: 'secondary',
     parent: 'primary',
     expected: true,
     message: 'should return true when which-parent is "secondary" and parent is "primary"'
   },
   {
-    primary: createParentData('employee', 'yes', 'yes', 'yes'),
-    secondary: createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    secondary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     whichParent: 'primary',
     parent: 'secondary',
     expected: true,
     message: 'should return true when which-parent is "primary" and parent is "secondary"'
   },
   {
-    primary: createParentData('self-employed', '', '', ''),
+    primary: sharedHelperFunctions.createParentData('self-employed', '', '', ''),
     parent: 'primary',
     expected: true,
     message: 'should return true when employmentStatus is "self-employed" and parent is "primary"'
   },
   {
-    secondary: createParentData('self-employed', '', '', ''),
+    secondary: sharedHelperFunctions.createParentData('self-employed', '', '', ''),
     parent: 'secondary',
     expected: true,
     message: 'should return true when employmentStatus is "self-employed" and parent is "secondary"'
@@ -165,19 +165,19 @@ const workAndPay = [
 
 const sinonStubs = [
   {
-    primary: createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     function: 'employmentStatus',
     expected: true,
     message: 'should return true for employmentStatus'
   },
   {
-    primary: createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     function: 'workAndPay',
     expected: true,
     message: 'should return true for workAndPay'
   },
   {
-    primary: createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     function: 'otherParentWorkAndPay',
     expected: true,
     message: 'should return true for otherParentWorkAndPay'

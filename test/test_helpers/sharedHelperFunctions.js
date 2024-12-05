@@ -1,6 +1,15 @@
 const { expect } = require('chai')
 const { it } = require('mocha')
 
+function createParentData (employmentStatus, payThreshold, workStart, continuousWork) {
+  return {
+    'employment-status': employmentStatus,
+    'pay-threshold': payThreshold,
+    'work-start': workStart,
+    'continuous-work': continuousWork
+  }
+}
+
 function runSkipTests (testCases, method, baseData) {
   testCases.forEach(({ primary, secondary, whichParent, parent, expected, message }) => {
     it(`${message}`, () => {
@@ -69,6 +78,7 @@ function workAndPay (req, validateFunc, testCases) {
 }
 
 module.exports = {
+  createParentData,
   runSkipTests,
   testAcceptedValues,
   testInvalidField,

@@ -1,37 +1,36 @@
 const { describe, beforeEach } = require('mocha')
 const skip = require('../../../app/skip')
-const createParentData = require('../../test_helpers/createParentData')
 const testCases = require('../../shared/skipTestCases')
-const { runSkipTests } = require('../../test_helpers/createSharedTests')
+const sharedHelperFunctions = require('../../test_helpers/sharedHelperFunctions')
 
 describe('skip.js', () => {
   let data
 
   beforeEach(() => {
     data = {
-      primary: createParentData('', '', '', ''),
-      secondary: createParentData('', '', '', ''),
+      primary: sharedHelperFunctions.createParentData('', '', '', ''),
+      secondary: sharedHelperFunctions.createParentData('', '', '', ''),
       'which-parent': ''
     }
   })
 
   describe('nextParent', () => {
-    runSkipTests(testCases.nextParent, skip.nextParent, data)
+    sharedHelperFunctions.runSkipTests(testCases.nextParent, skip.nextParent, data)
   })
 
   describe('employmentStatus', () => {
-    runSkipTests(testCases.employmentStatus, skip.employmentStatus, data)
+    sharedHelperFunctions.runSkipTests(testCases.employmentStatus, skip.employmentStatus, data)
   })
 
   describe('parentMeetsPayAndContinuousWorkThresholds', () => {
-    runSkipTests(testCases.parentMeetsPayAndContinuousWorkThresholds, skip.parentMeetsPayAndContinuousWorkThresholds, data)
+    sharedHelperFunctions.runSkipTests(testCases.parentMeetsPayAndContinuousWorkThresholds, skip.parentMeetsPayAndContinuousWorkThresholds, data)
   })
 
   describe('otherParentWorkAndPay', () => {
-    runSkipTests(testCases.otherParentWorkAndPay, skip.otherParentWorkAndPay, data)
+    sharedHelperFunctions.runSkipTests(testCases.otherParentWorkAndPay, skip.otherParentWorkAndPay, data)
   })
 
   describe('otherParent', () => {
-    runSkipTests(testCases.otherParent, skip.otherParentWorkAndPay, data)
+    sharedHelperFunctions.runSkipTests(testCases.otherParent, skip.otherParentWorkAndPay, data)
   })
 })
