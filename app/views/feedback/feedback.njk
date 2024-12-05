@@ -35,25 +35,33 @@
           items: [
             {
               value: "very satisfactory",
-              text: "Very Satisfactory"
+              text: "Very Satisfactory",
+              checked: data | feedbackExperience("very satisfactory")
             },
             {
               value: "satisfactory",
-              text: "Satisfactory"
+              text: "Satisfactory",
+              checked: data | feedbackExperience("satisfactory")
             },
             {
               value: "neither satisfactory or dissatisfactory",
-              text: "Neither Satisfactory or Dissatisfactory"
+              text: "Neither Satisfactory or Dissatisfactory",
+              checked: data | feedbackExperience("neither satisfactory or dissatisfactory")
             },
             {
               value: "dissatisfactory",
-              text: "Dissatisfactory"
+              text: "Dissatisfactory",
+              checked: data | feedbackExperience("dissatisfactory")
             },
             {
               value: "very dissatisfactory",
-              text: "Very Dissatisfactory"
+              text: "Very Dissatisfactory",
+              checked: data | feedbackExperience("very dissatisfactory")
             }
-          ]
+          ],
+          errorMessage: {
+              text: errors["feedback"].text
+          } if errors["feedback"]
         }) }}
 
         {{ govukCharacterCount({
