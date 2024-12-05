@@ -27,6 +27,7 @@ function runSkipTests (testCases, method, baseData) {
 function testAcceptedValues (req, validateFunc, field, acceptedValues) {
   acceptedValues.forEach((value) => {
     req.session.data[field] = value
+
     expect(validateFunc(req)).to.equal(true)
   })
 }
@@ -36,6 +37,7 @@ function testInvalidField (req, validateFunc, field, invalidValue, expectedError
   expect(validateFunc(req)).to.equal(false)
 
   const error = req.session.errors[field]
+
   expect(error.text).to.equal(expectedError.text)
   expect(error.href).to.equal(expectedError.href)
 }
@@ -59,6 +61,7 @@ function employmentStatus (req, validateFunc, testCases) {
     it(`${message}`, () => {
       employmentStatus.forEach((status) => {
         req.session.data.primary['employment-status'] = status
+        
         expect(validateFunc(req, 'primary')).to.equal(expected)
       })
     })
