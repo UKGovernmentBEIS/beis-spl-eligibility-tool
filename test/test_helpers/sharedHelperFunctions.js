@@ -61,7 +61,7 @@ function employmentStatus (req, validateFunc, testCases) {
     it(`${message}`, () => {
       employmentStatus.forEach((status) => {
         req.session.data.primary['employment-status'] = status
-        
+
         expect(validateFunc(req, 'primary')).to.equal(expected)
       })
     })
