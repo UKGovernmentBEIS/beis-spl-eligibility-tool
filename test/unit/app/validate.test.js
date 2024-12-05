@@ -5,6 +5,7 @@ const sinon = require('sinon')
 const skip = require('../../../app/skip')
 const createParentData = require('../../test_helpers/createParentData')
 const testCases = require('../../shared/validateTestCases')
+const createSharedTests = require('../../test_helpers/createSharedTests')
 
 describe('validate.js', () => {
   let req
@@ -38,44 +39,30 @@ describe('validate.js', () => {
   })
 
   describe('natureOfParenthood', () => {
-    it("returns true if request session data 'nature-of-parenthood' contains accepted values", () => {
+    it('returns true if session data contains accepted values', () => {
       const acceptedValues = ['birth', 'adoption', 'surrogacy']
-
-      acceptedValues.forEach((value) => {
-        req.session.data['nature-of-parenthood'] = value
-        expect(validate.natureOfParenthood(req)).to.equal(true)
-      })
+      createSharedTests.testAcceptedValues(req, validate.natureOfParenthood, 'nature-of-parenthood', acceptedValues)
     })
 
-    it("returns an error message and false if request session data 'nature-of-parenthood' does not contain accepted values", () => {
-      req.session.data['nature-of-parenthood'] = 'test'
-      expect(validate.natureOfParenthood(req)).to.equal(false)
-
-      const error = req.session.errors['nature-of-parenthood']
-
-      expect(error.text).to.equal('Select either birth, adoption or surrogacy')
-      expect(error.href).to.equal('#nature-of-parenthood')
+    it("returns an error message for an invalid values in session data for 'nature-of-parenthood'", () => {
+      createSharedTests.testInvalidField(req, validate.natureOfParenthood, 'nature-of-parenthood', 'test', {
+        text: 'Select either birth, adoption or surrogacy',
+        href: '#nature-of-parenthood'
+      })
     })
   })
 
   describe('caringWithPartner', () => {
-    it("returns true if request session data 'caring-with-partner' contains accepted values", () => {
+    it('returns true if session data contains accepted values', () => {
       const acceptedValues = ['yes', 'no']
-
-      acceptedValues.forEach((value) => {
-        req.session.data['caring-with-partner'] = value
-        expect(validate.caringWithPartner(req)).to.equal(true)
-      })
+      createSharedTests.testAcceptedValues(req, validate.caringWithPartner, 'caring-with-partner', acceptedValues)
     })
 
-    it("returns an error message and false if request session data 'caring-with-partner' does not contain accepted values", () => {
-      req.session.data['caring-with-partner'] = 'test'
-      expect(validate.caringWithPartner(req)).to.equal(false)
-
-      const error = req.session.errors['caring-with-partner']
-
-      expect(error.text).to.equal('Select whether or not you are caring for the child with a partner')
-      expect(error.href).to.equal('#caring-with-partner')
+    it("returns an error message for an invalid values in session data for 'caring-with-partner'", () => {
+      createSharedTests.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
+        text: 'Select whether or not you are caring for the child with a partner',
+        href: '#caring-with-partner'
+      })
     })
   })
 
@@ -103,16 +90,8 @@ describe('validate.js', () => {
   })
 
   describe('addStartDateError', () => {
-    testCases.addStartDateError.forEach(({ message, dateParts, expectedHref }) => {
-      it(`adds an error with message: "${message}"`, () => {
-        validate.addStartDateError(req, message, dateParts)
-
-        const error = req.session.errors['start-date']
-
-        expect(error).to.have.property('text', message)
-        expect(error).to.have.property('href', expectedHref)
-        expect(error).to.have.property('dateParts').that.deep.equals(dateParts)
-      })
+    it('returns the correct errors and error properties', () => {
+      createSharedTests.addStartError(req, validate.addStartDateError, testCases.addStartDateError)
     })
   })
 
@@ -127,25 +106,14 @@ describe('validate.js', () => {
   })
 
   describe('employmentStatus', () => {
-    testCases.employmentStatus.forEach(({ employmentStatus, expected, message }) => {
-      it(`${message}`, () => {
-        employmentStatus.forEach((status) => {
-          req.session.data.primary['employment-status'] = status
-          expect(validate.employmentStatus(req, 'primary')).to.equal(expected)
-        })
-      })
+    it('returns correct result if session data contains accepted or invalid values', () => {
+      createSharedTests.employmentStatus(req, validate.employmentStatus, testCases.employmentStatus)
     })
   })
 
   describe('workAndPay', () => {
-    testCases.workAndPay.forEach(({ primary, secondary, whichParent, parent, expected, message }) => {
-      it(`${message}`, () => {
-        if (primary) req.session.data.primary = primary
-        if (secondary) req.session.data.secondary = secondary
-        if (whichParent) req.session.data['which-parent'] = whichParent
-
-        expect(validate.workAndPay(req, parent)).to.equal(expected)
-      })
+    it('should return true for all valid test cases', () => {
+      createSharedTests.workAndPay(req, validate.workAndPay, testCases.workAndPay)
     })
   })
 
