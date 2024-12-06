@@ -1,7 +1,13 @@
 const emailjs = require('@emailjs/nodejs')
 const logger = require('./logger')
 
-const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders) => {
+const sendMail = async (
+  experience,
+  moreDetails,
+  emailjsIds,
+  options,
+  reqHeaders
+) => {
   const currentDateTime = new Date().toLocaleString('en-GB', {
     timeZone: 'Europe/London',
     year: 'numeric',
@@ -23,12 +29,13 @@ const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders
   }
 
   try {
-    await emailjs.send(
-      emailjsIds.serviceID,
-      emailjsIds.templateID,
-      templateParams,
-      options
-    )
+    await emailjs
+      .send(
+        emailjsIds.serviceID,
+        emailjsIds.templateID,
+        templateParams,
+        options
+      )
       .then((response) => {
         logger.info({
           message: `Email sent successfully! ${response.status} ${response.text}`,
@@ -51,6 +58,7 @@ const sendMail = async (experience, moreDetails, emailjsIds, options, reqHeaders
       eventResult: 'Failure',
       errorDetails: err.text
     })
+    throw new Error(`Failed to send email: ${err.text}`)
   }
 }
 
