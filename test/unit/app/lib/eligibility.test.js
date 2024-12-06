@@ -1,7 +1,7 @@
 const { describe, it } = require('mocha')
 const { expect } = require('chai')
 
-const { getEligibility, ELIGIBILITY } = require('./eligibility')
+const { getEligibility, ELIGIBILITY } = require('../../../../app/lib/eligibility')
 
 describe('getEligibility', () => {
   it('returns not eligible if other parent does not meet work threshold', () => {
@@ -58,6 +58,13 @@ describe('getEligibility', () => {
     expect(getEligibility(testData, 'secondary', 'shpp')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
   })
 
+  it('returns unknown if eligibility is undefined', () => {
+    const testData = {}
+
+    expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'primary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+  })
+
   it('returns unknown if employment-status not provided', () => {
     const testData = {
       primary: {
@@ -72,6 +79,36 @@ describe('getEligibility', () => {
 
     expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
     expect(getEligibility(testData, 'primary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+  })
+
+  it('returns unknown if current parent has not completed thresholds', () => {
+    const testData = {
+      primary: {
+        'employment-status': 'employee',
+        'work-start': undefined,
+        'continuous-work': 'yes',
+        'pay-threshold': 'yes'
+      }
+    }
+
+    expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'primary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
+  })
+
+  it('returns unknown if secondary parent eligibility is undefined', () => {
+    const testData = {
+      primary: {
+        'employment-status': 'employee',
+        'work-start': 'yes',
+        'continuous-work': 'yes',
+        'pay-threshold': 'yes',
+        'other-parent-work': 'yes',
+        'other-parent-pay': 'yes'
+      }
+    }
+
+    expect(getEligibility(testData, 'secondary', 'spl')).to.equal(ELIGIBILITY.UNKNOWN)
+    expect(getEligibility(testData, 'secondary', 'shpp')).to.equal(ELIGIBILITY.UNKNOWN)
   })
 
   describe('for spl', () => {
@@ -90,7 +127,23 @@ describe('getEligibility', () => {
       expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
     })
 
+    it('returns not eligible if employment status is "self-employed" not "worker"', () => {
+      const testData = {
+        primary: { 'employment-status': 'self-employed' }
+      }
+
+      expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+    })
+
     describe('when employment status is "employee"', () => {
+      it('returns not eligible if employment status is "unemployed" not "employee"', () => {
+        const testData = {
+          primary: { 'employment-status': 'unemployed' }
+        }
+
+        expect(getEligibility(testData, 'primary', 'spl')).to.equal(ELIGIBILITY.NOT_ELIGIBLE)
+      })
+
       it('returns not eligible if work-start === "no"', () => {
         const testData = {
           primary: {

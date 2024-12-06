@@ -63,5 +63,6 @@ module.exports = {
   employmentStatus,
   workAndPay,
   otherParentWorkAndPay,
-  nextParent
+  nextParent,
+  parentMeetsPayAndContinuousWorkThresholds
 }

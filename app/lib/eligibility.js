@@ -47,11 +47,9 @@ function getEligibility (data, parent, policy) {
   const thisParentEligibility = data[parent]
   const otherParent = parent === 'primary' ? 'secondary' : 'primary'
   const otherParentEligibility = data[otherParent]
-
   if (thisParentEligibility === undefined) {
     return ELIGIBILITY.UNKNOWN
   }
-
   if (!thisParentEligibility['employment-status']) {
     return ELIGIBILITY.UNKNOWN
   }
