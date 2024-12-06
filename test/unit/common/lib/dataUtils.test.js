@@ -3,6 +3,27 @@ const { expect } = require('chai')
 const dataUtils = require('../../../../common/lib/dataUtils')
 
 describe('dataUtils', () => {
+  describe('feedbackExperience', () => {
+    it('should return true if data is a string and matches optionName', () => {
+      const result = dataUtils.feedbackExperience('testOption', 'testOption')
+      expect(result).to.equal(true)
+    })
+
+    it('should return false if data is a string and does not match optionName', () => {
+      const result = dataUtils.feedbackExperience('testOption', 'otherOption')
+      expect(result).to.equal(false)
+    })
+
+    it('should return true if data has feedback property that matches optionName', () => {
+      const result = dataUtils.feedbackExperience({ feedback: 'testOption' }, 'testOption')
+      expect(result).to.equal(true)
+    })
+
+    it('should return false if data has feedback property that does not match optionName', () => {
+      const result = dataUtils.feedbackExperience({ feedback: 'otherOption' }, 'testOption')
+      expect(result).to.equal(false)
+    })
+  })
   describe('natureOfParenthood', () => {
     it('should return the nature-of-parenthood value from data', () => {
       const data = { 'nature-of-parenthood': 'birth' }
