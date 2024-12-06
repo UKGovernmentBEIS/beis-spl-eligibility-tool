@@ -4,7 +4,8 @@ const validate = require('../../../app/validate')
 const sinon = require('sinon')
 const skip = require('../../../app/skip')
 const testCases = require('../../shared/validateTestCases')
-const sharedHelperFunctions = require('../../test_helpers/sharedHelperFunctions')
+const helperFunctions = require('../../test_helpers/helperFunctions')
+const sharedBehaviourTests = require('../../test_helpers/sharedBehaviourTests')
 
 describe('validate.js', () => {
   let req
@@ -19,8 +20,8 @@ describe('validate.js', () => {
           'start-date-year': '',
           'start-date-month': '',
           'start-date-day': '',
-          primary: sharedHelperFunctions.createParentData('', '', '', ''),
-          secondary: sharedHelperFunctions.createParentData('', '', '', ''),
+          primary: helperFunctions.createParentData('', '', '', ''),
+          secondary: helperFunctions.createParentData('', '', '', ''),
           whichParent: ''
         },
         errors: []
@@ -40,11 +41,11 @@ describe('validate.js', () => {
   describe('natureOfParenthood', () => {
     it('returns true if session data contains accepted values', () => {
       const acceptedValues = ['birth', 'adoption', 'surrogacy']
-      sharedHelperFunctions.testAcceptedValues(req, validate.natureOfParenthood, 'nature-of-parenthood', acceptedValues)
+      sharedBehaviourTests.testAcceptedValues(req, validate.natureOfParenthood, 'nature-of-parenthood', acceptedValues)
     })
 
     it("returns an error message for an invalid values in session data for 'nature-of-parenthood'", () => {
-      sharedHelperFunctions.testInvalidField(req, validate.natureOfParenthood, 'nature-of-parenthood', 'test', {
+      sharedBehaviourTests.testInvalidField(req, validate.natureOfParenthood, 'nature-of-parenthood', 'test', {
         text: 'Select either birth, adoption or surrogacy',
         href: '#nature-of-parenthood'
       })
@@ -54,11 +55,11 @@ describe('validate.js', () => {
   describe('caringWithPartner', () => {
     it('returns true if session data contains accepted values', () => {
       const acceptedValues = ['yes', 'no']
-      sharedHelperFunctions.testAcceptedValues(req, validate.caringWithPartner, 'caring-with-partner', acceptedValues)
+      sharedBehaviourTests.testAcceptedValues(req, validate.caringWithPartner, 'caring-with-partner', acceptedValues)
     })
 
     it("returns an error message for an invalid values in session data for 'caring-with-partner'", () => {
-      sharedHelperFunctions.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
+      sharedBehaviourTests.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
         text: 'Select whether or not you are caring for the child with a partner',
         href: '#caring-with-partner'
       })
@@ -90,7 +91,7 @@ describe('validate.js', () => {
 
   describe('addStartDateError', () => {
     it('returns the correct errors and error properties', () => {
-      sharedHelperFunctions.addStartError(req, validate.addStartDateError, testCases.addStartDateError)
+      sharedBehaviourTests.addStartError(req, validate.addStartDateError, testCases.addStartDateError)
     })
   })
 
@@ -106,13 +107,13 @@ describe('validate.js', () => {
 
   describe('employmentStatus', () => {
     it('returns correct result if session data contains accepted or invalid values', () => {
-      sharedHelperFunctions.employmentStatus(req, validate.employmentStatus, testCases.employmentStatus)
+      sharedBehaviourTests.employmentStatus(req, validate.employmentStatus, testCases.employmentStatus)
     })
   })
 
   describe('workAndPay', () => {
     it('should return true for all valid test cases', () => {
-      sharedHelperFunctions.workAndPay(req, validate.workAndPay, testCases.workAndPay)
+      sharedBehaviourTests.workAndPay(req, validate.workAndPay, testCases.workAndPay)
     })
   })
 

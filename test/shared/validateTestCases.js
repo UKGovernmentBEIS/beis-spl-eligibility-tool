@@ -1,6 +1,6 @@
 const startDate = new Date()
 startDate.setMonth(startDate.getMonth() - 9)
-const sharedHelperFunctions = require('../test_helpers/sharedHelperFunctions')
+const helperFunctions = require('../test_helpers/helperFunctions')
 
 const startDateCases = [
   {
@@ -134,29 +134,29 @@ const employmentStatus = [
 
 const workAndPay = [
   {
-    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
-    secondary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    secondary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     whichParent: 'secondary',
     parent: 'primary',
     expected: true,
     message: 'should return true when which-parent is "secondary" and parent is "primary"'
   },
   {
-    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
-    secondary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    secondary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     whichParent: 'primary',
     parent: 'secondary',
     expected: true,
     message: 'should return true when which-parent is "primary" and parent is "secondary"'
   },
   {
-    primary: sharedHelperFunctions.createParentData('self-employed', '', '', ''),
+    primary: helperFunctions.createParentData('self-employed', '', '', ''),
     parent: 'primary',
     expected: true,
     message: 'should return true when employmentStatus is "self-employed" and parent is "primary"'
   },
   {
-    secondary: sharedHelperFunctions.createParentData('self-employed', '', '', ''),
+    secondary: helperFunctions.createParentData('self-employed', '', '', ''),
     parent: 'secondary',
     expected: true,
     message: 'should return true when employmentStatus is "self-employed" and parent is "secondary"'
@@ -165,19 +165,19 @@ const workAndPay = [
 
 const sinonStubs = [
   {
-    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     function: 'employmentStatus',
     expected: true,
     message: 'should return true for employmentStatus'
   },
   {
-    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     function: 'workAndPay',
     expected: true,
     message: 'should return true for workAndPay'
   },
   {
-    primary: sharedHelperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
+    primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
     function: 'otherParentWorkAndPay',
     expected: true,
     message: 'should return true for otherParentWorkAndPay'
