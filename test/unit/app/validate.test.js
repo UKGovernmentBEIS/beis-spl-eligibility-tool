@@ -22,7 +22,9 @@ describe('validate.js', () => {
           'start-date-day': '',
           primary: helperFunctions.createParentData('', '', '', ''),
           secondary: helperFunctions.createParentData('', '', '', ''),
-          whichParent: ''
+          whichParent: '',
+          feedback: '',
+          'spam-filter': ''
         },
         errors: []
       }
@@ -123,6 +125,35 @@ describe('validate.js', () => {
       req.session.data.secondary = {}
 
       expect(validate.otherParentWorkAndPay(req, 'primary')).to.equal(false)
+    })
+  })
+
+  describe('feedback', () => {
+    it('returns false and adds error if there is no feedback', () => {
+      req.session.data.feedback = ''
+      req.session.data['spam-filter'] = 'yes'
+
+      validate.feedback(req)
+      const error = req.session.errors.feedback
+      expect(error.text).to.equal('Provide your experience with the service.')
+
+      expect(validate.feedback(req)).to.equal(false)
+    })
+
+    testCases.feedback.forEach(({ feedback, spamFilter, url, expected, errorText, message }) => {
+      it(`${message}`, () => {
+        if (feedback) req.session.data.feedback = feedback
+        if (spamFilter) req.session.data['spam-filter'] = spamFilter
+        if (url) req.session.data.url = url
+
+        validate.feedback(req)
+        if (req.session.errors['spam-filter']) {
+          const error = req.session.errors['spam-filter']
+          expect(error.text).to.equal(errorText)
+        }
+
+        expect(validate.feedback(req)).to.equal(expected)
+      })
     })
   })
 

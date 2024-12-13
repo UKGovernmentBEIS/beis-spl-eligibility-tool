@@ -163,6 +163,46 @@ const workAndPay = [
   }
 ]
 
+const feedback = [
+  {
+    feedback: 'Great service',
+    spamFilter: 'yes',
+    url: 'ttp://example.com',
+    expected: false,
+    errorText: undefined,
+    message: 'returns false if url is present'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: 'yes',
+    url: '',
+    expected: true,
+    errorText: undefined,
+    message: 'returns true if feedback and spam-filter (yes) are valid and url is not present'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: 'yes.',
+    expected: true,
+    errorText: undefined,
+    message: 'returns true if feedback and spam-filter (yes.) are valid and url is not present'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: '',
+    expected: false,
+    errorText: 'Prove you are not a robot',
+    message: 'returns false and adds error if spam-filter is empty'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: 'no',
+    expected: false,
+    errorText: 'The value you entered was incorrect. Please try again.',
+    message: 'returns false and adds error if spam-filter is incorrect'
+  }
+]
+
 const sinonStubs = [
   {
     primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
@@ -190,5 +230,6 @@ module.exports = {
   whichParent,
   employmentStatus,
   workAndPay,
+  feedback,
   sinonStubs
 }
