@@ -20,7 +20,7 @@ const relevantWeek = [
       'start-date-year': '2019'
     },
     expected: '2019-09-29',
-    message: 'always returns a sunday'
+    message: 'returns a sunday'
   }
 ]
 
