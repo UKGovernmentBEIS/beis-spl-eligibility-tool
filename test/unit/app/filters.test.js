@@ -12,6 +12,7 @@ describe('filters', () => {
     environment = {
       getFilter: () => {}
     }
+    filters = require('../../../app/filters')(environment)
   })
 
   describe('relevantWeek', () => {
@@ -23,6 +24,7 @@ describe('filters', () => {
         'start-date-month': '10',
         'start-date-year': '2019'
       }
+      filters = require('../../../app/filters')(environment)
     })
 
     testCases.relevantWeek.forEach(({ isBirth, isAdoption, data: testData, expected, message }) => {
@@ -106,7 +108,6 @@ describe('filters', () => {
       it(`${message}`, () => {
         if (parent === 'primary') data.primary['employment-status'] = employmentStatus
         if (parent === 'secondary') data.secondary['employment-status'] = employmentStatus
-        filters = require('../../../app/filters')(environment)
 
         expect(filters.isWorker(data, parent)).to.equal(expected)
       })
@@ -115,7 +116,6 @@ describe('filters', () => {
 
   describe('eligibilityLabel', () => {
     it('returns "eligible" if parent is eligible', () => {
-      filters = require('../../../app/filters')(environment)
       const data = {
         primary: {
           'employment-status': 'employee',
@@ -136,8 +136,6 @@ describe('filters', () => {
     })
 
     it('returns "not eligible" if parent is not eligible', () => {
-      filters = require('../../../app/filters')(environment)
-
       const data = {
         primary: {
           'employment-status': 'self-employed'
@@ -149,8 +147,6 @@ describe('filters', () => {
     })
 
     it('returns "Eligibility unknown" if eligibility is unknown', () => {
-      filters = require('../../../app/filters')(environment)
-
       const data = {}
 
       const result = filters.eligibilityLabel(data, 'primary', 'spl')
@@ -180,7 +176,6 @@ describe('filters', () => {
 
     testCases.eligibilityIcon.forEach(({ employmentStatus, policy, expected, message }) => {
       it(`${message}`, () => {
-        filters = require('../../../app/filters')(environment)
         if (employmentStatus !== '') {
           data.primary['employment-status'] = employmentStatus
         } else {
@@ -215,8 +210,6 @@ describe('filters', () => {
 
     testCases.hasCheckedAnyEligibility.forEach(({ primary, secondary, expected, parent, message }) => {
       it(`${message}`, () => {
-        filters = require('../../../app/filters')(environment)
-
         if (primary) data.primary = primary
         if (secondary) data.secondary = secondary
         if (!primary && !secondary) data = {}
@@ -230,8 +223,6 @@ describe('filters', () => {
   describe('coupleHasAnyIneligibility', () => {
     testCases.coupleHasAnyIneligibility.forEach(({ data, expected, message }) => {
       it(`${message}`, () => {
-        filters = require('../../../app/filters')(environment)
-
         const result = filters.coupleHasAnyIneligibility(data)
         expect(result).to.equal(expected)
       })
@@ -241,8 +232,6 @@ describe('filters', () => {
   describe('hasStartDateError', () => {
     testCases.hasStartDateError.forEach(({ errors, partOfDate, expected, message }) => {
       it(`${message}`, () => {
-        filters = require('../../../app/filters')(environment)
-
         const result = filters.hasStartDateError(errors, partOfDate)
         expect(result).to.equal(expected)
       })
@@ -251,8 +240,6 @@ describe('filters', () => {
 
   describe('resultsAnalyticsData', () => {
     it('returns the eligibility data for each parent and policy', () => {
-      filters = require('../../../app/filters')(environment)
-
       const data = {
         'nature-of-parenthood': 'birth',
         primary: {
