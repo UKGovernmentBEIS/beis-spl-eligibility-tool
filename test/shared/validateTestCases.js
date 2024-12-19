@@ -163,6 +163,46 @@ const workAndPay = [
   }
 ]
 
+const feedback = [
+  {
+    feedback: 'Great service',
+    spamFilter: 'yes',
+    url: 'ttp://example.com',
+    expected: false,
+    errorText: undefined,
+    message: 'returns false if url is present'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: 'yes',
+    url: '',
+    expected: true,
+    errorText: undefined,
+    message: 'returns true if feedback and spam-filter (yes) are valid and url is not present'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: 'yes.',
+    expected: true,
+    errorText: undefined,
+    message: 'returns true if feedback and spam-filter (yes.) are valid and url is not present'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: '',
+    expected: false,
+    errorText: 'Prove you are not a robot.',
+    message: 'returns false and adds error if spam-filter is empty'
+  },
+  {
+    feedback: 'Great service',
+    spamFilter: 'no',
+    expected: false,
+    errorText: 'The value you entered was incorrect. Please try again.',
+    message: 'returns false and adds error if spam-filter is incorrect'
+  }
+]
+
 const sinonStubs = [
   {
     primary: helperFunctions.createParentData('employee', 'yes', 'yes', 'yes'),
@@ -184,11 +224,72 @@ const sinonStubs = [
   }
 ]
 
+const isYesOrNo = [
+  {
+    value: 'yes',
+    expected: true,
+    message: 'should return true for yes'
+  },
+  {
+    value: 'no',
+    expected: true,
+    message: 'should return true for no'
+  },
+  {
+    value: 'maybe',
+    expected: false,
+    message: 'should return false for other values'
+  }
+]
+
+const prettyList = [
+  {
+    array: [],
+    expected: '',
+    message: 'should return an empty string for an empty array'
+  },
+  {
+    array: ['one'],
+    expected: 'one',
+    message: 'should return the only element for an array with one element'
+  },
+  {
+    array: ['one', 'two', 'three'],
+    expected: 'one, two and three',
+    message: 'should return a comma separated list with and for the last element'
+  }
+]
+
+const validateParentYesNoFields = [
+  {
+    field1: 'yes',
+    field2: 'no',
+    expected: true,
+    message: 'should return true if all fields are yes or no'
+  },
+  {
+    field1: 'yes',
+    field2: 'maybe',
+    expected: false,
+    message: 'should return false if any fields are not yes or no'
+  },
+  {
+    field1: 'maybe',
+    field2: 'maybe',
+    expected: false,
+    message: 'should return false if any fields are both not yes or no'
+  }
+]
+
 module.exports = {
   startDateCases,
   addStartDateError,
   whichParent,
   employmentStatus,
   workAndPay,
-  sinonStubs
+  feedback,
+  sinonStubs,
+  isYesOrNo,
+  prettyList,
+  validateParentYesNoFields
 }
