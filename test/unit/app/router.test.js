@@ -1,6 +1,7 @@
 'use strict'
 
 const supertest = require('supertest')
+const session = require('supertest-session')
 const sinon = require('sinon')
 const proxyrequire = require('proxyquire')
 
@@ -25,6 +26,20 @@ describe('GET /', () => {
   })
 })
 
+describe('GET natureOfParenthood', () => {
+  it('renders the nature-of-parenthood page', (done) => {
+    app
+      .get(paths.getPath('natureOfParenthood'))
+      .expect(200)
+      .expect((res) => {
+        if (!res.text.includes('nature-of-parenthood')) {
+          throw new Error('Missing nature-of-parenthood content')
+        }
+      })
+      .end(done)
+  })
+})
+
 describe('POST natureOfParenthood', () => {
   it('redirects back to nature-of-parenthood if nature-of-parenthood not provided', (done) => {
     app
@@ -44,12 +59,78 @@ describe('POST natureOfParenthood', () => {
   })
 })
 
+describe('GET caringWithPartner', () => {
+  let testSession
+
+  beforeEach((done) => {
+    testSession = session(getApp())
+    testSession
+      .post(paths.getPath('natureOfParenthood'))
+      .send({ 'nature-of-parenthood': 'birth' })
+      .expect(302)
+      .end(done)
+  })
+
+  it('renders the caring-with-partner page after visiting natureOfParenthood', (done) => {
+    testSession
+      .get(paths.getPath('caringWithPartner'))
+      .expect(200)
+      .expect((res) => {
+        if (!res.text.includes('caring-with-partner')) {
+          throw new Error('Missing caring-with-partner content')
+        }
+      })
+      .end(done)
+  })
+})
+
+describe('GET startDate', () => {
+  let testSession
+
+  beforeEach((done) => {
+    testSession = session(getApp())
+    testSession
+      .post(paths.getPath('natureOfParenthood'))
+      .send({ 'nature-of-parenthood': 'birth' })
+      .expect(302)
+      .end((err) => {
+        if (err) return done(err)
+        testSession
+          .post(paths.getPath('caringWithPartner'))
+          .send({ 'caring-with-partner': 'yes' })
+          .expect(302)
+          .end(done)
+      })
+  })
+
+  it('renders the startDate page after visiting caringWithPartner', (done) => {
+    testSession
+      .get(paths.getPath('startDate'))
+      .expect(200)
+      .expect((res) => {
+        if (!res.text.includes('start-date')) {
+          throw new Error('Missing start-date content')
+        }
+      })
+      .end(done)
+  })
+})
+
 describe('POST caringWithPartner', () => {
   it('redirects back to caringWithPartner if caring-with-partner not provided', (done) => {
     app
       .post(paths.getPath('caringWithPartner'))
       .expect(302)
       .expect('Location', paths.getPath('caringWithPartner'))
+      .end(done)
+  })
+
+  it('redirects to notCaringWithPartner if caring-with-partner provided', (done) => {
+    app
+      .post(paths.getPath('caringWithPartner'))
+      .send({ 'caring-with-partner': 'no' })
+      .expect(302)
+      .expect('Location', paths.getPath('notCaringWithPartner'))
       .end(done)
   })
 
@@ -123,6 +204,42 @@ describe('POST startDate', () => {
       .send(payload)
       .expect(302)
       .expect('Location', paths.getPath('whichParent'))
+      .end(done)
+  })
+})
+
+describe('POST whichParent', () => {
+  it('redirects back to whichParent if which-parent not provided', (done) => {
+    app
+      .post(paths.getPath('whichParent'))
+      .expect(302)
+      .expect('Location', paths.getPath('whichParent'))
+      .end(done)
+  })
+
+  it('redirects to employmentStatus.partner if which-parent is secondary', (done) => {
+    const payload = {
+      'which-parent': 'secondary'
+    }
+
+    app
+      .post(paths.getPath('whichParent'))
+      .send(payload)
+      .expect(302)
+      .expect('Location', paths.getPath('employmentStatus.partner'))
+      .end(done)
+  })
+
+  it('redirects to employmentStatus.parental-order-parent if which-parent is primary', (done) => {
+    const payload = {
+      'which-parent': 'primary'
+    }
+
+    app
+      .post(paths.getPath('whichParent'))
+      .send(payload)
+      .expect(302)
+      .expect('Location', paths.getPath('employmentStatus.parental-order-parent'))
       .end(done)
   })
 })
@@ -213,6 +330,33 @@ describe('POST workAndPay with a parent', () => {
       .end(done)
   })
 
+  describe('GET /cookies', () => {
+    it('/cookies should return 200 status', (done) => {
+      supertest(getApp())
+        .get(paths.getPath('cookies'))
+        .expect(200)
+        .end(done)
+    })
+  })
+
+  describe('GET /contact-us', () => {
+    it('/contact-us should return 200 status', (done) => {
+      supertest(getApp())
+        .get(paths.getPath('contact-us'))
+        .expect(200)
+        .end(done)
+    })
+  })
+
+  describe('GET /accessibility-statement', () => {
+    it('/accessibility-statement should return 200 status', (done) => {
+      supertest(getApp())
+        .get(paths.getPath('accessibilityStatement'))
+        .expect(200)
+        .end(done)
+    })
+  })
+
   describe('feedback', () => {
     describe('GET /feedback', () => {
       it('/feedback should return 200 status', (done) => {
@@ -261,6 +405,46 @@ describe('POST workAndPay with a parent', () => {
           .expect(302)
           .end(done)
       })
+    })
+  })
+
+  describe('GET /feedback/confirmation', () => {
+    let testSession
+
+    beforeEach((done) => {
+      const emailjsSendStub = sinon
+        .stub()
+        .resolves({ status: 200, text: 'OK' })
+
+      proxyrequire('../../../app/emailjs-mailer', {
+        '@emailjs/nodejs': {
+          send: emailjsSendStub
+        }
+      })
+
+      testSession = session(getApp())
+      testSession
+        .post(paths.getPath('feedback'))
+        .send({
+          feedback: 'Great service!',
+          'feedback-more-detail': 'No additional feedback',
+          userAgent: 'test-agent',
+          'spam-filter': 'yes'
+        })
+        .expect(302)
+        .end(done)
+    })
+
+    it('renders the feedback confirmation page after visiting feedback page', (done) => {
+      testSession
+        .get(paths.getPath('feedbackConfirmation'))
+        .expect(200)
+        .expect((res) => {
+          if (!res.text.includes('feedback-confirmation')) {
+            throw new Error('Missing feedback-confirmation content')
+          }
+        })
+        .end(done)
     })
   })
 })

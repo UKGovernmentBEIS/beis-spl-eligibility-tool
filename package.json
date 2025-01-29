@@ -48,6 +48,7 @@
     "qs": "6.9.7",
     "serve-favicon": "^2.5.0",
     "staticify": "^3.3.3",
+    "supertest-session": "^5.0.1",
     "throng": "4.0.x",
     "winston": "^3.14.2",
     "xml": "^1.0.1"
