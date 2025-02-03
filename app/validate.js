@@ -19,20 +19,20 @@ function natureOfParenthood (req) {
 
 function caringWithPartner (req) {
   if (!isYesOrNo(req.session.data['caring-with-partner'])) {
-    let dynamicParentFragment
+    let errorMessageFragment
     switch (req.session.data['nature-of-parenthood']) {
       case 'birth':
-        dynamicParentFragment = 'mother'
+        errorMessageFragment = 'mother'
         break
       case 'adoption':
-        dynamicParentFragment = 'primary adopter'
+        errorMessageFragment = 'primary adopter'
         break
       case 'surrogacy':
-        dynamicParentFragment = 'parental order parent'
+        errorMessageFragment = 'parental order parent'
         break
     }
 
-    addError(req, 'caring-with-partner', `Select whether the ${dynamicParentFragment} is caring for the child with a partner`, '#caring-with-partner')
+    addError(req, 'caring-with-partner', `Select whether the ${errorMessageFragment} is caring for the child with a partner`, '#caring-with-partner')
     return false
   }
   return true
@@ -97,7 +97,23 @@ function employmentStatus (req, parent) {
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
   if (!permittedValues.includes(employmentStatus)) {
-    addError(req, 'employment-status', 'Select your employment status', '#employment-status')
+    let errorMessageFragment
+    switch (req.route.path) {
+      case '/mother/employment-status':
+        errorMessageFragment = 'mother'
+        break
+      case '/primary-adopter/employment-status':
+        errorMessageFragment = 'primary adopter'
+        break
+      case '/parental-order-parent/employment-status':
+        errorMessageFragment = 'parental order parent'
+        break
+      case '/partner/employment-status':
+        errorMessageFragment = 'partner'
+        break
+    }
+
+    addError(req, 'employment-status', `Select the ${errorMessageFragment}'s employment status`, '#employment-status')
     return false
   }
   return true

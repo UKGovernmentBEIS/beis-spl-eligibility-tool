@@ -120,6 +120,36 @@ describe('validate.js', () => {
     it('returns correct result if session data contains accepted or invalid values', () => {
       sharedBehaviourTests.employmentStatus(req, validate.employmentStatus, testCases.employmentStatus)
     })
+
+    it('returns the correct error message based on the current route path', () => {
+      const employmentStatusErrorMessages = {
+        mother: {
+          path: '/mother/employment-status',
+          message: "Select the mother's employment status"
+        },
+        primaryAdopter: {
+          path: '/primary-adopter/employment-status',
+          message: "Select the primary adopter's employment status"
+        },
+        parentalOrderParent: {
+          path: '/parental-order-parent/employment-status',
+          message: "Select the parental order parent's employment status"
+        },
+        partner: {
+          path: '/partner/employment-status',
+          message: "Select the partner's employment status"
+        }
+      }
+
+      for (const { path, message } of Object.values(employmentStatusErrorMessages)) {
+        req.route = { path }
+        req.session.data['employment-status'] = 'invalid-status'
+        sharedBehaviourTests.testInvalidField(req, validate.employmentStatus, 'employment-status', 'test', {
+          text: message,
+          href: '#employment-status'
+        })
+      }
+    })
   })
 
   describe('workAndPay', () => {
