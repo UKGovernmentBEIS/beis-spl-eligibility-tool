@@ -156,6 +156,46 @@ describe('validate.js', () => {
     it('should return true for all valid test cases', () => {
       sharedBehaviourTests.workAndPay(req, validate.workAndPay, testCases.workAndPay)
     })
+
+    it('returns the correct error message based on the current route path', () => {
+      const workAndPayErrorMessages = {
+        mother: {
+          path: '/mother/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the mother started their job before the date given',
+            'continuous-work': "Select whether the mother's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the mother meets the pay threshold'
+          }
+        },
+        primaryAdopter: {
+          path: '/primary-adopter/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the primary adopter started their job before the date given',
+            'continuous-work': "Select whether the primary adopter's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the primary adopter meets the pay threshold'
+          }
+        },
+        parentalOrderParent: {
+          path: '/parental-order-parent/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the parental order parent started their job before the date given',
+            'continuous-work': "Select whether the parental order parent's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the parental order parent meets the pay threshold'
+          }
+        }
+      }
+
+      for (const { path, errors } of Object.values(workAndPayErrorMessages)) {
+        req.route = { path }
+        for (const [field, message] of Object.entries(errors)) {
+          req.session.data[field] = 'invalid-status'
+          sharedBehaviourTests.testInvalidField(req, validate.workAndPay, field, 'test', {
+            text: message,
+            href: `#${field}`
+          })
+        }
+      }
+    })
   })
 
   describe('otherParentWorkAndPay', () => {

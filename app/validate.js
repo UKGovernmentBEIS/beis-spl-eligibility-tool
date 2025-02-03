@@ -123,11 +123,25 @@ function workAndPay (req, parent) {
   if (skip.workAndPay(req.session.data, parent)) {
     return true
   }
+  console.log(parent)
+
+  let errorMessageFragment
+  switch (req.route.path) {
+    case '/mother/work-and-pay':
+      errorMessageFragment = 'mother'
+      break
+    case '/primary-adopter/work-and-pay':
+      errorMessageFragment = 'primary adopter'
+      break
+    case '/parental-order-parent/work-and-pay':
+      errorMessageFragment = 'parental order parent'
+      break
+  }
 
   return validateParentYesNoFields(req, parent, {
-    'work-start': 'Select whether or not you started your job before the date given',
-    'continuous-work': 'Select whether or not your work has been continuous during the period given',
-    'pay-threshold': 'Select whether or not you meet the pay threshold'
+    'work-start': `Select whether the ${errorMessageFragment} started their job before the date given`,
+    'continuous-work': `Select whether the ${errorMessageFragment}'s work has been continuous during the period given`,
+    'pay-threshold': `Select whether the ${errorMessageFragment} meets the pay threshold`
   })
 }
 
