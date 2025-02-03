@@ -19,7 +19,20 @@ function natureOfParenthood (req) {
 
 function caringWithPartner (req) {
   if (!isYesOrNo(req.session.data['caring-with-partner'])) {
-    addError(req, 'caring-with-partner', 'Select whether or not you are caring for the child with a partner', '#caring-with-partner')
+    let dynamicParentFragment
+    switch (req.session.data['nature-of-parenthood']) {
+      case 'birth':
+        dynamicParentFragment = 'mother'
+        break
+      case 'adoption':
+        dynamicParentFragment = 'primary adopter'
+        break
+      case 'surrogacy':
+        dynamicParentFragment = 'parental order parent'
+        break
+    }
+
+    addError(req, 'caring-with-partner', `Select whether the ${dynamicParentFragment} is caring for the child with a partner`, '#caring-with-partner')
     return false
   }
   return true

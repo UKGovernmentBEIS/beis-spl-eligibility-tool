@@ -60,11 +60,20 @@ describe('validate.js', () => {
       sharedBehaviourTests.testAcceptedValues(req, validate.caringWithPartner, 'caring-with-partner', acceptedValues)
     })
 
-    it("returns an error message for an invalid values in session data for 'caring-with-partner'", () => {
-      sharedBehaviourTests.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
-        text: 'Select whether or not you are caring for the child with a partner',
-        href: '#caring-with-partner'
-      })
+    it("returns the correct error message based on session data for 'caring-with-partner'", () => {
+      const parenthoodTypes = {
+        birth: 'Select whether the mother is caring for the child with a partner',
+        adoption: 'Select whether the primary adopter is caring for the child with a partner',
+        surrogacy: 'Select whether the parental order parent is caring for the child with a partner'
+      }
+
+      for (const [type, message] of Object.entries(parenthoodTypes)) {
+        req.session.data['nature-of-parenthood'] = type
+        sharedBehaviourTests.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
+          text: message,
+          href: '#caring-with-partner'
+        })
+      }
     })
   })
 
