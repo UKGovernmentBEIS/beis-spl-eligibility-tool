@@ -60,11 +60,20 @@ describe('validate.js', () => {
       sharedBehaviourTests.testAcceptedValues(req, validate.caringWithPartner, 'caring-with-partner', acceptedValues)
     })
 
-    it("returns an error message for an invalid values in session data for 'caring-with-partner'", () => {
-      sharedBehaviourTests.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
-        text: 'Select whether or not you are caring for the child with a partner',
-        href: '#caring-with-partner'
-      })
+    it("returns the correct error message based on session data for 'caring-with-partner'", () => {
+      const parenthoodTypes = {
+        birth: 'Select whether the mother is caring for the child with a partner',
+        adoption: 'Select whether the primary adopter is caring for the child with a partner',
+        surrogacy: 'Select whether the parental order parent is caring for the child with a partner'
+      }
+
+      for (const [type, message] of Object.entries(parenthoodTypes)) {
+        req.session.data['nature-of-parenthood'] = type
+        sharedBehaviourTests.testInvalidField(req, validate.caringWithPartner, 'caring-with-partner', 'test', {
+          text: message,
+          href: '#caring-with-partner'
+        })
+      }
     })
   })
 
@@ -111,11 +120,89 @@ describe('validate.js', () => {
     it('returns correct result if session data contains accepted or invalid values', () => {
       sharedBehaviourTests.employmentStatus(req, validate.employmentStatus, testCases.employmentStatus)
     })
+
+    it('returns the correct error message based on the current route path', () => {
+      const employmentStatusErrorMessages = {
+        mother: {
+          path: '/mother/employment-status',
+          message: "Select the mother's employment status"
+        },
+        primaryAdopter: {
+          path: '/primary-adopter/employment-status',
+          message: "Select the primary adopter's employment status"
+        },
+        parentalOrderParent: {
+          path: '/parental-order-parent/employment-status',
+          message: "Select the parental order parent's employment status"
+        },
+        partner: {
+          path: '/partner/employment-status',
+          message: "Select the partner's employment status"
+        }
+      }
+
+      for (const { path, message } of Object.values(employmentStatusErrorMessages)) {
+        req.route = { path }
+        req.session.data['employment-status'] = 'invalid-status'
+        sharedBehaviourTests.testInvalidField(req, validate.employmentStatus, 'employment-status', 'test', {
+          text: message,
+          href: '#employment-status'
+        })
+      }
+    })
   })
 
   describe('workAndPay', () => {
     it('should return true for all valid test cases', () => {
       sharedBehaviourTests.workAndPay(req, validate.workAndPay, testCases.workAndPay)
+    })
+
+    it('returns the correct error message based on the current route path', () => {
+      const workAndPayErrorMessages = {
+        mother: {
+          path: '/mother/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the mother started their job before the date given',
+            'continuous-work': "Select whether the mother's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the mother meets the pay threshold'
+          }
+        },
+        primaryAdopter: {
+          path: '/primary-adopter/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the primary adopter started their job before the date given',
+            'continuous-work': "Select whether the primary adopter's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the primary adopter meets the pay threshold'
+          }
+        },
+        parentalOrderParent: {
+          path: '/parental-order-parent/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the parental order parent started their job before the date given',
+            'continuous-work': "Select whether the parental order parent's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the parental order parent meets the pay threshold'
+          }
+        },
+        partner: {
+          path: '/partner/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the partner started their job before the date given',
+            'continuous-work': "Select whether the partner's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the partner meets the pay threshold'
+          }
+        }
+      }
+
+      for (const { path, errors } of Object.values(workAndPayErrorMessages)) {
+        req.route = { path }
+        for (const [field, message] of Object.entries(errors)) {
+          req.session.data[field] = 'invalid-status'
+          sharedBehaviourTests.testInvalidField(req, validate.workAndPay, field, 'test', {
+            text: message,
+            href: `#${field}`
+          })
+        }
+      }
     })
   })
 

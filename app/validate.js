@@ -19,7 +19,20 @@ function natureOfParenthood (req) {
 
 function caringWithPartner (req) {
   if (!isYesOrNo(req.session.data['caring-with-partner'])) {
-    addError(req, 'caring-with-partner', 'Select whether or not you are caring for the child with a partner', '#caring-with-partner')
+    let errorMessageFragment
+    switch (req.session.data['nature-of-parenthood']) {
+      case 'birth':
+        errorMessageFragment = 'mother'
+        break
+      case 'adoption':
+        errorMessageFragment = 'primary adopter'
+        break
+      case 'surrogacy':
+        errorMessageFragment = 'parental order parent'
+        break
+    }
+
+    addError(req, 'caring-with-partner', `Select whether the ${errorMessageFragment} is caring for the child with a partner`, '#caring-with-partner')
     return false
   }
   return true
@@ -84,7 +97,23 @@ function employmentStatus (req, parent) {
   const employmentStatus = delve(req.session.data, [parent, 'employment-status'])
   const permittedValues = ['employee', 'worker', 'self-employed', 'unemployed']
   if (!permittedValues.includes(employmentStatus)) {
-    addError(req, 'employment-status', 'Select your employment status', '#employment-status')
+    let errorMessageFragment
+    switch (req.route.path) {
+      case '/mother/employment-status':
+        errorMessageFragment = 'mother'
+        break
+      case '/primary-adopter/employment-status':
+        errorMessageFragment = 'primary adopter'
+        break
+      case '/parental-order-parent/employment-status':
+        errorMessageFragment = 'parental order parent'
+        break
+      case '/partner/employment-status':
+        errorMessageFragment = 'partner'
+        break
+    }
+
+    addError(req, 'employment-status', `Select the ${errorMessageFragment}'s employment status`, '#employment-status')
     return false
   }
   return true
@@ -94,11 +123,28 @@ function workAndPay (req, parent) {
   if (skip.workAndPay(req.session.data, parent)) {
     return true
   }
+  console.log(parent)
+
+  let errorMessageFragment
+  switch (req.route.path) {
+    case '/mother/work-and-pay':
+      errorMessageFragment = 'mother'
+      break
+    case '/primary-adopter/work-and-pay':
+      errorMessageFragment = 'primary adopter'
+      break
+    case '/parental-order-parent/work-and-pay':
+      errorMessageFragment = 'parental order parent'
+      break
+    case '/partner/work-and-pay':
+      errorMessageFragment = 'partner'
+      break
+  }
 
   return validateParentYesNoFields(req, parent, {
-    'work-start': 'Select whether or not you started your job before the date given',
-    'continuous-work': 'Select whether or not your work has been continuous during the period given',
-    'pay-threshold': 'Select whether or not you meet the pay threshold'
+    'work-start': `Select whether the ${errorMessageFragment} started their job before the date given`,
+    'continuous-work': `Select whether the ${errorMessageFragment}'s work has been continuous during the period given`,
+    'pay-threshold': `Select whether the ${errorMessageFragment} meets the pay threshold`
   })
 }
 
