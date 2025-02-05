@@ -136,6 +136,9 @@ function workAndPay (req, parent) {
     case '/parental-order-parent/work-and-pay':
       errorMessageFragment = 'parental order parent'
       break
+    case '/partner/work-and-pay':
+      errorMessageFragment = 'partner'
+      break
   }
 
   return validateParentYesNoFields(req, parent, {

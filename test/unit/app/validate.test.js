@@ -182,6 +182,14 @@ describe('validate.js', () => {
             'continuous-work': "Select whether the parental order parent's work has been continuous during the period given",
             'pay-threshold': 'Select whether the parental order parent meets the pay threshold'
           }
+        },
+        partner: {
+          path: '/partner/work-and-pay',
+          errors: {
+            'work-start': 'Select whether the partner started their job before the date given',
+            'continuous-work': "Select whether the partner's work has been continuous during the period given",
+            'pay-threshold': 'Select whether the partner meets the pay threshold'
+          }
         }
       }
 
