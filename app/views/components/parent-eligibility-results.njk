@@ -15,26 +15,29 @@
   </h2>
 
   {% if data[parent] %}
-    <div class="govuk-body eligibility-result">
-      <div class="eligibility-icon">
-        {{ splIcon | safe }}
-      </div>
-      <div>
-        {{ splEligiblity | capitalize }} for Shared Parental Leave
-      </div>
-    </div>
-    <div class="govuk-body eligibility-result">
-      <div class="eligibility-icon">
-        {{ shppIcon | safe }}
-      </div>
-      <div>
-        {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
-          May be eligible for Shared Parental Pay
-        {% else %}
-          {{ shppEligiblity | capitalize }} for Shared Parental Pay
-        {% endif %}
-      </div>
-    </div>
+    <ul class="govuk-list">
+      <li class="govuk-body eligibility-result">
+        <div class="eligibility-icon">
+          {{ splIcon | safe }}
+        </div>
+        <div>
+          {{ splEligiblity | capitalize }} for Shared Parental Leave
+        </div>
+        <br></br>
+      </li>
+      <li class="govuk-body eligibility-result">
+        <div class="eligibility-icon">
+          {{ shppIcon | safe }}
+        </div>
+        <div>
+          {% if data | isWorker(parent) and shppEligiblity === "eligible" %}
+            May be eligible for Shared Parental Pay
+          {% else %}
+            {{ shppEligiblity | capitalize }} for Shared Parental Pay
+          {% endif %}
+        </div>
+      </li>
+    </ul>
 
     {% if
       data[parent]["employment-status"] === "self-employed" or
