@@ -1,4 +1,4 @@
-# BEIS SPL Planner
+# DBT SPL Planner
 
 This repository contains the code for the Shared Parental Leave (SPL) and Stautory Shared Parental Pay (ShPP) eligibility tool service.
 
@@ -24,9 +24,10 @@ It is built on top of the [BEIS SPL common](https://github.com/UKGovernmentBEIS/
 
 Clone this code with Git:
 ```
-git clone git@github.com:UKGovernmentBEIS/beis-spl-planner.git
+git clone git@github.com:businessandtrade-partners/spl-eligibility-tool.git
 ```
 
+> Step no longer required but keeping for info
 Add the common project as a second remote in Git, to pull changes from there when needed:
 ```
 git remote add common git@github.com:UKGovernmentBEIS/beis-spl-common.git
