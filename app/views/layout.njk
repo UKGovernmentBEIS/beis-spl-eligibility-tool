@@ -10,7 +10,6 @@
 {% endblock %}
 
 {% block header %}
-{% include "./includes/ga.njk" %}
   <header id="cookie_banner" class="cookie-banner">
     {% set html %}
       <h1 class="govuk-heading-m">Cookies on {{ service_name }}</h1>
@@ -59,6 +58,11 @@
     },
     html: 'This is a new service. Help us improve it and <a class="govuk-link" href="/feedback">give your feedback (opens in new tab)</a>.'
   }) }}
+{% endblock %}
+
+{% block body %}
+  {% include "./includes/ga.njk" %}
+  {{ block('content') }}
 {% endblock %}
 
 {% block footer %}
