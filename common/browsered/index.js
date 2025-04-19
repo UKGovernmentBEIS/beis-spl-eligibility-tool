@@ -37,8 +37,10 @@ cookieManager.init({
     optional: true,
     cookies: [
       '_ga',
-      '_gid',
-      '_gat_UA-158688524-1'
+      '_ga_NJ98WRPX',
+      '_gat',
+      '_gat_UA-158688524-1',
+      '_gid'
     ]
   }
   ]
