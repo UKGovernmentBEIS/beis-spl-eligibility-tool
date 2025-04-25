@@ -8,6 +8,7 @@
     "npm": ">8.5"
   },
   "scripts": {
+    "build": "grunt generate-assets",
     "compile": "grunt generate-assets",
     "clean": "grunt clean",
     "dev": "grunt",
