@@ -154,6 +154,9 @@ class Paths {
       },
       accessibilityStatement: {
         url: '/accessibility-statement'
+      },
+      privacyNotice: {
+        url: '/privacy-notice'
       }
     }
   }
