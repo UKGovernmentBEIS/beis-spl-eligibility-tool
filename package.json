@@ -90,5 +90,8 @@
     "stylelint-order": "^6.0.4",
     "stylelint-scss": "^6.7.0",
     "supertest": "^4.0.2"
+  },
+  "overrides": {
+    "elliptic": "6.6.1"
   }
 }
